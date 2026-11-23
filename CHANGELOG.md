@@ -2,6 +2,24 @@
 
 ## 2026-11-23
 
+### kis_studio 1.0.2
+
+- Behoben: Leere Panels in *Notaufnahme* (*Status*, Wartende je Triage-Stufe), *Labor und Radiologie*
+  (*Kritische Werte*, *TAT Notfall*, *Durchlaufzeit je Prioritaet*, *Auftraege je Modalitaet und
+  Status*, *Auftraege je Geraet* und weitere) sowie *Cisco IQ* (*Kritisch betroffen*, *Advisories mit
+  betroffenen Geraeten*, *Betroffene Geraete*). Ursache waren Basissuchen, die nicht alle
+  Felder an die abgeleiteten Suchen weitergegeben haben. Dasselbe ist im Dashboard *Sicherheit*
+  behoben.
+- *Kritische Werte* und *Befunde nicht im KIS* zeigen jetzt 0 statt "keine Daten".
+- Tabellen ohne Treffer zeigen jetzt eine Zeile wie "Keine Speicherfehler im Zeitraum", statt leer zu
+  bleiben: *Kritische Werte*, *Umgeplante Untersuchungen*, *PACS Speicherfehler*, *Advisories mit
+  betroffenen Geraeten*, *Betroffene Geraete*.
+- *Medizintechnik*: Die Tabelle *STK / MTK faellig (MPBV)* erklaert die Abkuerzungen
+  (Sicherheitstechnische und Messtechnische Kontrolle).
+- Zu tun: `dist/kis_studio-1.0.2.spl` als Upgrade hochladen (*Upgrade app* ankreuzen). Falls
+  Dashboards in der UI bearbeitet wurden, die Kopien unter `local/data/ui/views/` loeschen, sonst
+  bleiben die alten Suchen aktiv.
+
 ### kis_studio 1.0.1
 
 - *Intensiv-Monitorwand* (Dashboard *Intensiv*): Die EKG-Kurve laeuft jetzt wie an einem echten

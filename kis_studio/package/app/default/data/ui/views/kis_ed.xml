@@ -37,7 +37,7 @@
         "ds_status": {
             "type": "ds.search",
             "options": {
-                "query": "index=demo_sakh sourcetype=\"sakh:ed:tracking\" type=status | head 1",
+                "query": "index=demo_sakh sourcetype=\"sakh:ed:tracking\" type=status | head 1\n| fields _time f longest_t1 longest_t2 longest_t3 longest_t4 longest_t5 longest_wait_min r status triage_level waiting waiting_t1 waiting_t2 waiting_t3 waiting_t4 waiting_t5",
                 "enableSmartSources": true
             },
             "name": "Letzter Board-Status"

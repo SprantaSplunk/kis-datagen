@@ -104,7 +104,7 @@
         "ds_audit": {
             "type": "ds.search",
             "options": {
-                "query": "index=demo_sakh sourcetype=\"sakh:kis:audit\" department=\"$dept$\"",
+                "query": "index=demo_sakh sourcetype=\"sakh:kis:audit\" department=\"$dept$\"\n| fields Zeit _time action break_the_glass btg_reason count department h m patient_id result role user ward workstation",
                 "enableSmartSources": true
             },
             "name": "KIS-Audit"

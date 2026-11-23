@@ -104,7 +104,7 @@
         "ds_lis": {
             "type": "ds.search",
             "options": {
-                "query": "index=demo_sakh sourcetype=\"sakh:lis:result\" department=\"$dept$\"",
+                "query": "index=demo_sakh sourcetype=\"sakh:lis:result\" department=\"$dept$\"\n| fields Wert Zeit _time c category count critical delivered_to_kis delivery_status flag m n pos priority tat_min test_code test_name u unit value ward",
                 "enableSmartSources": true
             },
             "name": "Laborbefunde"
@@ -120,7 +120,7 @@
             "type": "ds.chain",
             "options": {
                 "extend": "ds_lis",
-                "query": "| where critical=\"true\" OR critical=1 | timechart span=30m count as \"Kritische Werte\""
+                "query": "| eval c=if(critical=\"true\" OR critical=\"1\", 1, 0) | timechart span=30m sum(c) as \"Kritische Werte\""
             }
         },
         "ds_k_tat": {
@@ -134,7 +134,7 @@
             "type": "ds.chain",
             "options": {
                 "extend": "ds_lis",
-                "query": "| where delivered_to_kis=\"false\" OR delivered_to_kis=0 | timechart span=10m count as \"Nicht im KIS\""
+                "query": "| eval u=if(delivered_to_kis=\"false\" OR delivered_to_kis=\"0\", 1, 0) | timechart span=10m sum(u) as \"Nicht im KIS\""
             }
         },
         "ds_k_flu": {
@@ -169,13 +169,13 @@
             "type": "ds.chain",
             "options": {
                 "extend": "ds_lis",
-                "query": "| where flag=\"HH\" OR flag=\"LL\"\n| eval Zeit=strftime(_time, \"%H:%M\"), Wert=value.\" \".unit\n| table Zeit ward test_name Wert flag priority delivery_status\n| rename ward as Station test_name as Test flag as Flag priority as Prioritaet delivery_status as Zustellung | head 40"
+                "query": "| where flag=\"HH\" OR flag=\"LL\"\n| eval Zeit=strftime(_time, \"%H:%M\"), Wert=value.\" \".unit\n| table Zeit ward test_name Wert flag priority delivery_status\n| rename ward as Station test_name as Test flag as Flag priority as Prioritaet delivery_status as Zustellung | head 40\n| appendpipe [| stats count | where count=0 | eval Zeit=\"Keine kritischen Werte im Zeitraum\" | fields - count]"
             }
         },
         "ds_ris": {
             "type": "ds.search",
             "options": {
-                "query": "index=demo_sakh sourcetype=\"sakh:ris:order\" department=\"$dept$\"",
+                "query": "index=demo_sakh sourcetype=\"sakh:ris:order\" department=\"$dept$\"\n| fields Tage Zeit _time count device_id exam modality order_id original_device priority reason status wait_days",
                 "enableSmartSources": true
             },
             "name": "RIS-Auftraege"
@@ -198,7 +198,7 @@
             "type": "ds.chain",
             "options": {
                 "extend": "ds_ris",
-                "query": "| where status=\"umgeplant\"\n| eval Zeit=strftime(_time, \"%H:%M\") | table Zeit order_id exam original_device device_id reason wait_days\n| rename order_id as Auftrag exam as Untersuchung original_device as \"Geplant auf\" device_id as \"Neu auf\" reason as Grund wait_days as \"Wartezeit (Tage)\""
+                "query": "| where status=\"umgeplant\"\n| eval Zeit=strftime(_time, \"%H:%M\") | table Zeit order_id exam original_device device_id reason wait_days\n| rename order_id as Auftrag exam as Untersuchung original_device as \"Geplant auf\" device_id as \"Neu auf\" reason as Grund wait_days as \"Wartezeit (Tage)\"\n| appendpipe [| stats count | where count=0 | eval Zeit=\"Keine umgeplanten Untersuchungen im Zeitraum\" | fields - count]"
             }
         },
         "ds_pacs": {
@@ -212,7 +212,7 @@
         "ds_pacs_fail": {
             "type": "ds.search",
             "options": {
-                "query": "index=demo_sakh sourcetype=\"sakh:pacs:dicom\" status!=\"Success\" | stats count as Fehler by device_id status | rename device_id as Modalitaet status as Fehlerbild",
+                "query": "index=demo_sakh sourcetype=\"sakh:pacs:dicom\" status!=\"Success\" | stats count as Fehler by device_id status | rename device_id as Modalitaet status as Fehlerbild | appendpipe [| stats count | where count=0 | eval Modalitaet=\"Keine Speicherfehler im Zeitraum\" | fields - count]",
                 "enableSmartSources": true
             }
         },

@@ -1,5 +1,5 @@
 import { bar, chain, kpi, pie, search, setToken, table } from '../lib/studio.mjs';
-import { IDX } from '../lib/spl.mjs';
+import { IDX, none } from '../lib/spl.mjs';
 
 const ASSETS = `${IDX} sourcetype="cisco:iq:asset" building="$building$" earliest=-7h
 | stats latest(productId) as productId latest(productFamily) as productFamily latest(softwareVersion) as softwareVersion latest(role) as role latest(building) as building latest(lifecycleStage) as lifecycleStage latest(lastDateOfSupport) as lastDateOfSupport latest(endOfSaleDate) as endOfSaleDate latest(coverageStatus) as coverageStatus latest(contractNumber) as contractNumber latest(serviceLevel) as serviceLevel latest(coverageEndDate) as coverageEndDate by hostname`;
@@ -24,10 +24,12 @@ export default {
         ds_k_crit: chain('ds_adv', '| where severity="Critical" | stats dc(hostname) as "Kritisch betroffen"'),
         ds_k_fn: search(`${IDX} sourcetype="cisco:iq:fieldnotice" status="Potentially Vulnerable" earliest=-7h | stats dc(hostname) as "Field Notices"`),
         ds_adv_table: chain('ds_adv', `| stats latest(title) as Titel latest(severity) as Schwere max(cvssBaseScore) as CVSS dc(hostname) as Betroffen latest(fixedVersion) as "Fix in" values(cves{}) as CVE latest(firstPublished) as Veroeffentlicht by advisoryId
-| eval sev=case(Schwere="Critical", 0, Schwere="High", 1, true(), 2) | sort sev - CVSS | fields - sev | rename advisoryId as Advisory`),
+| eval sev=case(Schwere="Critical", 0, Schwere="High", 1, true(), 2) | sort sev - CVSS | fields - sev | rename advisoryId as Advisory
+${none('Titel', 'Keine Advisories im letzten Cisco-IQ-Snapshot')}`),
         ds_affected: chain('ds_adv', `| search advisoryId="$advisory$"
 | stats latest(productId) as Modell latest(softwareVersion) as Software latest(fixedVersion) as "Fix in" latest(severity) as Schwere values(advisoryId) as Advisory latest(building) as Haus by hostname
-| rename hostname as Geraet | sort Haus Geraet`),
+| rename hostname as Geraet | sort Haus Geraet
+${none('Geraet', 'Keine betroffenen Geraete im letzten Cisco-IQ-Snapshot')}`),
         ds_lifecycle: chain('ds_assets', '| stats count by lifecycleStage'),
         ds_coverage: chain('ds_assets', '| stats count by coverageStatus'),
         ds_family: chain('ds_assets', '| stats count as Geraete by productId | sort - Geraete | head 12 | rename productId as Modell'),

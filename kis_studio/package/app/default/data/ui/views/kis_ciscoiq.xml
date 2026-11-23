@@ -103,7 +103,7 @@
         "ds_adv": {
             "type": "ds.search",
             "options": {
-                "query": "index=demo_sakh sourcetype=\"cisco:iq:advisory\" building=\"$building$\" earliest=-7h",
+                "query": "index=demo_sakh sourcetype=\"cisco:iq:advisory\" building=\"$building$\" earliest=-7h\n| fields CVSS Geraet Haus Schwere Titel _time advisoryId building count cves{}* cvssBaseScore firstPublished fixedVersion hostname productId sev severity softwareVersion title",
                 "enableSmartSources": true
             },
             "name": "Advisories"
@@ -126,14 +126,14 @@
             "type": "ds.chain",
             "options": {
                 "extend": "ds_adv",
-                "query": "| stats latest(title) as Titel latest(severity) as Schwere max(cvssBaseScore) as CVSS dc(hostname) as Betroffen latest(fixedVersion) as \"Fix in\" values(cves{}) as CVE latest(firstPublished) as Veroeffentlicht by advisoryId\n| eval sev=case(Schwere=\"Critical\", 0, Schwere=\"High\", 1, true(), 2) | sort sev - CVSS | fields - sev | rename advisoryId as Advisory"
+                "query": "| stats latest(title) as Titel latest(severity) as Schwere max(cvssBaseScore) as CVSS dc(hostname) as Betroffen latest(fixedVersion) as \"Fix in\" values(cves{}) as CVE latest(firstPublished) as Veroeffentlicht by advisoryId\n| eval sev=case(Schwere=\"Critical\", 0, Schwere=\"High\", 1, true(), 2) | sort sev - CVSS | fields - sev | rename advisoryId as Advisory\n| appendpipe [| stats count | where count=0 | eval Titel=\"Keine Advisories im letzten Cisco-IQ-Snapshot\" | fields - count]"
             }
         },
         "ds_affected": {
             "type": "ds.chain",
             "options": {
                 "extend": "ds_adv",
-                "query": "| search advisoryId=\"$advisory$\"\n| stats latest(productId) as Modell latest(softwareVersion) as Software latest(fixedVersion) as \"Fix in\" latest(severity) as Schwere values(advisoryId) as Advisory latest(building) as Haus by hostname\n| rename hostname as Geraet | sort Haus Geraet"
+                "query": "| search advisoryId=\"$advisory$\"\n| stats latest(productId) as Modell latest(softwareVersion) as Software latest(fixedVersion) as \"Fix in\" latest(severity) as Schwere values(advisoryId) as Advisory latest(building) as Haus by hostname\n| rename hostname as Geraet | sort Haus Geraet\n| appendpipe [| stats count | where count=0 | eval Geraet=\"Keine betroffenen Geraete im letzten Cisco-IQ-Snapshot\" | fields - count]"
             }
         },
         "ds_lifecycle": {

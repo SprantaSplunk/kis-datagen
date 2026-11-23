@@ -8,6 +8,9 @@ export const ev = (sourcetype, extra = '') => `${IDX} sourcetype="${sourcetype}"
 export const IOS_REX = '| rex "^<\\d+>\\d+: (?<device>[^:]+): [^%]+%(?<facility>[A-Z0-9_]+)-(?<severity>\\d)-(?<mnemonic>[A-Z0-9_]+): (?<message_text>.*)"';
 export const ISE_REX = '| rex "(?<ise_category>CISE_\\w+)" | rex "NetworkDeviceName=(?<nad>[^,]+)" | rex "EndPointMatchedProfile=(?<profile>[^,]+)" | rex "#SAKH#Haus (?<ise_building>[A-D])" | rex "FailureReason=(?<failure_reason>[^,]+)"';
 
+// one placeholder row when a table search finds nothing, so the panel does not look broken
+export const none = (field, text) => `| appendpipe [| stats count | where count=0 | eval ${field}="${text}" | fields - count]`;
+
 // latest value per ward / series from a metrics index
 export function mlatest(names, by) {
     return `| mstats latest(_value) as value WHERE ${MIDX} metric_name IN (${names.map((n) => `"${n}"`).join(', ')}) BY metric_name ${by}`;

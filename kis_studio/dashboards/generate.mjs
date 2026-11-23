@@ -5,7 +5,7 @@
 import { mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { DOMAINS, buildPage } from './lib/studio.mjs';
+import { DOMAINS, buildPage, pinBaseFields } from './lib/studio.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const appDir = join(here, '..', 'package', 'app');
@@ -37,6 +37,7 @@ const modules = await Promise.all(
 const specs = modules.filter(Boolean).sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
 for (const spec of specs) {
     if (!ORDER.includes(spec.id)) throw new Error(`unknown page ${spec.id}`);
+    pinBaseFields(spec.dataSources);
 }
 
 if (process.argv.includes('--queries')) {

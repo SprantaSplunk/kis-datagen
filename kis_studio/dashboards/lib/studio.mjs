@@ -46,6 +46,42 @@ export function chain(extend, query, name) {
     return { type: 'ds.chain', options: { extend, query: clean(query) }, ...(name ? { name } : {}) };
 }
 
+// A chain only sees the fields its base search names explicitly when the base search returns raw
+// events, so such bases get a `fields` clause with every identifier their chains use.
+const SHAPED = /\|\s*(stats|timechart|chart|tstats|mstats|top|rare|table|fields|transaction|geostats|xyseries|inputlookup)\b/;
+
+const SPL_WORDS = new Set(['AND', 'OR', 'NOT', 'by', 'BY', 'over', 'as', 'span', 'limit', 'usenull', 'useother', 'true', 'false']);
+
+export function pinBaseFields(dataSources) {
+    const chainsOf = (id) => Object.values(dataSources).filter((ds) => ds.type === 'ds.chain' && ds.options.extend === id);
+    for (const [id, ds] of Object.entries(dataSources)) {
+        if (ds.type !== 'ds.search') continue;
+        const query = ds.options.query.trim();
+        if (query.startsWith('|') || SHAPED.test(query)) continue;
+        const pending = chainsOf(id);
+        if (!pending.length) continue;
+        const names = new Set(['_time']);
+        while (pending.length) {
+            const chainDs = pending.pop();
+            const text = chainDs.options.query
+                .replace(/\$\w+\$/g, ' ')
+                .replace(/"(?:[^"\\]|\\.)*"/g, ' ')
+                .replace(/'([^']*)'/g, ' $1 ')
+                .replace(/\|\s*\w+/g, ' ')
+                .replace(/\b(as|AS)\s+[A-Za-z_][A-Za-z0-9_]*/g, ' ')
+                .replace(/\b[A-Za-z_]\w*\s*\(/g, '(')
+                .replace(/\b\w+=(?=\d)/g, ' ');
+            for (const m of text.matchAll(/[A-Za-z_][A-Za-z0-9_.]*(\{\})?/g)) {
+                const name = m[1] ? `${m[0].slice(0, -2)}{}*` : m[0].replace(/\.+$/, '');
+                if (!SPL_WORDS.has(name)) names.add(name);
+            }
+            pending.push(...chainsOf(Object.keys(dataSources).find((k) => dataSources[k] === chainDs)));
+        }
+        ds.options.query = `${query}\n| fields ${[...names].sort().join(' ')}`;
+    }
+    return dataSources;
+}
+
 function clean(query) {
     return query
         .split('\n')

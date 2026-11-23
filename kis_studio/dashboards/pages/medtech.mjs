@@ -86,7 +86,7 @@ export default {
             h: 420,
             panels: [
                 { cols: 7, title: 'Offline oder mit Alarm', viz: table('ds_offline', { count: 10, status: ['Status', 'Verbindung'] }) },
-                { cols: 5, title: 'STK / MTK faellig (MPBV)', viz: table('ds_stk', { count: 10, status: ['Status'], ranges: { Tage: { warn: 30, crit: 0 } } }) },
+                { cols: 5, title: 'STK / MTK faellig (MPBV)', hint: 'STK = Sicherheitstechnische Kontrolle, MTK = Messtechnische Kontrolle, Tage = Tage bis zur STK', viz: table('ds_stk', { count: 10, status: ['Status'], ranges: { Tage: { warn: 30, crit: 0 } } }) },
             ],
         },
     ],

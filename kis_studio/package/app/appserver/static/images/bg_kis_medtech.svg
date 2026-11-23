@@ -142,5 +142,6 @@
     <rect x="1143" y="1572" width="120" height="2" rx="1" fill="#60a5fa" fill-opacity="0.85"/>
     <rect x="1145" y="1588" width="4" height="16" rx="2" fill="#60a5fa"/>
     <text x="1157" y="1601" class="pt">STK / MTK FAELLIG (MPBV)</text>
+    <text x="1860" y="1601" class="ph" text-anchor="end">STK = Sicherheitstechnische Kontrolle, MTK = Messtechnische Kontrolle, Tage = Tage bis zur STK</text>
   </g>
 </svg>
