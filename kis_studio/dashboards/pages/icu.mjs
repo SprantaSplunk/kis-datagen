@@ -2,7 +2,7 @@ import { chain, custom, kpi, line, search, setToken, table } from '../lib/studio
 import { IDX, MIDX } from '../lib/spl.mjs';
 
 const LATEST = `${IDX} sourcetype="sakh:pdms:vitals" earliest=-10m
-| stats latest(hr) as hr latest(spo2) as spo2 latest(rr) as rr latest(nibp_sys) as nibp_sys latest(nibp_dia) as nibp_dia latest(temp_c) as temp_c latest(news2) as news2 latest(ventilated) as ventilated latest(data_status) as data_status latest(patient_id) as patient_id latest(ward) as ward by bed`;
+| stats latest(hr) as hr latest(spo2) as spo2 latest(rr) as rr latest(nibp_sys) as nibp_sys latest(nibp_dia) as nibp_dia latest(temp_c) as temp_c latest(news2) as news2 latest(ventilated) as ventilated latest(rhythm) as rhythm latest(data_status) as data_status latest(patient_id) as patient_id latest(ward) as ward by bed`;
 
 export default {
     id: 'kis_icu',
@@ -12,9 +12,25 @@ export default {
     subtitle: 'Zentrale Monitorwand, Fruehwarn-Score NEWS2, Beatmung und Datenluecken der Geraeteanbindung',
     description: 'Intensivmedizin: Vitalwerte je Bett aus dem PDMS, NEWS2, Beatmungsgeraete und Verbindungsstatus',
     inputs: ['time'],
-    tokens: { bed: '*' },
+    tokens: { bed: '*', vent: '*' },
+    extraInputs: {
+        input_vent: {
+            type: 'input.dropdown',
+            title: 'Beatmung (Monitorwand)',
+            options: {
+                token: 'vent',
+                defaultValue: '*',
+                items: [
+                    { label: 'Alle Betten', value: '*' },
+                    { label: 'Beatmet', value: 'true' },
+                    { label: 'Nicht beatmet', value: 'false' },
+                ],
+            },
+        },
+    },
     dataSources: {
         ds_latest: search(LATEST, { name: 'Vitalwerte (letzte 10 min)' }),
+        ds_wall: chain('ds_latest', '| fillnull value="unbekannt" ventilated | search ventilated="$vent$"'),
         ds_k_beds: chain('ds_latest', '| stats count as "Belegte Betten"'),
         ds_k_vent: chain('ds_latest', '| where ventilated="true" OR ventilated=1 | stats count as Beatmet'),
         ds_k_crit: chain('ds_latest', '| where news2>=7 | stats count as "NEWS2 >= 7"'),
@@ -54,8 +70,8 @@ export default {
                 {
                     cols: 12,
                     title: 'Belegte Intensivbetten',
-                    hint: 'Klick auf ein Bett zeigt den Verlauf',
-                    viz: custom('icu_wall', 'ds_latest', { drilldownToken: 'bed' }, [setToken('bed')]),
+                    hint: 'Filter "Beatmung" oben; Klick auf ein Bett zeigt den Verlauf. Rechts oben je Bett: Ableitung und Rhythmus (SR, VHF, VES, LSB, SM, AVB1)',
+                    viz: custom('icu_wall', 'ds_wall', { drilldownToken: 'bed' }, [setToken('bed')]),
                 },
             ],
         },

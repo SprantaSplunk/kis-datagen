@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "TA-kis-datagen",
-        "version": "1.0.2",
+        "version": "1.0.3",
         "description": "KIS Datagen (Splunk Allgemeines Krankenhaus SAKH)",
         "contact": {
             "name": "Alex"

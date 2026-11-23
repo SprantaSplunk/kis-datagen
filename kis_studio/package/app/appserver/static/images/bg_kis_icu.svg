@@ -85,7 +85,7 @@
     <rect x="58" y="500" width="120" height="2" rx="1" fill="#34e2a0" fill-opacity="0.85"/>
     <rect x="60" y="516" width="4" height="16" rx="2" fill="#34e2a0"/>
     <text x="72" y="529" class="pt">BELEGTE INTENSIVBETTEN</text>
-    <text x="1860" y="529" class="ph" text-anchor="end">Klick auf ein Bett zeigt den Verlauf</text>
+    <text x="1860" y="529" class="ph" text-anchor="end">Filter &quot;Beatmung&quot; oben; Klick auf ein Bett zeigt den Verlauf. Rechts oben je Bett: Ableitung und Rhythmus (SR, VHF, VES, LSB, SM, AVB1)</text>
     <rect x="40" y="1110" width="910" height="360" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
     <rect x="58" y="1110" width="120" height="2" rx="1" fill="#34e2a0" fill-opacity="0.85"/>
     <rect x="60" y="1126" width="4" height="16" rx="2" fill="#34e2a0"/>

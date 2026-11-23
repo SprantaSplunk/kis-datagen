@@ -2,6 +2,33 @@
 
 ## 2026-11-23
 
+### TA-kis-datagen 1.0.3
+
+- PDMS-Vitalwerte (`sakh:pdms:vitals`) haben das neue Feld `rhythm` mit dem Herzrhythmus je
+  Patientin und Patient: `SR` (Sinusrhythmus), `VHF` (Vorhofflimmern), `VES` (Sinusrhythmus mit
+  ventrikulaeren Extrasystolen), `LSB` (Linksschenkelblock), `SM` (Schrittmacher), `AVB1` (AV-Block I).
+  Der Rhythmus bleibt waehrend des Aufenthalts gleich. Bei Vorhofflimmern schwankt die Herzfrequenz
+  staerker, bei Schrittmacher liegt sie stabil um 70.
+- Zu tun: `dist/TA-kis-datagen-1.0.3.tar.gz` als Upgrade hochladen (*Upgrade app* ankreuzen) und
+  Splunk neu starten.
+
+### kis_studio 1.0.5
+
+- *Intensivstation*: Neues Auswahlfeld *Beatmung (Monitorwand)* mit *Alle Betten*, *Beatmet* und
+  *Nicht beatmet*. Es filtert die *Monitorwand*, die Kacheln oben zaehlen weiter alle Betten.
+- *Intensiv-Monitorwand*: Jedes Bett zeigt ein eigenes EKG passend zu seinem Rhythmus.
+  Vorhofflimmern ist unregelmaessig, ohne P-Welle und mit Flimmerwellen. Extrasystolen kommen
+  vorzeitig, sind breit und haben eine kompensatorische Pause. Schenkelblock und Schrittmacher
+  zeigen einen breiten QRS-Komplex, der Schrittmacher zusaetzlich den Stimulations-Spike. Beim
+  AV-Block I ist der PR-Abstand verlaengert.
+- Amplituden, ST-Strecke und T-Welle unterscheiden sich je Bett. Die Grundlinie schwankt im Takt
+  der Atemfrequenz.
+- Jede Kachel zeigt rechts oben Ableitung und Rhythmus, zum Beispiel "II · VHF". Der Tooltip
+  nennt den Rhythmus ausgeschrieben. Ohne das Feld `rhythm` (TA vor 1.0.3) bekommt jedes Bett einen
+  festen Rhythmus aus seinem Namen.
+- Zu tun: `dist/TA-kis-datagen-1.0.3.tar.gz` und `dist/kis_studio-1.0.5.spl` als Upgrade hochladen,
+  danach Splunk neu starten.
+
 ### kis_studio 1.0.4
 
 - *Zentrale Notaufnahme*: Neues Auswahlfeld *Triage-Stufe* oben auf der Seite. Es zeigt den aktiven

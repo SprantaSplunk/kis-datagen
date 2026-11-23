@@ -424,7 +424,14 @@ def pdms(ctx, ts):
             sev = unit(ctx.seed, "sev", pid)
             n = lambda k, p=600: noise(ctx.seed, "%s-%s" % (pid, k), ts, p)
             vent = sev > 0.45
+            u = unit(ctx.seed, "rhythm", pid)
+            rhythm = "SR" if u < 0.45 else "VHF" if u < 0.65 else "VES" if u < 0.77 else "LSB" if u < 0.85 \
+                else "SM" if u < 0.92 else "AVB1"
             hr = 78 + 25 * sev + 8 * n("hr")
+            if rhythm == "VHF":
+                hr += 8 + 10 * n("af", 240)
+            elif rhythm == "SM":
+                hr = 70 + 1.5 * n("hr")
             spo2 = 97 - 6 * sev + 1.5 * n("spo2")
             if sev > 0.92 and n("crit", 1800) > 0.6:
                 hr += 30
@@ -434,7 +441,7 @@ def pdms(ctx, ts):
                     "nibp_sys": int(122 - 25 * sev + 12 * n("sys")), "nibp_dia": int(72 - 12 * sev + 6 * n("dia")),
                     "temp_c": round(37.0 + 1.2 * sev * max(0, n("t", 3600)) + 0.2 * n("t2"), 1),
                     "ventilated": vent, "fio2": round(0.3 + 0.4 * sev, 2) if vent else 0.21,
-                    "peep": int(5 + 6 * sev) if vent else 0, "data_status": "ok"}
+                    "peep": int(5 + 6 * sev) if vent else 0, "rhythm": rhythm, "data_status": "ok"}
             score = (hr > 110) + (hr > 130) + (data["spo2"] < 92) * 2 + (data["rr"] > 24) + (data["nibp_sys"] < 95) * 2
             data["news2"] = int(score + (2 if vent else 0))
             data["alarm"] = "rot" if data["news2"] >= 7 else "gelb" if data["news2"] >= 5 else "keiner"

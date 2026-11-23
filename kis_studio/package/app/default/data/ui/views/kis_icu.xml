@@ -12,6 +12,28 @@
                 "token": "global_time",
                 "defaultValue": "-4h@m,now"
             }
+        },
+        "input_vent": {
+            "type": "input.dropdown",
+            "title": "Beatmung (Monitorwand)",
+            "options": {
+                "token": "vent",
+                "defaultValue": "*",
+                "items": [
+                    {
+                        "label": "Alle Betten",
+                        "value": "*"
+                    },
+                    {
+                        "label": "Beatmet",
+                        "value": "true"
+                    },
+                    {
+                        "label": "Nicht beatmet",
+                        "value": "false"
+                    }
+                ]
+            }
         }
     },
     "defaults": {
@@ -29,6 +51,9 @@
             "default": {
                 "bed": {
                     "value": "*"
+                },
+                "vent": {
+                    "value": "*"
                 }
             }
         }
@@ -37,10 +62,17 @@
         "ds_latest": {
             "type": "ds.search",
             "options": {
-                "query": "index=demo_sakh sourcetype=\"sakh:pdms:vitals\" earliest=-10m\n| stats latest(hr) as hr latest(spo2) as spo2 latest(rr) as rr latest(nibp_sys) as nibp_sys latest(nibp_dia) as nibp_dia latest(temp_c) as temp_c latest(news2) as news2 latest(ventilated) as ventilated latest(data_status) as data_status latest(patient_id) as patient_id latest(ward) as ward by bed",
+                "query": "index=demo_sakh sourcetype=\"sakh:pdms:vitals\" earliest=-10m\n| stats latest(hr) as hr latest(spo2) as spo2 latest(rr) as rr latest(nibp_sys) as nibp_sys latest(nibp_dia) as nibp_dia latest(temp_c) as temp_c latest(news2) as news2 latest(ventilated) as ventilated latest(rhythm) as rhythm latest(data_status) as data_status latest(patient_id) as patient_id latest(ward) as ward by bed",
                 "enableSmartSources": true
             },
             "name": "Vitalwerte (letzte 10 min)"
+        },
+        "ds_wall": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_latest",
+                "query": "| fillnull value=\"unbekannt\" ventilated | search ventilated=\"$vent$\""
+            }
         },
         "ds_k_beds": {
             "type": "ds.chain",
@@ -467,7 +499,7 @@
         "viz_07": {
             "type": "kis_studio.icu_wall",
             "dataSources": {
-                "primary": "ds_latest"
+                "primary": "ds_wall"
             },
             "options": {
                 "drilldownToken": "bed"
@@ -1293,7 +1325,8 @@
             }
         ],
         "globalInputs": [
-            "input_time"
+            "input_time",
+            "input_vent"
         ]
     }
 }]]></definition>

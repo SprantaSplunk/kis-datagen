@@ -86,6 +86,11 @@ class BaseVolume(unittest.TestCase):
         for p in METRIC_PREFIXES:
             self.assertIn(p, prefixes)
 
+    def test_icu_rhythms(self):
+        rhythms = {e[4]["rhythm"] for e in self.events if e[1] == "sakh:pdms:vitals" and e[4].get("data_status") == "ok"}
+        self.assertGreaterEqual(len(rhythms), 4, rhythms)
+        self.assertLessEqual(rhythms, {"SR", "VHF", "VES", "LSB", "SM", "AVB1"})
+
     def test_change_snapshot(self):
         last = max(e[0] for e in self.events if e[1] == "snow:change_request")
         snap = [e[4] for e in self.events if e[1] == "snow:change_request" and e[0] == last]

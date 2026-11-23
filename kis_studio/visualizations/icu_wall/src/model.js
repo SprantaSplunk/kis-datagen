@@ -1,4 +1,5 @@
 import { cell, findField, opt, toNumber, toText } from '../../../shared/data.js';
+import { rhythmFor } from './ecg.js';
 
 export const DEFAULTS = { drilldownToken: 'bed', news2Warn: 5, news2Crit: 7, columns: 0, showWave: true, sweepSeconds: 6 };
 
@@ -29,6 +30,7 @@ export function toModel(normalized, options) {
         data: findField(normalized, ['data_status', 'status']),
         trend: findField(normalized, ['trend', 'hr_trend']),
         pid: findField(normalized, ['patient_id']),
+        rhythm: findField(normalized, ['rhythm', 'rhythmus']),
     };
     if (f.bed < 0 || (f.hr < 0 && f.spo2 < 0 && f.data < 0)) {
         return { error: 'Intensiv-Monitorwand braucht die Spalte "bed" und Vitalwerte wie "hr" und "spo2".' };
@@ -66,6 +68,7 @@ export function toModel(normalized, options) {
             dataStatus,
             trend,
             pid: toText(cell(row, f.pid)).trim(),
+            rhythmCode: rhythmFor(bed, toText(cell(row, f.rhythm)).trim()),
             status,
         });
     }
