@@ -2,6 +2,28 @@
 
 ## 2026-11-23
 
+### TA-kis-datagen 1.0.2
+
+- ServiceNow-Changes (`snow:change_request`) sind jetzt realistisch: werktags 3 bis 7 neue Changes,
+  am Wochenende 0 bis 1, aus rund 30 typischen Vorhaben (Patchdays, KIS-, PACS-, PDMS- und
+  LIS-Releases, Netzwerk, Medizintechnik, Zertifikate). Jeder Change durchlaeuft *Neu*, *Bewertung*,
+  *Genehmigung* (CAB, nur Normal-Changes), *Geplant*, *Implementierung*, *Review* und *Geschlossen* mit
+  Abschlusscode.
+- Der Input schreibt alle 15 Minuten einen Snapshot aller offenen Changes und der in den letzten 3 Tagen
+  abgeschlossenen (rund 30 Datensaetze), wie ein ServiceNow-Tabellenabzug. Neue Felder: `opened_at`,
+  `approval`, `close_code`, `sys_updated_on`. Bisher gab es nur 1 bis 4 Einzelereignisse pro Tag.
+- Notfall-Changes aus den Szenarien bleiben im Snapshot sichtbar, solange das Szenario laeuft.
+- Zu tun: `dist/TA-kis-datagen-1.0.2.tar.gz` als Upgrade hochladen (*Upgrade app* ankreuzen) und
+  Splunk neu starten. Der erste Snapshot kommt sofort beim Start des Inputs.
+
+### kis_studio 1.0.3
+
+- *ServiceNow CMDB und ITSM*: Die Tabelle *Changes* zeigt den aktuellen Stand aus dem letzten
+  Snapshot, laufende und anstehende Changes zuerst, mit Ende und Abschlusscode. Neu: Panel
+  *Changes je Status*. Die Kachel heisst jetzt *Offene Changes*, *Notfall-Changes* zaehlt nur offene.
+- Zu tun: zuerst `TA-kis-datagen` 1.0.2 installieren, dann `dist/kis_studio-1.0.3.spl` als Upgrade
+  hochladen (*Upgrade app* ankreuzen).
+
 ### kis_studio 1.0.2
 
 - Behoben: Leere Panels in *Notaufnahme* (*Status*, Wartende je Triage-Stufe), *Labor und Radiologie*

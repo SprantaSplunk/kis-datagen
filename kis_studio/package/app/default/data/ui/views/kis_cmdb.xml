@@ -74,22 +74,30 @@
         "ds_chg": {
             "type": "ds.search",
             "options": {
-                "query": "index=demo_sakh sourcetype=\"snow:change_request\" | stats latest(type) as Typ latest(state) as Status latest(short_description) as Beschreibung latest(risk) as Risiko latest(assignment_group) as Gruppe latest(cmdb_ci) as CI latest(start_date) as Start by number | rename number as Change",
+                "query": "index=demo_sakh sourcetype=\"snow:change_request\" earliest=-20m\n| stats latest(type) as Typ latest(state) as Status latest(short_description) as Beschreibung latest(risk) as Risiko latest(assignment_group) as Gruppe latest(cmdb_ci) as CI latest(start_date) as Start latest(end_date) as Ende latest(close_code) as Abschluss by number\n| eval o=case(Status=\"Implementierung\", 0, Typ=\"Emergency\", 1, Status=\"Genehmigung\", 2, Status=\"Geplant\", 3, Status=\"Bewertung\", 4, Status=\"Neu\", 5, Status=\"Review\", 6, true(), 7)\n| sort o Start | fields - o | rename number as Change",
                 "enableSmartSources": true
-            }
+            },
+            "name": "Changes (aktueller Stand)"
         },
         "ds_k_chg": {
             "type": "ds.chain",
             "options": {
                 "extend": "ds_chg",
-                "query": "| stats count as Changes"
+                "query": "| where Status!=\"Geschlossen\" | stats count as \"Offene Changes\""
             }
         },
         "ds_k_emg": {
             "type": "ds.chain",
             "options": {
                 "extend": "ds_chg",
-                "query": "| where Typ=\"Emergency\" | stats count as \"Notfall-Changes\""
+                "query": "| where Typ=\"Emergency\" AND Status!=\"Geschlossen\" | stats count as \"Notfall-Changes\""
+            }
+        },
+        "ds_chg_state": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_chg",
+                "query": "| stats count by Status"
             }
         },
         "ds_k_ci": {
@@ -1063,6 +1071,29 @@
             }
         },
         "viz_13": {
+            "type": "splunk.pie",
+            "dataSources": {
+                "primary": "ds_chg_state"
+            },
+            "options": {
+                "backgroundColor": "transparent",
+                "labelDisplay": "valuesAndPercentage",
+                "seriesColors": [
+                    "#22d3ee",
+                    "#a78bfa",
+                    "#34e2a0",
+                    "#ffc53d",
+                    "#ff4d6d",
+                    "#60a5fa",
+                    "#f472b6",
+                    "#2dd4bf",
+                    "#fb923c",
+                    "#e879f9"
+                ],
+                "showDonutHole": true
+            }
+        },
+        "viz_14": {
             "type": "splunk.table",
             "dataSources": {
                 "primary": "ds_assets"
@@ -1544,7 +1575,7 @@
                 "position": {
                     "x": 52,
                     "y": 2004,
-                    "w": 1196,
+                    "w": 1041,
                     "h": 324
                 }
             },
@@ -1552,9 +1583,19 @@
                 "item": "viz_13",
                 "type": "block",
                 "position": {
-                    "x": 1292,
+                    "x": 1137,
                     "y": 2004,
-                    "w": 576,
+                    "w": 266,
+                    "h": 324
+                }
+            },
+            {
+                "item": "viz_14",
+                "type": "block",
+                "position": {
+                    "x": 1447,
+                    "y": 2004,
+                    "w": 421,
                     "h": 324
                 }
             }

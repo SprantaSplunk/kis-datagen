@@ -102,7 +102,7 @@
     <rect x="970" y="300" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
     <rect x="988" y="300" width="120" height="2" rx="1" fill="#2dd4bf" fill-opacity="0.85"/>
     <rect x="990" y="316" width="4" height="16" rx="2" fill="#2dd4bf"/>
-    <text x="1002" y="329" class="pt">CHANGES</text>
+    <text x="1002" y="329" class="pt">OFFENE CHANGES</text>
     <rect x="1280" y="300" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
     <rect x="1298" y="300" width="120" height="2" rx="1" fill="#2dd4bf" fill-opacity="0.85"/>
     <rect x="1300" y="316" width="4" height="16" rx="2" fill="#2dd4bf"/>
@@ -132,13 +132,18 @@
     <rect x="1453" y="1580" width="120" height="2" rx="1" fill="#2dd4bf" fill-opacity="0.85"/>
     <rect x="1455" y="1596" width="4" height="16" rx="2" fill="#2dd4bf"/>
     <text x="1467" y="1609" class="pt">CIS JE KLASSE</text>
-    <rect x="40" y="1960" width="1220" height="380" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="40" y="1960" width="1065" height="380" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
     <rect x="58" y="1960" width="120" height="2" rx="1" fill="#2dd4bf" fill-opacity="0.85"/>
     <rect x="60" y="1976" width="4" height="16" rx="2" fill="#2dd4bf"/>
     <text x="72" y="1989" class="pt">CHANGES</text>
-    <rect x="1280" y="1960" width="600" height="380" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
-    <rect x="1298" y="1960" width="120" height="2" rx="1" fill="#2dd4bf" fill-opacity="0.85"/>
-    <rect x="1300" y="1976" width="4" height="16" rx="2" fill="#2dd4bf"/>
-    <text x="1312" y="1989" class="pt">ASSETS</text>
+    <text x="1085" y="1989" class="ph" text-anchor="end">Laufende und anstehende zuerst, abgeschlossene der letzten 3 Tage am Ende</text>
+    <rect x="1125" y="1960" width="290" height="380" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="1143" y="1960" width="120" height="2" rx="1" fill="#2dd4bf" fill-opacity="0.85"/>
+    <rect x="1145" y="1976" width="4" height="16" rx="2" fill="#2dd4bf"/>
+    <text x="1157" y="1989" class="pt">CHANGES JE STATUS</text>
+    <rect x="1435" y="1960" width="445" height="380" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="1453" y="1960" width="120" height="2" rx="1" fill="#2dd4bf" fill-opacity="0.85"/>
+    <rect x="1455" y="1976" width="4" height="16" rx="2" fill="#2dd4bf"/>
+    <text x="1467" y="1989" class="pt">ASSETS</text>
   </g>
 </svg>

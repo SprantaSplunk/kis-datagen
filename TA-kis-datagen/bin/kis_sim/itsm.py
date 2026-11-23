@@ -200,47 +200,130 @@ def incidents(ctx, ts):
 
 
 CHANGES = [
+    ("Windows Patchday Server Gruppe 1", "Normal", "Windows-Team", "sakh-dc01"),
     ("Windows Patchday Server Gruppe 2", "Normal", "Windows-Team", "sakh-file01"),
+    ("Windows Patchday Druckserver", "Standard", "Windows-Team", "sakh-print01"),
     ("KIS Release 26.4 Hotfix 3", "Normal", "KIS-Applikationsbetreuung", "sakh-kisapp01"),
-    ("Firmware-Update Infusionspumpen Haus B", "Normal", "Medizintechnik", "PUMP-0150"),
-    ("Erweiterung VLAN Medizintechnik Haus D", "Standard", "Netzwerkteam", "sakh-d-dist01"),
+    ("KIS Formular-Update Pflegeanamnese", "Standard", "KIS-Applikationsbetreuung", "sakh-kisapp02"),
+    ("OP-Planung: neue Saalbelegung Haus A", "Standard", "KIS-Applikationsbetreuung", "sakh-opapp01"),
     ("Oracle Quarterly Patch KISSTBY", "Normal", "DBA-Team", "sakh-kisdb02"),
+    ("SQL Server CU-Update PDMS-Datenbank", "Normal", "DBA-Team", "sakh-pdmsdb01"),
+    ("Tablespace-Erweiterung KISPRD", "Standard", "DBA-Team", "sakh-kisdb01"),
+    ("Neue HL7-Schnittstelle Dialyse an Kommunikationsserver", "Normal", "Schnittstellenteam", "sakh-kom01"),
     ("Zertifikatstausch ELGA GDA-Gateway", "Standard", "Schnittstellenteam", "sakh-elga01"),
+    ("Mapping-Anpassung LIS-Befundschnittstelle", "Standard", "Schnittstellenteam", "sakh-kom02"),
+    ("LIS Analysator-Treiber Update Haematologie", "Normal", "Labor-IT", "sakh-lisapp01"),
+    ("Blutbank-Software Release 8.2", "Normal", "Labor-IT", "sakh-bbapp01"),
+    ("PACS Storage-Erweiterung Archiv", "Normal", "Radiologie-IT", "sakh-pacs02"),
+    ("RIS Worklist-Konfiguration CT 2", "Standard", "Radiologie-IT", "sakh-ris01"),
+    ("PDMS Release-Update Intensiv", "Normal", "Intensiv-IT", "sakh-pdms01"),
+    ("Firmware-Update Infusionspumpen Haus B", "Normal", "Medizintechnik", "sakh-mtgw01"),
+    ("Integration neuer Patientenmonitore Station 3B", "Normal", "Medizintechnik", "sakh-mtgw01"),
+    ("Erweiterung VLAN Medizintechnik Haus D", "Standard", "Netzwerkteam", "sakh-d-dist01"),
+    ("IOS-XE-Update Core-Switches RZ1", "Normal", "Netzwerkteam", "sakh-rz1-core01"),
+    ("Firewall-Regel Fernwartung Siemens MRT", "Standard", "Netzwerkteam", "sakh-fw01"),
+    ("ISE Profiling-Policy Medizingeraete", "Normal", "Netzwerkteam", "sakh-ise01"),
+    ("WLAN Controller Software-Update", "Normal", "Netzwerkteam", "sakh-wlc01"),
+    ("Veeam Backup-Job Umstellung auf Immutable Repository", "Normal", "Storage- und Backup-Team", "sakh-veeam01"),
+    ("Patientenportal TLS-Konfiguration", "Standard", "Web-Team", "sakh-portal01"),
+    ("Lichtruf-Server Patch", "Normal", "Haustechnik", "sakh-ruf01"),
+    ("Defender-Policy Ausnahme KIS-Clients", "Normal", "IT-Security (SOC)", "sakh-kisapp03"),
 ]
+CHANGE_WINDOW_DAYS = 14
+
+
+def _change_plan(ctx, db):
+    r = rng(ctx.seed, "chg", db)
+    n = r.randint(3, 7) if ctx.clock.weekday(db * 86400 + 43200) < 5 else r.randint(0, 1)
+    plans = []
+    for i in range(n):
+        desc, typ, group, ci = r.choice(CHANGES)
+        created = db * 86400 + r.uniform(6, 15) * 3600
+        lead = r.uniform(0.3, 2) if typ == "Standard" else r.uniform(3, 9)
+        risk = weighted(r, [("Niedrig", 0.55), ("Mittel", 0.35), ("Hoch", 0.1)])
+        hour = r.choice((5, 6, 18, 19)) if risk == "Hoch" or typ == "Normal" else r.choice((7, 9, 12, 14))
+        start = int((created + lead * 86400) // 86400) * 86400 + hour * 3600
+        start = max(start, created + 4 * 3600)
+        plans.append({
+            "number": "CHG%07d" % (db % 100000 * 10 + i), "short_description": desc, "type": typ,
+            "risk": risk, "assignment_group": group, "cmdb_ci": ci, "created": created, "start": start,
+            "end": start + r.uniform(1, 4) * 3600,
+            "close_code": weighted(r, [("Erfolgreich", 0.9), ("Erfolgreich mit Abweichungen", 0.07),
+                                       ("Zurueckgerollt", 0.03)]),
+            "cab": typ == "Normal"})
+    return plans
+
+
+def _change_state(p, ts):
+    if ts < p["created"]:
+        return None
+    lead = p["start"] - p["created"]
+    if ts < p["created"] + 2 * 3600:
+        return "Neu"
+    if p["cab"] and ts < p["created"] + 0.25 * lead:
+        return "Bewertung"
+    if p["cab"] and ts < p["created"] + 0.6 * lead:
+        return "Genehmigung"
+    if ts < p["start"]:
+        return "Geplant"
+    if ts < p["end"]:
+        return "Implementierung"
+    if ts < p["end"] + 86400:
+        return "Review"
+    if ts < p["end"] + 3 * 86400:
+        return "Geschlossen"
+    return None
 
 
 def changes(ctx, ts):
-    """snow:change_request - planned changes and emergency changes."""
+    """snow:change_request - snapshot of the change table every 15 minutes plus scenario emergency changes."""
     out = []
-    day = int(ts // 86400)
-    for db in (day - 1, day):
-        r = rng(ctx.seed, "chg", db)
-        for i in range(r.randint(1, 4)):
-            created = db * 86400 + r.uniform(6, 16) * 3600
-            desc, typ, group, ci = r.choice(CHANGES)
-            if ts - 60 < created <= ts:
-                start = created + r.uniform(1, 5) * 86400
-                out.append(ev(created, "snow:change_request", "snow:change_request", INSTANCE, {
-                    "number": "CHG%07d" % (db % 100000 * 10 + i), "short_description": desc, "type": typ,
-                    "state": "Genehmigung", "risk": weighted(r, [("Niedrig", 0.6), ("Mittel", 0.35), ("Hoch", 0.05)]),
-                    "assignment_group": group, "cmdb_ci": ci,
-                    "start_date": ctx.clock.local(start).strftime("%Y-%m-%d %H:%M:%S"),
-                    "end_date": ctx.clock.local(start + 7200).strftime("%Y-%m-%d %H:%M:%S")}))
-    sc = ctx.scen
-    if sc.crossed("cisco_psirt", 1200, ts, 60):
-        affected = [d["name"] for d in H.NETWORK if d["model"].startswith(("C9300", "C9200")) and d["software"].startswith("17.9")]
-        out.append(ev(ts, "snow:change_request", "snow:change_request", INSTANCE, {
-            "number": "CHG9%06d" % (int(sc.onset["cisco_psirt"]) % 1000000), "type": "Emergency",
-            "short_description": "Notfall-Upgrade IOS XE 17.9.7 auf %d Catalyst Access-Switches (PSIRT)" % len(affected),
-            "state": "Genehmigt", "risk": "Hoch", "assignment_group": "Netzwerkteam", "cmdb_ci": ", ".join(affected[:10]),
-            "affected_count": len(affected), "start_date": ctx.clock.local(ts + 3600).strftime("%Y-%m-%d %H:%M:%S"),
-            "end_date": ctx.clock.local(ts + 5 * 3600).strftime("%Y-%m-%d %H:%M:%S"), "u_scenario": "cisco_psirt"}))
-    if sc.crossed("kis_db", 900, ts, 60):
-        out.append(ev(ts, "snow:change_request", "snow:change_request", INSTANCE, {
-            "number": "CHG9%06d" % (int(sc.onset["kis_db"]) % 1000000), "type": "Emergency",
-            "short_description": "LKF-Export abbrechen und in Nachtfenster verschieben", "state": "Implementierung",
-            "risk": "Mittel", "assignment_group": "DBA-Team", "cmdb_ci": "sakh-kisdb01", "u_scenario": "kis_db"}))
+    if int(ts) % 900 == 0 or ctx.first.get("changes"):
+        ctx.first["changes"] = False
+        upd = ctx.clock.local(ts).strftime("%Y-%m-%d %H:%M:%S")
+        fmt = lambda t: ctx.clock.local(t).strftime("%Y-%m-%d %H:%M:%S")
+        day = int(ts // 86400)
+        for db in range(day - CHANGE_WINDOW_DAYS, day + 1):
+            for p in _change_plan(ctx, db):
+                state = _change_state(p, ts)
+                if state is None:
+                    continue
+                data = {k: p[k] for k in ("number", "short_description", "type", "risk", "assignment_group", "cmdb_ci")}
+                data.update({"state": state, "opened_at": fmt(p["created"]), "start_date": fmt(p["start"]),
+                             "end_date": fmt(p["end"]), "approval": "Genehmigt" if state not in ("Neu", "Bewertung", "Genehmigung")
+                             else "Angefordert" if state == "Genehmigung" else "Nicht angefordert",
+                             "sys_updated_on": upd})
+                if state == "Geschlossen":
+                    data["close_code"] = p["close_code"]
+                out.append(ev(ts, "snow:change_request", "snow:change_request", INSTANCE, data))
+        for name, delay in (("cisco_psirt", 1200), ("kis_db", 900)):
+            e = ctx.scen.elapsed(name, ts)
+            if e is not None and e >= delay:
+                data = _emergency_change(ctx, name, ctx.scen.onset[name] + delay)
+                data["sys_updated_on"] = upd
+                out.append(ev(ts, "snow:change_request", "snow:change_request", INSTANCE, data))
+    for name, delay in (("cisco_psirt", 1200), ("kis_db", 900)):
+        if ctx.scen.crossed(name, delay, ts, 60):
+            out.append(ev(ts, "snow:change_request", "snow:change_request", INSTANCE, _emergency_change(ctx, name, ts)))
     return out
+
+
+def _emergency_change(ctx, name, at):
+    fmt = lambda t: ctx.clock.local(t).strftime("%Y-%m-%d %H:%M:%S")
+    number = "CHG9%06d" % (int(ctx.scen.onset[name]) % 1000000)
+    if name == "cisco_psirt":
+        affected = [d["name"] for d in H.NETWORK if d["model"].startswith(("C9300", "C9200")) and d["software"].startswith("17.9")]
+        return {
+            "number": number, "type": "Emergency",
+            "short_description": "Notfall-Upgrade IOS XE 17.9.7 auf %d Catalyst Access-Switches (PSIRT)" % len(affected),
+            "state": "Genehmigt", "approval": "Genehmigt", "risk": "Hoch", "assignment_group": "Netzwerkteam",
+            "cmdb_ci": ", ".join(affected[:10]), "affected_count": len(affected), "opened_at": fmt(at),
+            "start_date": fmt(at + 3600), "end_date": fmt(at + 5 * 3600), "u_scenario": "cisco_psirt"}
+    return {
+        "number": number, "type": "Emergency", "short_description": "LKF-Export abbrechen und in Nachtfenster verschieben",
+        "state": "Implementierung", "approval": "Genehmigt", "risk": "Mittel", "assignment_group": "DBA-Team",
+        "cmdb_ci": "sakh-kisdb01", "opened_at": fmt(at), "start_date": fmt(at), "end_date": fmt(at + 3600),
+        "u_scenario": "kis_db"}
 
 
 GENERATORS = [

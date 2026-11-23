@@ -15,7 +15,7 @@ ALL_GENERATORS = clinical.GENERATORS + infra.GENERATORS + itsm.GENERATORS
 class Context:
     def __init__(self, seed, clock, scen, model):
         self.seed, self.clock, self.scen, self.m = seed, clock, scen, model
-        self.first = {"cisco_iq": True, "cmdb": True}
+        self.first = {"cisco_iq": True, "cmdb": True, "changes": True}
 
 
 class Simulation:

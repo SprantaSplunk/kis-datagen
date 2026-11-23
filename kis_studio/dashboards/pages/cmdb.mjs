@@ -24,9 +24,13 @@ export default {
         ds_k_open: chain('ds_inc', '| where state!="Geloest" | stats count as "Offene Incidents"'),
         ds_k_p1: chain('ds_inc', '| where state!="Geloest" AND priority=1 | stats count as "P1 offen"'),
         ds_k_major: chain('ds_inc', '| where major="true" OR major=1 | stats count as "Major Incidents"'),
-        ds_chg: search(`${IDX} sourcetype="snow:change_request" | stats latest(type) as Typ latest(state) as Status latest(short_description) as Beschreibung latest(risk) as Risiko latest(assignment_group) as Gruppe latest(cmdb_ci) as CI latest(start_date) as Start by number | rename number as Change`),
-        ds_k_chg: chain('ds_chg', '| stats count as Changes'),
-        ds_k_emg: chain('ds_chg', '| where Typ="Emergency" | stats count as "Notfall-Changes"'),
+        ds_chg: search(`${IDX} sourcetype="snow:change_request" earliest=-20m
+| stats latest(type) as Typ latest(state) as Status latest(short_description) as Beschreibung latest(risk) as Risiko latest(assignment_group) as Gruppe latest(cmdb_ci) as CI latest(start_date) as Start latest(end_date) as Ende latest(close_code) as Abschluss by number
+| eval o=case(Status="Implementierung", 0, Typ="Emergency", 1, Status="Genehmigung", 2, Status="Geplant", 3, Status="Bewertung", 4, Status="Neu", 5, Status="Review", 6, true(), 7)
+| sort o Start | fields - o | rename number as Change`, { name: 'Changes (aktueller Stand)' }),
+        ds_k_chg: chain('ds_chg', '| where Status!="Geschlossen" | stats count as "Offene Changes"'),
+        ds_k_emg: chain('ds_chg', '| where Typ="Emergency" AND Status!="Geschlossen" | stats count as "Notfall-Changes"'),
+        ds_chg_state: chain('ds_chg', '| stats count by Status'),
         ds_k_ci: search(`${IDX} sourcetype="snow:cmdb_ci_*" earliest=-7h | stats dc(sys_id) as CIs`),
         ds_inc_table: chain('ds_inc', `| search cmdb_ci="$ci$" | where state!="Geloest"
 | sort priority - opened_at | table number priority_label state business_service cmdb_ci assignment_group short_description opened_at
@@ -44,7 +48,7 @@ export default {
                 { cols: 2, title: 'Offene Incidents', viz: kpi('ds_k_open', { decimals: 0, spark: false, warn: 10, crit: 20, higher: false }) },
                 { cols: 2, title: 'P1 offen', viz: kpi('ds_k_p1', { decimals: 0, spark: false, warn: 1, crit: 2, higher: false }) },
                 { cols: 2, title: 'Major Incidents', viz: kpi('ds_k_major', { decimals: 0, spark: false, warn: 1, crit: 2, higher: false }) },
-                { cols: 2, title: 'Changes', viz: kpi('ds_k_chg', { decimals: 0, spark: false, color: '#2dd4bf' }) },
+                { cols: 2, title: 'Offene Changes', viz: kpi('ds_k_chg', { decimals: 0, spark: false, color: '#2dd4bf' }) },
                 { cols: 2, title: 'Notfall-Changes', viz: kpi('ds_k_emg', { decimals: 0, spark: false, warn: 1, crit: 2, higher: false }) },
                 { cols: 2, title: 'Configuration Items', viz: kpi('ds_k_ci', { decimals: 0, spark: false, color: '#60a5fa' }) },
             ],
@@ -76,8 +80,9 @@ export default {
         {
             h: 380,
             panels: [
-                { cols: 8, title: 'Changes', viz: table('ds_chg', { count: 10, status: ['Typ'] }) },
-                { cols: 4, title: 'Assets', viz: table('ds_assets', { count: 5 }) },
+                { cols: 7, title: 'Changes', hint: 'Laufende und anstehende zuerst, abgeschlossene der letzten 3 Tage am Ende', viz: table('ds_chg', { count: 10, status: ['Typ'] }) },
+                { cols: 2, title: 'Changes je Status', viz: pie('ds_chg_state') },
+                { cols: 3, title: 'Assets', viz: table('ds_assets', { count: 5 }) },
             ],
         },
     ],

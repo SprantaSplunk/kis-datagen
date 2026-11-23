@@ -86,6 +86,15 @@ class BaseVolume(unittest.TestCase):
         for p in METRIC_PREFIXES:
             self.assertIn(p, prefixes)
 
+    def test_change_snapshot(self):
+        last = max(e[0] for e in self.events if e[1] == "snow:change_request")
+        snap = [e[4] for e in self.events if e[1] == "snow:change_request" and e[0] == last]
+        self.assertGreaterEqual(len(snap), 15)
+        states = {c["state"] for c in snap}
+        self.assertTrue({"Genehmigung", "Geplant", "Geschlossen"} <= states, states)
+        self.assertEqual(len(snap), len({c["number"] for c in snap}))
+        self.assertGreaterEqual(len({e[0] for e in self.events if e[1] == "snow:change_request"}), 7 * 4)
+
     def test_dimensions_per_family(self):
         need = {"sakh.server.": "host", "sakh.db.": "instance", "sakh.hl7.": "channel", "sakh.te.": "agent",
                 "sakh.mri.": "device_id", "sakh.beds.": "ward", "sakh.blood.": "blood_group", "sakh.vmware.": "cluster"}
