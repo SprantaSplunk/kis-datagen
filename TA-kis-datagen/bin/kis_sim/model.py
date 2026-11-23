@@ -99,7 +99,7 @@ class Model:
     # ------------------------------------------------------------- blood bank
     def blood_level(self, product, group, ts):
         """Available units of a blood product."""
-        target = next(p[3] for p in H.BLOOD_PRODUCTS if p[0] == product) * H.BLOOD_SHARE[group]
+        target = self.blood_target(product, group)
         h = self.clock.hour(ts)
         base = 0.86 + 0.08 * noise(self.seed, "bb-" + product + group, ts, 4 * 3600)
         base -= 0.10 * bump(h, 15.0, 3.0)
@@ -118,11 +118,15 @@ class Model:
         return max(0, int(round(target * clamp(base, 0, 1.3))))
 
     def blood_min(self, product, group):
-        target = next(p[3] for p in H.BLOOD_PRODUCTS if p[0] == product) * H.BLOOD_SHARE[group]
-        return max(1, int(round(target * 0.4)))
+        return H.BLOOD_STOCK[product][group][1]
 
     def blood_target(self, product, group):
-        return max(1, int(round(next(p[3] for p in H.BLOOD_PRODUCTS if p[0] == product) * H.BLOOD_SHARE[group])))
+        return H.BLOOD_STOCK[product][group][0]
+
+    def blood_usage(self, product, group):
+        """Units issued per day."""
+        daily = next(p[3] for p in H.BLOOD_PRODUCTS if p[0] == product)
+        return daily * H.BLOOD_USE[group] / sum(H.BLOOD_USE.values())
 
     # ------------------------------------------------------------- MRI helium
     def helium(self, device, ts):

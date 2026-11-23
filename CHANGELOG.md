@@ -2,6 +2,29 @@
 
 ## 2026-11-23
 
+### TA-kis-datagen 1.0.4
+
+- Blutdepot (`sakh:bloodbank:inventory`) mit realistischen Bestaenden: Soll- und Mindestbestand sind
+  je Produkt und Blutgruppe festgelegt. Im Normalbetrieb liegen rund 390 Erythrozytenkonzentrate (EK)
+  auf Lager (Soll 461), etwa 45 Thrombozytenkonzentrate und rund 500 Plasmen.
+- 0 negativ ist als Notfallreserve und AB-Plasma als Universalplasma ueber dem Bevoelkerungsanteil
+  bevorratet. Seltene Gruppen wie AB negativ haben bewusst nur wenige Einheiten.
+- `days_of_supply` rechnet mit dem echten Tagesverbrauch (rund 50 EK, 8 TK und 34 Plasmen pro Tag).
+  Die EK-Reichweite liegt normal bei 6 bis 11 Tagen.
+- Status: *niedrig* unter dem Mindestbestand, *kritisch* unter dem halben Mindestbestand. Beim
+  Szenario *Blutkonserven-Engpass* fallen EK 0 negativ und A negativ auf wenige Einheiten
+  (*kritisch*), EK 0 positiv wird *niedrig*.
+- Zu tun: `dist/TA-kis-datagen-1.0.4.tar.gz` als Upgrade hochladen (*Upgrade app* ankreuzen) und
+  Splunk neu starten. Die Werte vor dem Upgrade bleiben im Verlauf sichtbar, bis sie aus dem
+  Zeitraum fallen.
+
+### kis_klinik 1.0.2
+
+- *Blutdepot*: *EK gesamt* wird unter 300 gelb und unter 200 rot (Soll 461).
+- *Reichweite*: gelb unter 3 Tagen, rot unter 1,5 Tagen. Die Hinweise an den Panels nennen die
+  Schwellen, auch die Regel fuer *niedrig* und *kritisch* bei den Beuteln.
+- Zu tun: `dist/kis_klinik-1.0.2.spl` als Upgrade hochladen und Splunk neu starten.
+
 ### kis_klinik 1.0.1
 
 - KIS Studio (`kis_studio`) wird nicht mehr weiterentwickelt und ist aus dem Repository entfernt.

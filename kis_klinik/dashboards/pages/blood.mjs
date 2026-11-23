@@ -41,7 +41,7 @@ export default {
             section: 'Reserven',
             h: 150,
             panels: [
-                { cols: 2, title: 'EK gesamt', viz: kpi('ds_k_ek', { decimals: 0, spark: false, warn: 400, crit: 250 }) },
+                { cols: 2, title: 'EK gesamt', hint: 'Soll 461', viz: kpi('ds_k_ek', { decimals: 0, spark: false, warn: 300, crit: 200 }) },
                 { cols: 2, title: 'Kritische Bestaende', viz: kpi('ds_k_crit', { decimals: 0, spark: false, warn: 1, crit: 2, higher: false }) },
                 { cols: 2, title: 'Unter Mindestbestand', viz: kpi('ds_k_low', { decimals: 0, spark: false, warn: 1, crit: 3, higher: false }) },
                 { cols: 2, title: 'Verfall in 48 h', viz: kpi('ds_k_exp', { decimals: 0, spark: false, color: '#c98a00' }) },
@@ -56,7 +56,7 @@ export default {
                 {
                     cols: 12,
                     title: 'Blutkonserven je Produkt und Blutgruppe',
-                    hint: 'Strichlinie = Mindestbestand. Klick auf einen Beutel filtert Verlauf und Transfusionen',
+                    hint: 'Strichlinie = Mindestbestand; darunter niedrig, unter dem halben Minimum kritisch. Klick filtert Verlauf und Transfusionen',
                     viz: custom('blood_bank', 'ds_inv', { drilldownToken: 'blood_group' }, [setToken('blood_group')]),
                 },
             ],
@@ -71,7 +71,7 @@ export default {
         {
             h: 440,
             panels: [
-                { cols: 7, title: 'Reichweite', viz: table('ds_days', { count: 12, status: ['Status'], ranges: { 'Reichweite (Tage)': { warn: 2, crit: 1 } } }) },
+                { cols: 7, title: 'Reichweite', hint: 'gelb unter 3 Tagen, rot unter 1,5 Tagen', viz: table('ds_days', { count: 12, status: ['Status'], ranges: { 'Reichweite (Tage)': { warn: 3, crit: 1.5 } } }) },
                 { cols: 5, title: 'Transfusionen je Abteilung', viz: bar('ds_trans_dept', { stack: 'stacked', legend: 'bottom' }) },
             ],
         },

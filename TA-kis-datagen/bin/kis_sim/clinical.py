@@ -207,7 +207,7 @@ def blood_inventory(ctx, ts):
             r = rng(ctx.seed, "bbinv", product, g, int(ts // 600))
             reserved = min(avail, int(round(avail * (0.08 + 0.1 * r.random()))))
             exp48 = 0 if product == "FFP" else int(round(avail * (0.25 if product == "TK" else 0.04) * r.random()))
-            usage = max(0.5, tgt / (shelf if product != "FFP" else 60) * 1.6)
+            usage = max(0.2, m.blood_usage(product, g))
             out.append(ev(ts, "sakh:bloodbank:inventory", "blutdepot:bestand", "sakh-bbapp01", {
                 "product": product, "product_name": label, "blood_group": g, "units_available": avail,
                 "units_reserved": reserved, "units_free": avail - reserved, "min_stock": mn,
@@ -229,7 +229,7 @@ def transfusion(ctx, ts):
     for _ in range(poisson(r, lam)):
         t = _spread(r, ts, 60)
         product = weighted(r, [("EK", 0.72), ("FFP", 0.16), ("TK", 0.12)])
-        g = weighted(r, list(H.BLOOD_SHARE.items()))
+        g = weighted(r, list(H.BLOOD_USE.items()))
         short = m.impact("blood_shortage", ts) > 0.5 and product == "EK" and g in ("0-", "A-")
         dept = weighted(r, [("CHI", 3), ("UCH", 3), ("ICU", 4), ("ONK", 3), ("INN", 2), ("GYN", 1), ("ZNA", 2)])
         out.append(ev(t, "sakh:bloodbank:transfusion", "blutdepot:ausgabe", "sakh-bbapp01", {

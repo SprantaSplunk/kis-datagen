@@ -57,6 +57,18 @@ class BaseVolume(unittest.TestCase):
         seen = {e[1] for e in self.events}
         self.assertEqual(set(), seen & METRICS_ONLY)
 
+    def test_blood_stock_realistic(self):
+        last = {}
+        for _t, st, _s, _h, d in self.events:
+            if st == "sakh:bloodbank:inventory":
+                last[(d["product"], d["blood_group"])] = d
+        self.assertEqual(24, len(last))
+        self.assertGreaterEqual(sum(d["units_available"] for k, d in last.items() if k[0] == "EK"), 300)
+        self.assertEqual({"ok"}, {d["status"] for d in last.values()})
+        for k, d in last.items():
+            if k[0] == "EK":
+                self.assertTrue(3 <= d["days_of_supply"] <= 15, (k, d["days_of_supply"]))
+
     def test_more_than_30_sources(self):
         self.assertGreaterEqual(len(EVENT_SOURCETYPES | METRICS_ONLY), 30)
 

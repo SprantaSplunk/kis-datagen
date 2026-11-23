@@ -314,16 +314,16 @@
             "context": {
                 "majorColorConfig": [
                     {
-                        "to": 250,
+                        "to": 200,
                         "value": "#c8253f"
                     },
                     {
-                        "from": 250,
-                        "to": 400,
+                        "from": 200,
+                        "to": 300,
                         "value": "#c98a00"
                     },
                     {
-                        "from": 400,
+                        "from": 300,
                         "value": "#1e8a5a"
                     }
                 ]
@@ -770,16 +770,16 @@
                 ],
                 "range_2": [
                     {
-                        "to": 1,
+                        "to": 1.5,
                         "value": "#f9dde1"
                     },
                     {
-                        "from": 1,
-                        "to": 2,
+                        "from": 1.5,
+                        "to": 3,
                         "value": "#fcefcc"
                     },
                     {
-                        "from": 2,
+                        "from": 3,
                         "value": "#d9f0e3"
                     }
                 ]
