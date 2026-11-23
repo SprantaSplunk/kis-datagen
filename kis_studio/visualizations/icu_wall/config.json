@@ -23,7 +23,8 @@
       "news2Warn": { "type": "number", "default": 5 },
       "news2Crit": { "type": "number", "default": 7 },
       "columns": { "type": "number", "default": 0 },
-      "showWave": { "type": "boolean", "default": true }
+      "showWave": { "type": "boolean", "default": true },
+      "sweepSeconds": { "type": "number", "default": 6 }
     },
     "editorConfig": [
       {
@@ -39,7 +40,8 @@
         "label": "Darstellung",
         "layout": [
           [{ "editor": "editor.number", "label": "Spalten (0 = automatisch)", "option": "columns" }],
-          [{ "editor": "editor.checkbox", "label": "EKG-Kurve animieren", "option": "showWave" }]
+          [{ "editor": "editor.checkbox", "label": "EKG-Kurve animieren", "option": "showWave" }],
+          [{ "editor": "editor.number", "label": "Sweep-Dauer (Sekunden, 6 = 25 mm/s)", "option": "sweepSeconds" }]
         ]
       },
       {

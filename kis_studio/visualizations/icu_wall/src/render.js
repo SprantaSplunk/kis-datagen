@@ -19,16 +19,62 @@ function grid(count, width, height, fixed) {
     return best;
 }
 
-// stylised ECG complex at phase p (0..1)
-function ecg(p) {
-    if (p < 0.08) return Math.sin((p / 0.08) * Math.PI) * 0.12;
-    if (p < 0.14) return 0;
-    if (p < 0.16) return -0.15;
-    if (p < 0.19) return 1;
-    if (p < 0.22) return -0.3;
-    if (p < 0.4) return 0;
-    if (p < 0.55) return Math.sin(((p - 0.4) / 0.15) * Math.PI) * 0.22;
+// stylised ECG complex, s = seconds since the start of the beat; intervals are physiological and
+// only compressed when the RR interval is shorter than the complex (tachycardia)
+function ecg(s, rr) {
+    const k = Math.min(1, rr / 0.6);
+    const t = s / k;
+    if (t < 0.09) return Math.sin((t / 0.09) * Math.PI) * 0.12;
+    if (t < 0.16) return 0;
+    if (t < 0.18) return -0.15 * ((t - 0.16) / 0.02);
+    if (t < 0.205) return -0.15 + 1.15 * ((t - 0.18) / 0.025);
+    if (t < 0.23) return 1 - 1.3 * ((t - 0.205) / 0.025);
+    if (t < 0.25) return -0.3 + 0.3 * ((t - 0.23) / 0.02);
+    if (t < 0.36) return 0;
+    if (t < 0.52) return Math.sin(((t - 0.36) / 0.16) * Math.PI) * 0.22;
     return 0;
+}
+
+function hash01(text) {
+    let h = 2166136261;
+    for (let i = 0; i < text.length; i += 1) h = Math.imul(h ^ text.charCodeAt(i), 16777619);
+    return (h >>> 0) / 4294967296;
+}
+
+// beats elapsed at time t (s): own phase per bed plus slight beat-to-beat variability
+function beatsAt(t, freq, seed) {
+    return t * freq + seed + 0.035 * Math.sin(t * 0.7 + seed * 6.283) + 0.02 * Math.sin(t * 0.23 + seed * 3.1);
+}
+
+function ecgValue(t, hr, seed) {
+    const freq = hr / 60;
+    const beats = beatsAt(t, freq, seed);
+    const frac = beats - Math.floor(beats);
+    return ecg(frac / freq, 1 / freq);
+}
+
+const VERTICES = [0.16, 0.18, 0.205, 0.23, 0.25];
+
+// exact times of the QRS corners inside [t0, t1], so narrow R peaks never fall between two samples
+function qrsTimes(t0, t1, hr, seed) {
+    const freq = hr / 60;
+    const k = Math.min(1, 1 / freq / 0.6);
+    const solve = (target) => {
+        let t = (target - seed) / freq;
+        for (let i = 0; i < 4; i += 1) {
+            const d = freq + 0.0245 * Math.cos(t * 0.7 + seed * 6.283) + 0.0046 * Math.cos(t * 0.23 + seed * 3.1);
+            t -= (beatsAt(t, freq, seed) - target) / d;
+        }
+        return t;
+    };
+    const out = [];
+    for (let n = Math.floor(beatsAt(t0, freq, seed)) - 1; n <= Math.ceil(beatsAt(t1, freq, seed)); n += 1) {
+        for (const v of VERTICES) {
+            const tv = solve(n + v * k * freq);
+            if (tv >= t0 && tv <= t1) out.push(tv);
+        }
+    }
+    return out;
 }
 
 export function draw(ctx, width, height, model, env) {
@@ -93,23 +139,48 @@ export function draw(ctx, width, height, model, env) {
             const waveH = ch * 0.3;
             const waveW = cw - 2 * pad;
             if (o.showWave && waveH > 8) {
-                const beats = clamp((Number.isFinite(b.hr) ? b.hr : 70) / 60, 0.5, 3.5);
-                const shift = env.still ? 0 : (env.time / 1000) * beats;
+                // sweep display like a bedside monitor: fixed time axis, the trace is rewritten
+                // left to right and a short gap marks the write position
+                const hr = clamp(Number.isFinite(b.hr) ? b.hr : 70, 30, 220);
+                const seed = hash01(b.id);
+                const gain = 0.85 + 0.25 * hash01(`${b.id}:gain`);
+                const span = o.sweepSeconds;
+                const now = env.still ? span : env.time / 1000 + seed * span;
+                const cursor = env.still ? 1 : (now % span) / span;
+                const gapW = env.still ? 0 : 0.04;
+                const steps = Math.max(40, Math.round(waveW / 1.5));
+                // segment written in the current sweep (left of the cursor) and the remainder of the
+                // previous sweep (right of the gap); each frac maps to one point in time
+                const segments = [[0, cursor, cursor]];
+                if (cursor + gapW < 1) segments.push([cursor + gapW, 1, cursor + 1]);
                 ctx.strokeStyle = HR_COLOR;
                 ctx.lineWidth = 1.4;
                 glow(ctx, HR_COLOR, 4, palette);
                 ctx.beginPath();
-                const steps = Math.max(20, Math.round(waveW / 2));
-                for (let s = 0; s <= steps; s += 1) {
-                    const frac = s / steps;
-                    const phase = (((frac * 3 + shift) % 1) + 1) % 1;
-                    const px = x + pad + frac * waveW;
-                    const py = waveTop + waveH * 0.7 - ecg(phase) * waveH * 0.65;
-                    if (s === 0) ctx.moveTo(px, py);
-                    else ctx.lineTo(px, py);
-                }
+                let head = null;
+                segments.forEach(([f0, f1, base], si) => {
+                    const fracs = [];
+                    for (let s = Math.ceil(f0 * steps); s <= Math.floor(f1 * steps); s += 1) fracs.push(s / steps);
+                    fracs.push(f0, f1);
+                    const tOf = (frac) => now - (base - frac) * span;
+                    for (const tv of qrsTimes(tOf(f0), tOf(f1), hr, seed)) fracs.push(base - (now - tv) / span);
+                    fracs.sort((a, b) => a - b);
+                    fracs.forEach((frac, j) => {
+                        const px = x + pad + frac * waveW;
+                        const py = waveTop + waveH * 0.7 - ecgValue(tOf(frac), hr, seed) * gain * waveH * 0.65;
+                        if (j === 0) ctx.moveTo(px, py);
+                        else ctx.lineTo(px, py);
+                        if (si === 0) head = [px, py];
+                    });
+                });
                 ctx.stroke();
                 ctx.shadowBlur = 0;
+                if (head && !env.still) {
+                    ctx.fillStyle = '#eafff6';
+                    ctx.beginPath();
+                    ctx.arc(head[0], head[1], 1.8, 0, Math.PI * 2);
+                    ctx.fill();
+                }
             } else if (b.trend.length > 1) {
                 const min = Math.min(...b.trend);
                 const max = Math.max(...b.trend);

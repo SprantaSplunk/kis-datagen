@@ -2,6 +2,17 @@
 
 ## 2026-11-23
 
+### kis_studio 1.0.1
+
+- *Intensiv-Monitorwand* (Dashboard *Intensiv*): Die EKG-Kurve laeuft jetzt wie an einem echten
+  Bettmonitor als Sweep mit fester Zeitachse (Standard 6 Sekunden, entspricht 25 mm/s). Vorher lief sie
+  rund dreimal zu schnell und auf allen Betten synchron.
+- Jedes Bett hat einen eigenen Takt und eine leichte Schwankung der Schlagabstaende. Die Zahl der
+  Schlaege pro Kachel entspricht der Herzfrequenz, die R-Zacken sind gleich hoch.
+- Neue Option *Sweep-Dauer (Sekunden)* im Editor der Visualisierung (3 bis 12).
+- Zu tun: `dist/kis_studio-1.0.1.spl` als Upgrade hochladen (*Upgrade app* ankreuzen) und den
+  Browser-Cache leeren oder das Dashboard mit Shift+Reload neu laden.
+
 ### TA-kis-datagen 1.0.1
 
 - Behoben: Auf der Seite *Inputs* liess sich kein Input anlegen ("Something went wrong"). Splunk hat

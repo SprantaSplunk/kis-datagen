@@ -1,6 +1,6 @@
 import { cell, findField, opt, toNumber, toText } from '../../../shared/data.js';
 
-export const DEFAULTS = { drilldownToken: 'bed', news2Warn: 5, news2Crit: 7, columns: 0, showWave: true };
+export const DEFAULTS = { drilldownToken: 'bed', news2Warn: 5, news2Crit: 7, columns: 0, showWave: true, sweepSeconds: 6 };
 
 export function readOptions(options) {
     return {
@@ -9,6 +9,7 @@ export function readOptions(options) {
         news2Crit: opt(options, 'news2Crit', DEFAULTS.news2Crit),
         columns: Math.round(Math.min(20, Math.max(0, opt(options, 'columns', DEFAULTS.columns)))),
         showWave: opt(options, 'showWave', DEFAULTS.showWave),
+        sweepSeconds: Math.min(12, Math.max(3, Number(opt(options, 'sweepSeconds', DEFAULTS.sweepSeconds)) || DEFAULTS.sweepSeconds)),
     };
 }
 
