@@ -147,6 +147,20 @@ class BaseVolume(unittest.TestCase):
                 self.assertNotIn("name", d) if st.startswith("sakh:kis") else None
 
 
+class Restart(unittest.TestCase):
+    def test_snapshots_right_after_restart(self):
+        start = NOW + 31 * 60 + 40
+        events = []
+        sim = Simulation(lambda t, st, src, host, data: events.append((t, st)), start_ts=start, prime=True)
+        sim.run_until(start + 1)
+        seen = {st for t, st in events}
+        for st in ("sakh:bloodbank:inventory", "sakh:kis:beds", "cisco:dnac:devicehealth"):
+            self.assertIn(st, seen)
+        sim.run_until(NOW + 3600)
+        blood = sorted({t for t, st in events if st == "sakh:bloodbank:inventory"})
+        self.assertEqual([start, NOW + 40 * 60, NOW + 50 * 60, NOW + 3600], blood)
+
+
 class Determinism(unittest.TestCase):
     def test_same_seed_same_data(self):
         _, a, ma = run(hours=0.5)

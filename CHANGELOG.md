@@ -2,6 +2,17 @@
 
 ## 2026-11-23
 
+### TA-kis-datagen 1.0.5
+
+- Nach einem Neustart oder Upgrade, bei dem der Input laenger als die erlaubte Luecke stand,
+  schreiben alle langsameren Quellen sofort eine aktuelle Momentaufnahme: Blutdepot-Bestand,
+  Bettenbelegung, Dienstplan, Catalyst-Health, ThousandEyes, VMware, Cisco IQ und CMDB. Vorher kamen
+  sie erst zu ihrem naechsten Takt (Blutdepot alle 10 Minuten, Dienstplan alle 30 Minuten), und
+  *Blutdepot*, *Bettenmanagement* und die Kacheln der *Klinik-Uebersicht* blieben bis dahin leer.
+- Danach laufen die Quellen wieder in ihrem gewohnten Takt.
+- Zu tun: `dist/TA-kis-datagen-1.0.5.tar.gz` als Upgrade hochladen (*Upgrade app* ankreuzen) und
+  Splunk neu starten.
+
 ### TA-kis-datagen 1.0.4
 
 - Blutdepot (`sakh:bloodbank:inventory`) mit realistischen Bestaenden: Soll- und Mindestbestand sind

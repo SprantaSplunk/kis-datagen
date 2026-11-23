@@ -26,7 +26,7 @@ Die App legt beide Indexe an (`default/indexes.conf`, 30 Tage Aufbewahrung):
 
 ## Einrichtung
 
-1. App installieren (`TA-kis-datagen-1.0.4.tar.gz`).
+1. App installieren (`TA-kis-datagen-1.0.5.tar.gz`).
 2. *Configuration → HEC Setup*: Modus HEC, URL und Token eintragen (Token wird geprueft und
    verschluesselt gespeichert). Ohne HEC: Modus *Direct*.
 3. *Inputs → Create New Input → SAKH Krankenhaus*: Name vergeben, Standardwerte passen

@@ -234,7 +234,7 @@ def run(name, item, session_key, event_writer, logger, checkpoint_dir):
     flags = scenario_flags(item)
     onset = cp.get("scenario_onset") or {}
     sim = Simulation(emit, tz_name, start_ts=start, seed=seed, scenarios=flags, onset=onset, logger=logger,
-                     emit_metric=emit_metric)
+                     emit_metric=emit_metric, prime=start == now)
     started = sim.set_scenarios(flags, now)
     logger.info("KIS datagen started (mode=%s, index=%s, metrics_index=%s, tz=%s, start=%s, scenarios: %s)",
                 mode, index, metrics_index, tz_name, int(start), describe(flags))
