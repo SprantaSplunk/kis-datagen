@@ -59,6 +59,7 @@ export function toModel(normalized, options) {
         ackMin: findField(normalized, ['ack_min']),
         ackRole: findField(normalized, ['ack_role']),
         escalated: findField(normalized, ['escalated']),
+        reason: findField(normalized, ['reason', 'grund']),
     };
     if ((f.code < 0 && f.name < 0) || f.value < 0) {
         return { error: 'Kritische Laborwerte braucht die Spalten "test_code" (oder "test_name") und "value" (optional "ref_low", "ref_high", "crit_low", "crit_high", "ward", "_time", "delivery_status").' };
@@ -96,7 +97,8 @@ export function toModel(normalized, options) {
             patient: toText(cell(row, f.patient)).trim(),
             ackMin: toNumber(cell(row, f.ackMin)),
             ackRole: toText(cell(row, f.ackRole)).trim(),
-            escalated: toText(cell(row, f.escalated)).trim() === '1',
+            escalated: toNumber(cell(row, f.escalated), 0),
+            reason: toText(cell(row, f.reason)).trim(),
             unacked: f.ackState >= 0
                 ? toText(cell(row, f.ackState)).trim().toLowerCase() === 'offen'
                 : f.ackMin >= 0 && !Number.isFinite(toNumber(cell(row, f.ackMin))),

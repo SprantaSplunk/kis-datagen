@@ -2,6 +2,23 @@
 
 ## 2026-11-23
 
+### TA-kis-datagen 1.0.9
+
+- Je 2 Stunden bleibt ein kritischer Laborwert einer Normalstation lange unquittiert, mit Grund
+  (`reason`), z. B. "Stationsarzt im OP" oder "Station telefonisch nicht erreichbar". Er wird nach
+  30 Minuten an den Oberarzt und nach 90 Minuten an den Oberarzt vom Dienst eskaliert
+  (`escalation_level=2`) und erst nach 2 bis knapp 4 Stunden quittiert. Meist sind dadurch ein
+  bis zwei ueberfaellige kritische Werte offen.
+- Quittiert innerhalb 30 Minuten werden damit etwa 85 % der kritischen Werte.
+- Zu tun: `dist/TA-kis-datagen-1.0.9.tar.gz` als Upgrade installieren und Splunk neu starten.
+
+### kis_klinik 1.0.9
+
+- *Offene kritische Befunde*: neue Spalte *Grund*, Status *2. Eskalation: OA vom Dienst*.
+- *Quittiert innerhalb 30 min*: Ziel 90 % (gelb darunter, rot unter 80 %).
+- *Kritische Werte je Test*: Der Tooltip nennt Eskalationsstufe und Grund.
+- Zu tun: `dist/kis_klinik-1.0.9.spl` als Upgrade hochladen und Splunk neu starten.
+
 ### TA-kis-datagen 1.0.8
 
 - Neuer Sourcetype `sakh:lis:critical` (Index `demo_sakh`): Jeder kritische Laborwert wird

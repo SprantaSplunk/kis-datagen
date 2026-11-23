@@ -91,7 +91,7 @@ class BaseVolume(unittest.TestCase):
                 steps.setdefault(d["order_id"], {})[d["action"]] = (t, d)
         for oid, t in results.items():
             got = steps.get(oid, {})
-            if t < NOW - 180 * 60:
+            if t < NOW - 240 * 60:
                 self.assertIn("quittiert", got, oid)
             for action, (when, d) in got.items():
                 self.assertAlmostEqual(when, t + d["minutes"] * 60, delta=4)
@@ -100,12 +100,16 @@ class BaseVolume(unittest.TestCase):
                 ack = got["quittiert"][1]
                 self.assertGreater(ack["minutes"], got["mitgeteilt"][1]["minutes"])
                 self.assertEqual(ack["minutes"] > 30, "eskaliert" in got, oid)
+        overdue = [oid for oid, t in results.items() if t < NOW - 30 * 60 and "quittiert" not in steps.get(oid, {})]
+        self.assertGreaterEqual(len(overdue), 1)
+        for oid in overdue:
+            self.assertIn("eskaliert", steps[oid])
         acked = [s["quittiert"][1]["minutes"] for s in steps.values() if "quittiert" in s]
         acked.sort()
         self.assertTrue(5 <= acked[len(acked) // 2] <= 20, acked[len(acked) // 2])
         for oid, got in steps.items():
             if oid not in results:
-                self.assertLess(min(w for w, _ in got.values()), NOW - 7 * 3600 + 180 * 60, oid)
+                self.assertLess(min(w for w, _ in got.values()), NOW - 7 * 3600 + 240 * 60, oid)
 
     def test_more_than_30_sources(self):
         self.assertGreaterEqual(len(EVENT_SOURCETYPES | METRICS_ONLY), 30)

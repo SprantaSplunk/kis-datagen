@@ -205,6 +205,7 @@ const STATUS_BG = [
     { match: 'Vulnerable', value: '#f9dde1' },
     { match: 'ueberfaellig', value: '#f9dde1' },
     { match: 'eskaliert an Oberarzt', value: '#f9dde1' },
+    { match: '2. Eskalation: OA vom Dienst', value: '#f9dde1' },
     { match: 'noch nicht mitgeteilt', value: '#f9dde1' },
     { match: 'telefonisch mitgeteilt', value: '#fcefcc' },
     { match: 'in Warteschlange', value: '#fcefcc' },

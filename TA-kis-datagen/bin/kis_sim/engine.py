@@ -17,6 +17,7 @@ class Context:
         self.seed, self.clock, self.scen, self.m = seed, clock, scen, model
         self.first = {"cisco_iq": True, "cmdb": True, "changes": True}
         self.lis_critical = {}
+        self.lis_stuck = {}
 
 
 class Simulation:

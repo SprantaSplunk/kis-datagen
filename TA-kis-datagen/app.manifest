@@ -21,7 +21,7 @@
         "id": {
             "group": null,
             "name": "TA-kis-datagen",
-            "version": "1.0.8"
+            "version": "1.0.9"
         },
         "license": {
             "name": "LICENSE.txt",

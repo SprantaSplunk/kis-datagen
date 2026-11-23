@@ -286,11 +286,12 @@ export function draw(ctx, width, height, model, env) {
                 [res.ward, hhmm(res.time), res.priority].filter(Boolean).join(' · '),
             ];
             if (Number.isFinite(res.ackMin)) {
-                lines.push(`quittiert nach ${formatNumber(res.ackMin, 0)} min${res.ackRole ? ` (${res.ackRole})` : ''}${res.escalated ? ', nach Eskalation' : ''}`);
+                lines.push(`quittiert nach ${formatNumber(res.ackMin, 0)} min${res.ackRole ? ` (${res.ackRole})` : ''}${res.escalated ? `, nach ${res.escalated >= 2 ? '2. ' : ''}Eskalation` : ''}`);
             } else if (res.unacked) {
                 const since = Number.isFinite(res.time) ? Math.max(0, Math.round((Date.now() - res.time) / 60000)) : NaN;
-                lines.push(`noch nicht quittiert${Number.isFinite(since) ? ` (seit ${since} min)` : ''}${res.escalated ? ', eskaliert an Oberarzt' : ''}`);
+                lines.push(`noch nicht quittiert${Number.isFinite(since) ? ` (seit ${since} min)` : ''}${res.escalated >= 2 ? ', 2. Eskalation an OA vom Dienst' : res.escalated ? ', eskaliert an Oberarzt' : ''}`);
             }
+            if (res.reason) lines.push(`Grund: ${res.reason}`);
             if (res.delivery) lines.push(`KIS: ${res.delivery}`);
             if (res.patient) lines.push(`Fall-ID ${res.patient}`);
             hits.push({ id: `res:${t.code}:${i}`, x: px - r - 2, y: py - r - 2, w: 2 * r + 4, h: 2 * r + 4, label: lines[0], tooltip: lines, hover: true });

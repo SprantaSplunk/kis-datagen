@@ -175,7 +175,7 @@
         "ds_crit": {
             "type": "ds.search",
             "options": {
-                "query": "index=demo_sakh department=\"$dept$\" ((sourcetype=\"sakh:lis:result\" (flag=\"HH\" OR flag=\"LL\")) OR sourcetype=\"sakh:lis:critical\")\n| eventstats min(eval(if(sourcetype=\"sakh:lis:critical\", _time, null()))) as ack_start\n| eval rt=if(sourcetype=\"sakh:lis:result\", _time, null()), acked=if(action=\"quittiert\", minutes, null()), ack_role=if(action=\"quittiert\", role, null()), told=if(action=\"mitgeteilt\", 1, null()), esc=if(action=\"eskaliert\", 1, null())\n| stats min(rt) as rt max(acked) as ack_min first(ack_role) as ack_role max(told) as told max(esc) as escalated first(test_code) as test_code first(test_name) as test_name first(value) as value first(unit) as unit first(ref_low) as ref_low first(ref_high) as ref_high first(crit_low) as crit_low first(crit_high) as crit_high first(flag) as flag first(ward) as ward first(priority) as priority first(delivery_status) as delivery_status first(patient_id) as patient_id first(ack_start) as ack_start by order_id\n| where isnotnull(rt)\n| eval ack_state=case(isnotnull(ack_min), \"quittiert\", rt>=ack_start, \"offen\", true(), \"unbekannt\")\n| eval _time=rt | sort - _time | head 300\n| table _time test_code test_name value unit ref_low ref_high crit_low crit_high flag ward priority delivery_status patient_id ack_state ack_min ack_role escalated",
+                "query": "index=demo_sakh department=\"$dept$\" ((sourcetype=\"sakh:lis:result\" (flag=\"HH\" OR flag=\"LL\")) OR sourcetype=\"sakh:lis:critical\")\n| eventstats min(eval(if(sourcetype=\"sakh:lis:critical\", _time, null()))) as ack_start\n| eval rt=if(sourcetype=\"sakh:lis:result\", _time, null()), acked=if(action=\"quittiert\", minutes, null()), ack_role=if(action=\"quittiert\", role, null()), told=if(action=\"mitgeteilt\", 1, null()), esc=if(action=\"eskaliert\", escalation_level, null()), why=if(action=\"eskaliert\", reason, null())\n| stats min(rt) as rt max(acked) as ack_min first(ack_role) as ack_role max(told) as told max(esc) as escalated first(why) as reason first(test_code) as test_code first(test_name) as test_name first(value) as value first(unit) as unit first(ref_low) as ref_low first(ref_high) as ref_high first(crit_low) as crit_low first(crit_high) as crit_high first(flag) as flag first(ward) as ward first(priority) as priority first(delivery_status) as delivery_status first(patient_id) as patient_id first(ack_start) as ack_start by order_id\n| where isnotnull(rt)\n| eval ack_state=case(isnotnull(ack_min), \"quittiert\", rt>=ack_start, \"offen\", true(), \"unbekannt\")\n| eval _time=rt | sort - _time | head 300\n| table _time test_code test_name value unit ref_low ref_high crit_low crit_high flag ward priority delivery_status patient_id ack_state ack_min ack_role escalated reason",
                 "enableSmartSources": true
             },
             "name": "Kritische Befunde mit Quittierung"
@@ -183,7 +183,7 @@
         "ds_open": {
             "type": "ds.search",
             "options": {
-                "query": "index=demo_sakh department=\"$dept$\" earliest=-4h latest=now ((sourcetype=\"sakh:lis:result\" (flag=\"HH\" OR flag=\"LL\")) OR sourcetype=\"sakh:lis:critical\")\n| eventstats min(eval(if(sourcetype=\"sakh:lis:critical\", _time, null()))) as ack_start\n| eval rt=if(sourcetype=\"sakh:lis:result\", _time, null()), acked=if(action=\"quittiert\", minutes, null()), ack_role=if(action=\"quittiert\", role, null()), told=if(action=\"mitgeteilt\", 1, null()), esc=if(action=\"eskaliert\", 1, null())\n| stats min(rt) as rt max(acked) as ack_min first(ack_role) as ack_role max(told) as told max(esc) as escalated first(test_code) as test_code first(test_name) as test_name first(value) as value first(unit) as unit first(ref_low) as ref_low first(ref_high) as ref_high first(crit_low) as crit_low first(crit_high) as crit_high first(flag) as flag first(ward) as ward first(priority) as priority first(delivery_status) as delivery_status first(patient_id) as patient_id first(ack_start) as ack_start by order_id\n| where isnotnull(rt)\n| eval ack_state=case(isnotnull(ack_min), \"quittiert\", rt>=ack_start, \"offen\", true(), \"unbekannt\")\n| where ack_state=\"offen\" | eval age=round((now() - rt) / 60, 0)",
+                "query": "index=demo_sakh department=\"$dept$\" earliest=-4h latest=now ((sourcetype=\"sakh:lis:result\" (flag=\"HH\" OR flag=\"LL\")) OR sourcetype=\"sakh:lis:critical\")\n| eventstats min(eval(if(sourcetype=\"sakh:lis:critical\", _time, null()))) as ack_start\n| eval rt=if(sourcetype=\"sakh:lis:result\", _time, null()), acked=if(action=\"quittiert\", minutes, null()), ack_role=if(action=\"quittiert\", role, null()), told=if(action=\"mitgeteilt\", 1, null()), esc=if(action=\"eskaliert\", escalation_level, null()), why=if(action=\"eskaliert\", reason, null())\n| stats min(rt) as rt max(acked) as ack_min first(ack_role) as ack_role max(told) as told max(esc) as escalated first(why) as reason first(test_code) as test_code first(test_name) as test_name first(value) as value first(unit) as unit first(ref_low) as ref_low first(ref_high) as ref_high first(crit_low) as crit_low first(crit_high) as crit_high first(flag) as flag first(ward) as ward first(priority) as priority first(delivery_status) as delivery_status first(patient_id) as patient_id first(ack_start) as ack_start by order_id\n| where isnotnull(rt)\n| eval ack_state=case(isnotnull(ack_min), \"quittiert\", rt>=ack_start, \"offen\", true(), \"unbekannt\")\n| where ack_state=\"offen\" | eval age=round((now() - rt) / 60, 0)",
                 "enableSmartSources": true
             },
             "name": "Offene kritische Befunde"
@@ -206,7 +206,7 @@
             "type": "ds.chain",
             "options": {
                 "extend": "ds_open",
-                "query": "| sort - age\n| eval Status=case(escalated=1, \"eskaliert an Oberarzt\", told=1, \"telefonisch mitgeteilt\", true(), \"noch nicht mitgeteilt\"), Wert=value.\" \".unit, Richtung=if(flag=\"HH\", \"zu hoch\", \"zu niedrig\")\n| table ward age test_name Wert Richtung Status delivery_status\n| rename ward as Station age as \"Seit (min)\" test_name as Test delivery_status as KIS\n| appendpipe [| stats count | where count=0 | eval Station=\"Alle kritischen Werte sind quittiert\" | fields - count]"
+                "query": "| sort - age\n| eval Status=case(escalated>=2, \"2. Eskalation: OA vom Dienst\", escalated=1, \"eskaliert an Oberarzt\", told=1, \"telefonisch mitgeteilt\", true(), \"noch nicht mitgeteilt\"), Wert=value.\" \".unit, Richtung=if(flag=\"HH\", \"zu hoch\", \"zu niedrig\")\n| table ward age test_name Wert Status reason delivery_status\n| rename ward as Station age as \"Seit (min)\" test_name as Test reason as Grund delivery_status as KIS\n| appendpipe [| stats count | where count=0 | eval Station=\"Alle kritischen Werte sind quittiert\" | fields - count]"
             }
         },
         "ds_ack": {
@@ -776,16 +776,16 @@
             "context": {
                 "majorColorConfig": [
                     {
-                        "to": 90,
+                        "to": 80,
                         "value": "#c8253f"
                     },
                     {
-                        "from": 90,
-                        "to": 95,
+                        "from": 80,
+                        "to": 90,
                         "value": "#c98a00"
                     },
                     {
-                        "from": 95,
+                        "from": 90,
                         "value": "#1e8a5a"
                     }
                 ]
@@ -927,6 +927,10 @@
                     },
                     {
                         "match": "eskaliert an Oberarzt",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "2. Eskalation: OA vom Dienst",
                         "value": "#f9dde1"
                     },
                     {
@@ -1370,6 +1374,10 @@
                         "value": "#f9dde1"
                     },
                     {
+                        "match": "2. Eskalation: OA vom Dienst",
+                        "value": "#f9dde1"
+                    },
+                    {
                         "match": "noch nicht mitgeteilt",
                         "value": "#f9dde1"
                     },
@@ -1660,6 +1668,10 @@
                     },
                     {
                         "match": "eskaliert an Oberarzt",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "2. Eskalation: OA vom Dienst",
                         "value": "#f9dde1"
                     },
                     {

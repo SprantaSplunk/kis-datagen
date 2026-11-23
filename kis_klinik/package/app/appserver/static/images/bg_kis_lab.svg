@@ -84,6 +84,7 @@
     <rect x="1435" y="860" width="445" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
     <rect x="1453" y="878" width="8" height="8" rx="2" fill="#b8457c"/>
     <text x="1469" y="888" class="pt">Quittiert innerhalb 30 min</text>
+    <text x="1862" y="888" class="ph" text-anchor="end">Ziel 90 %</text>
     <line x1="1436" y1="900.5" x2="1879" y2="900.5" stroke="#edf1f5"/>
     <rect x="40" y="1030" width="910" height="340" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
     <rect x="58" y="1048" width="8" height="8" rx="2" fill="#b8457c"/>

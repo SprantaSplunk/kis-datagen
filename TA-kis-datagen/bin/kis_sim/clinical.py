@@ -201,12 +201,38 @@ def lis(ctx, ts):
     return out
 
 
-LIS_ACK_WINDOW = 180 * 60
+LIS_ACK_WINDOW = 240 * 60
 LIS_ESCALATE_MIN = 30
+LIS_ESCALATE2_MIN = 90
+LIS_STUCK_SLOT = 7200
+STUCK_REASONS = ["Station telefonisch nicht erreichbar", "Stationsarzt im OP", "Patient verlegt, Zielstation unklar",
+                 "Dienstarzt bei Reanimation"]
 
 
-def _critical_steps(ctx, t, d):
-    """Notification, optional escalation and acknowledgement of one critical result: [(time, step)]."""
+def _critical_at(ctx, tick):
+    cache = ctx.lis_critical
+    if tick not in cache:
+        cache[tick] = [(e[0], e[4]) for e in lis(ctx, tick) if e[4].get("flag") in ("HH", "LL")]
+    return cache[tick]
+
+
+def _stuck_order(ctx, slot, ts):
+    """Order id of the critical result that is acknowledged late in this 2 h slot (first one on a normal ward)."""
+    known = ctx.lis_stuck
+    if slot in known:
+        return known[slot]
+    for tick in range(slot + 60, min(slot + LIS_STUCK_SLOT + 60, int(ts)) + 1, 60):
+        for t, d in _critical_at(ctx, tick):
+            if slot <= t < slot + LIS_STUCK_SLOT and d["department"] not in ("ICU", "ZNA"):
+                known[slot] = d["order_id"]
+                return known[slot]
+    if ts >= slot + LIS_STUCK_SLOT + 60:
+        known[slot] = None
+    return None
+
+
+def _critical_steps(ctx, t, d, stuck=False):
+    """Notification, escalations and acknowledgement of one critical result: [(minutes after result, step)]."""
     r = rng(ctx.seed, "lisack", d["order_id"])
     night = 1 - daytime(ctx.clock.hour(t), 7.0, 19.0)
     notify = 1.5 + r.lognormvariate(math.log(3.0), 0.5)
@@ -217,32 +243,41 @@ def _critical_steps(ctx, t, d):
     if r.random() < 0.03:
         react += LIS_ESCALATE_MIN
     ack = min(notify + react, LIS_ACK_WINDOW / 60 - 5)
-    escalated = ack > LIS_ESCALATE_MIN
+    if stuck:
+        ack = 120 + r.random() * 110
+    level = 2 if ack > LIS_ESCALATE2_MIN else 1 if ack > LIS_ESCALATE_MIN else 0
     lab = "MTL-%02d" % r.randint(1, 24)
     steps = [(notify, {"action": "mitgeteilt", "channel": "Telefon", "staff": lab, "role": "Labor (MTL)", "escalation_level": 0})]
-    if escalated:
+    reason = r.choice(STUCK_REASONS) if stuck else None
+    if level >= 1:
         steps.append((LIS_ESCALATE_MIN, {"action": "eskaliert", "channel": "Telefon", "staff": lab, "role": "Labor (MTL)",
-                                         "escalation_level": 1, "escalated_to": "Oberarzt"}))
+                                         "escalation_level": 1, "escalated_to": "Oberarzt", "reason": reason}))
         ack = max(ack, LIS_ESCALATE_MIN + 1.5 + r.random() * 10)
+    if level >= 2:
+        steps.append((LIS_ESCALATE2_MIN, {"action": "eskaliert", "channel": "Telefon", "staff": lab, "role": "Labor (MTL)",
+                                          "escalation_level": 2, "escalated_to": "Oberarzt vom Dienst", "reason": reason}))
     steps.append((ack, {"action": "quittiert", "channel": "KIS" if in_kis else "Telefon (Befund nicht im KIS)",
                         "staff": "u%05d" % r.randint(0, 2399),
-                        "role": "Oberarzt" if escalated else "Dienstarzt" if night > 0.5 else "Stationsarzt",
-                        "escalation_level": 1 if escalated else 0}))
+                        "role": "Oberarzt vom Dienst" if level == 2 else "Oberarzt" if level else
+                        "Dienstarzt" if night > 0.5 else "Stationsarzt",
+                        "escalation_level": level}))
     return [(t + minutes * 60, dict(step, minutes=round(minutes, 1))) for minutes, step in steps]
 
 
 def lis_critical(ctx, ts):
     """sakh:lis:critical - telephone notification, escalation and acknowledgement of critical lab values."""
-    cache = ctx.lis_critical
-    for tick in [k for k in cache if k < ts - LIS_ACK_WINDOW - 120]:
-        del cache[tick]
+    horizon = ts - LIS_ACK_WINDOW - LIS_STUCK_SLOT - 120
+    for tick in [k for k in ctx.lis_critical if k < horizon]:
+        del ctx.lis_critical[tick]
+    for slot in [k for k in ctx.lis_stuck if k < horizon]:
+        del ctx.lis_stuck[slot]
     out = []
     first = (int(ts - 60 - LIS_ACK_WINDOW) // 60) * 60
     for tick in range(first, int(ts) + 1, 60):
-        if tick not in cache:
-            cache[tick] = [(e[0], e[4]) for e in lis(ctx, tick) if e[4].get("flag") in ("HH", "LL")]
-        for t, d in cache[tick]:
-            for when, step in _critical_steps(ctx, t, d):
+        for t, d in _critical_at(ctx, tick):
+            slot = int(t // LIS_STUCK_SLOT) * LIS_STUCK_SLOT
+            stuck = _stuck_order(ctx, slot, ts) == d["order_id"]
+            for when, step in _critical_steps(ctx, t, d, stuck):
                 if ts - 60 < when <= ts:
                     out.append(ev(when, "sakh:lis:critical", "lis:critical", "sakh-lisapp01", dict(
                         {k: d[k] for k in ("order_id", "patient_id", "department", "ward", "test_code", "test_name",
