@@ -2,6 +2,18 @@
 
 ## 2026-11-23
 
+### kis_klinik 1.0.4
+
+- *OP-Management*, Saalplan *OP-Saele heute*: Ein Klick auf eine Saalzeile oder einen Fall waehlt
+  den Saal. Die Zeile wird farbig markiert, die anderen Saele werden abgeblendet, und
+  *Faelle des gewaehlten Saals* zeigt nur noch dessen Faelle. Ein zweiter Klick zeigt wieder alle
+  Saele. Bisher reagierte nur der schmale Saalname links, Klicks auf Fallbalken taten nichts.
+- Neues Auswahlfeld *OP-Saal* oben (nach Saalnummer sortiert) mit derselben Wirkung.
+- *Faelle des gewaehlten Saals* und *Abgesetzte Eingriffe* stehen jetzt direkt unter dem Saalplan,
+  *Saalstatus*, *Auslastung je Saal* und *Faelle je Abteilung* darunter.
+- Zu tun: `dist/kis_klinik-1.0.4.spl` als Upgrade hochladen und Splunk neu starten (sonst greift
+  der Klick auf die Fallbalken noch nicht).
+
 ### TA-kis-datagen 1.0.6
 
 - Blutdepot (`sakh:bloodbank:inventory`) mit etwa doppelt so hohen Bestaenden wie ein grosses

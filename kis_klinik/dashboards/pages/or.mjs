@@ -1,4 +1,4 @@
-import { chain, column, custom, kpi, search, setToken, table } from '../lib/studio.mjs';
+import { chain, column, custom, dynamicDropdown, kpi, search, setToken, table } from '../lib/studio.mjs';
 import { IDX } from '../lib/spl.mjs';
 
 const TODAY = `${IDX} sourcetype="sakh:or:case" (type=plan OR type=milestone) earliest=@d latest=+1d department="$dept$"
@@ -13,7 +13,11 @@ export default {
     description: 'OP-Management: Tagesplan aller OP-Saele, Status, Auslastung und abgesetzte Faelle',
     inputs: ['time', 'dept'],
     tokens: { room: '*' },
+    extraInputs: {
+        input_room: dynamicDropdown({ title: 'OP-Saal', token: 'room', ds: 'ds_room_list', field: 'room', allLabel: 'Alle Saele' }),
+    },
     dataSources: {
+        ds_room_list: search(`${IDX} sourcetype="sakh:or:case" earliest=@d latest=+1d | stats count by room | eval n=tonumber(replace(room, "[^0-9]", "")) + if(like(room, "OP-D%"), 100, 0) | sort n | fields room`, { name: 'OP-Saele' }),
         ds_today: search(TODAY, { name: 'OP-Faelle heute' }),
         ds_k_cases: chain('ds_today', '| stats count as "Faelle heute"'),
         ds_k_done: chain('ds_today', '| where isnotnull(actual_end) | stats count as Abgeschlossen'),
@@ -56,9 +60,16 @@ export default {
                 {
                     cols: 12,
                     title: 'OP-Saele heute',
-                    hint: 'Rahmen = geplant, Fuellung = tatsaechlich, durchgestrichen = abgesetzt. Klick auf einen Saal zeigt seine Faelle',
+                    hint: 'Rahmen = geplant, Fuellung = tatsaechlich, durchgestrichen = abgesetzt. Klick auf eine Saalzeile zeigt deren Faelle unten',
                     viz: custom('or_timeline', 'ds_today', { drillField: 'room', drilldownToken: 'room' }, [setToken('room')]),
                 },
+            ],
+        },
+        {
+            h: 400,
+            panels: [
+                { cols: 8, title: 'Faelle des gewaehlten Saals', hint: 'Klick auf einen Saal oder Auswahl "OP-Saal" oben; erneuter Klick zeigt alle', viz: table('ds_cases_room', { count: 9, status: ['Status'] }) },
+                { cols: 4, title: 'Abgesetzte Eingriffe', viz: table('ds_cancelled', { count: 9 }) },
             ],
         },
         {
@@ -69,11 +80,9 @@ export default {
             ],
         },
         {
-            h: 380,
+            h: 340,
             panels: [
-                { cols: 5, title: 'Faelle des gewaehlten Saals', viz: table('ds_cases_room', { count: 8, status: ['Status'] }) },
-                { cols: 4, title: 'Abgesetzte Eingriffe', viz: table('ds_cancelled', { count: 8 }) },
-                { cols: 3, title: 'Faelle je Abteilung', viz: column('ds_by_dept', { legend: 'off' }) },
+                { cols: 12, title: 'Faelle je Abteilung', viz: column('ds_by_dept', { legend: 'off' }) },
             ],
         },
     ],

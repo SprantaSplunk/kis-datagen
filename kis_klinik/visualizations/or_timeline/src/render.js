@@ -21,6 +21,10 @@ export function draw(ctx, width, height, model, env) {
     const xOf = (t) => labelW + ((t - model.start) / span) * plotW;
     const depts = [...new Set(model.cases.map((c) => c.dept).filter(Boolean))].sort();
     const deptColor = (d) => DEPT_COLORS[Math.max(0, depts.indexOf(d)) % DEPT_COLORS.length];
+    const chosen = o.drillField === 'room' && env.token ? env.token(o.drilldownToken) : undefined;
+    const selectedRoom = model.rooms.includes(chosen) ? chosen : null;
+    const roomPayload = (room) => ({ name: o.drilldownToken, value: room === selectedRoom ? '*' : room });
+    const roomHint = (room) => (room === selectedRoom ? 'Klick zeigt wieder alle Saele' : `Klick zeigt die Faelle von Saal ${room}`);
 
     // hour grid
     ctx.save();
@@ -43,26 +47,33 @@ export function draw(ctx, width, height, model, env) {
 
     model.rooms.forEach((room, ri) => {
         const y = axisH + ri * rowH;
+        const selected = room === selectedRoom;
+        const roomHovered = env.hoverId === `room:${room}`;
         ctx.save();
-        if (ri % 2 === 0) {
+        // dim the other rooms while one is selected
+        ctx.globalAlpha = selectedRoom && !selected && !roomHovered ? 0.35 : 1;
+        if (selected) {
+            ctx.fillStyle = withAlpha(palette.accent, 0.14);
+            ctx.fillRect(0, y, width, rowH);
+            ctx.fillStyle = palette.accent;
+            ctx.fillRect(0, y, 4, rowH);
+        } else if (ri % 2 === 0) {
             ctx.fillStyle = palette.track;
             ctx.fillRect(labelW, y, plotW, rowH);
         }
-        ctx.fillStyle = palette.text;
-        ctx.font = font(clamp(rowH * 0.42, 8, 14), 700);
+        ctx.fillStyle = selected ? palette.accent : palette.text;
+        ctx.font = font(clamp(rowH * 0.42, 8, 14), selected ? 800 : 700);
         ctx.textBaseline = 'middle';
-        ctx.fillText(room, 4, y + rowH / 2);
-        ctx.restore();
+        ctx.fillText(room, 8, y + rowH / 2);
 
-        const roomHovered = env.hoverId === `room:${room}`;
         if (o.drillField === 'room') {
-            hits.push({ id: `room:${room}`, x: 0, y, w: labelW - 4, h: rowH, label: `Saal ${room}`, tooltip: [`Saal ${room}`],
-                payload: { name: o.drilldownToken, value: room } });
+            hits.push({ id: `room:${room}`, x: 0, y, w: width, h: rowH,
+                label: `Saal ${room}${selected ? ' (Auswahl aktiv)' : ''}`, tooltip: [`Saal ${room}`, roomHint(room)],
+                payload: roomPayload(room) });
             if (roomHovered) {
-                ctx.save();
                 ctx.strokeStyle = palette.focus;
-                ctx.strokeRect(1, y + 1, labelW - 6, rowH - 2);
-                ctx.restore();
+                ctx.lineWidth = 1.5;
+                ctx.strokeRect(1, y + 1, width - 2, rowH - 2);
             }
         }
 
@@ -123,6 +134,7 @@ export function draw(ctx, width, height, model, env) {
             const tooltip = [c.procedure, `Saal ${c.room}${c.dept ? ` · ${c.dept}` : ''} · ${c.id}`, `Geplant ${hhmm(c.ps)}–${hhmm(c.pe)}`];
             if (c.cancelled) tooltip.push('Abgesetzt');
             else if (Number.isFinite(c.as)) tooltip.push(`Beginn ${hhmm(c.as)}${Number.isFinite(c.ae) ? ` · Ende ${hhmm(c.ae)}` : ' · laeuft'} · ${c.delay > 0 ? `+${formatNumber(c.delay, 0)} min` : 'puenktlich'}`);
+            if (o.drillField === 'room') tooltip.push(roomHint(c.room));
             const value = o.drillField === 'case' ? c.id : o.drillField === 'department' ? c.dept || c.room : c.room;
             hits.push({
                 id: `case:${c.id}`,
@@ -132,10 +144,10 @@ export function draw(ctx, width, height, model, env) {
                 h: bh,
                 label: `${c.procedure} in Saal ${c.room}, geplant ${hhmm(c.ps)}${c.cancelled ? ', abgesetzt' : ''}`,
                 tooltip,
-                payload: o.drillField === 'room' ? undefined : { name: o.drilldownToken, value },
-                hover: o.drillField === 'room',
+                payload: o.drillField === 'room' ? roomPayload(c.room) : { name: o.drilldownToken, value },
             });
         }
+        ctx.restore();
     });
 
     if (o.showNow) {
