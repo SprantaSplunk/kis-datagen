@@ -501,7 +501,7 @@
     "meta": {
         "name": "TA-kis-datagen",
         "restRoot": "TA_kis_datagen",
-        "version": "1.0.5",
+        "version": "1.0.6",
         "displayName": "KIS Datagen (Splunk Allgemeines Krankenhaus SAKH)",
         "schemaVersion": "0.0.10",
         "supportedThemes": [

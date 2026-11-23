@@ -35,7 +35,7 @@
     <rect x="40" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
     <rect x="58" y="318" width="8" height="8" rx="2" fill="#b8457c"/>
     <text x="74" y="328" class="pt">EK gesamt</text>
-    <text x="312" y="328" class="ph" text-anchor="end">Soll 461</text>
+    <text x="312" y="328" class="ph" text-anchor="end">Soll 935</text>
     <line x1="41" y1="340.5" x2="329" y2="340.5" stroke="#edf1f5"/>
     <rect x="350" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
     <rect x="368" y="318" width="8" height="8" rx="2" fill="#b8457c"/>

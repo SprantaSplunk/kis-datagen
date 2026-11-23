@@ -224,7 +224,7 @@ def transfusion(ctx, ts):
     m = ctx.m
     h = ctx.clock.hour(ts)
     r = rng(ctx.seed, "trans", int(ts))
-    lam = 0.03 + 0.05 * daytime(h, 8, 17, 2)
+    lam = 0.06 + 0.09 * daytime(h, 8, 17, 2)
     out = []
     for _ in range(poisson(r, lam)):
         t = _spread(r, ts, 60)

@@ -116,9 +116,17 @@ export function draw(ctx, width, height, model, env) {
             ctx.save();
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillStyle = palette.name === 'dark' || level > 0.5 ? '#ffffff' : palette.text;
-            ctx.font = font(clamp(bw * 0.36, 8, 20), 800);
-            ctx.fillText(formatNumber(c.units, 0), bx + bw / 2, by + bh * 0.6);
+            // label on its own tag: the fill edge may run through the middle of the bag
+            const size = clamp(bw * 0.32, 8, 18);
+            const label = formatNumber(c.units, 0);
+            ctx.font = font(size, 800);
+            const tagW = Math.min(bw - 4, ctx.measureText(label).width + size * 0.8);
+            const tagH = size * 1.35;
+            roundRect(ctx, bx + (bw - tagW) / 2, by + bh * 0.55 - tagH / 2, tagW, tagH, tagH / 2);
+            ctx.fillStyle = palette.tooltipBg;
+            ctx.fill();
+            ctx.fillStyle = palette.text;
+            ctx.fillText(label, bx + bw / 2, by + bh * 0.55 + 0.5);
             if (c.status !== 'ok') {
                 ctx.fillStyle = color;
                 ctx.font = font(clamp(cellH * 0.09, 7, 11), 800);

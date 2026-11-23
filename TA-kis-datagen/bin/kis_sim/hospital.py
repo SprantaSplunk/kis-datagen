@@ -122,20 +122,20 @@ BLOOD_GROUPS = ["0-", "0+", "A-", "A+", "B-", "B+", "AB-", "AB+"]
 BLOOD_SHARE = {"0-": 0.06, "0+": 0.30, "A-": 0.07, "A+": 0.37, "B-": 0.02, "B+": 0.12, "AB-": 0.01, "AB+": 0.05}
 # product, label, shelf life days, units used per day (matches the transfusion generator)
 BLOOD_PRODUCTS = [
-    ("EK", "Erythrozytenkonzentrat", 42, 50),
-    ("TK", "Thrombozytenkonzentrat", 5, 8),
-    ("FFP", "Gefrorenes Frischplasma", 730, 34),
+    ("EK", "Erythrozytenkonzentrat", 42, 100),
+    ("TK", "Thrombozytenkonzentrat", 5, 18),
+    ("FFP", "Gefrorenes Frischplasma", 730, 70),
 ]
 # (target, minimum) units per product and group; critical is below half the minimum.
 # 0 negativ is the emergency reserve for EK, AB plasma is universal plasma, so both are stocked
 # above their population share. EK target is about 9 days of supply.
 BLOOD_STOCK = {
-    "EK": {"0-": (70, 35), "0+": (130, 60), "A-": (40, 20), "A+": (140, 65),
-           "B-": (12, 6), "B+": (45, 20), "AB-": (6, 3), "AB+": (18, 8)},
-    "TK": {"0-": (4, 2), "0+": (14, 6), "A-": (4, 2), "A+": (16, 7),
-           "B-": (2, 1), "B+": (5, 2), "AB-": (2, 1), "AB+": (3, 1)},
-    "FFP": {"0-": (40, 20), "0+": (130, 60), "A-": (40, 20), "A+": (160, 75),
-            "B-": (15, 8), "B+": (60, 30), "AB-": (25, 12), "AB+": (70, 35)},
+    "EK": {"0-": (140, 70), "0+": (260, 120), "A-": (80, 40), "A+": (280, 130),
+           "B-": (30, 15), "B+": (90, 45), "AB-": (15, 8), "AB+": (40, 20)},
+    "TK": {"0-": (8, 4), "0+": (20, 8), "A-": (8, 4), "A+": (24, 10),
+           "B-": (4, 2), "B+": (8, 4), "AB-": (3, 2), "AB+": (5, 2)},
+    "FFP": {"0-": (80, 40), "0+": (260, 120), "A-": (80, 40), "A+": (320, 150),
+            "B-": (30, 15), "B+": (120, 60), "AB-": (50, 25), "AB+": (140, 70)},
 }
 # share of issued units per group; 0 negativ is also given to emergencies of unknown group
 BLOOD_USE = {"0-": 0.10, "0+": 0.29, "A-": 0.06, "A+": 0.35, "B-": 0.02, "B+": 0.12, "AB-": 0.01, "AB+": 0.05}

@@ -41,7 +41,7 @@ export default {
             section: 'Reserven',
             h: 150,
             panels: [
-                { cols: 2, title: 'EK gesamt', hint: 'Soll 461', viz: kpi('ds_k_ek', { decimals: 0, spark: false, warn: 300, crit: 200 }) },
+                { cols: 2, title: 'EK gesamt', hint: 'Soll 935', viz: kpi('ds_k_ek', { decimals: 0, spark: false, warn: 600, crit: 400 }) },
                 { cols: 2, title: 'Kritische Bestaende', viz: kpi('ds_k_crit', { decimals: 0, spark: false, warn: 1, crit: 2, higher: false }) },
                 { cols: 2, title: 'Unter Mindestbestand', viz: kpi('ds_k_low', { decimals: 0, spark: false, warn: 1, crit: 3, higher: false }) },
                 { cols: 2, title: 'Verfall in 48 h', viz: kpi('ds_k_exp', { decimals: 0, spark: false, color: '#c98a00' }) },

@@ -2,6 +2,25 @@
 
 ## 2026-11-23
 
+### TA-kis-datagen 1.0.6
+
+- Blutdepot (`sakh:bloodbank:inventory`) mit etwa doppelt so hohen Bestaenden wie ein grosses
+  Schwerpunktkrankenhaus: EK-Soll 935 (normal rund 790 auf Lager), TK-Soll 80, Plasma-Soll 1080.
+  Beispiele EK: 0 negativ 140, 0 positiv 260, A positiv 280, B negativ 30, AB negativ 15.
+- Tagesverbrauch und Transfusionen (`sakh:bloodbank:transfusion`) sind passend erhoeht: rund 100 EK,
+  18 TK und 70 Plasmen pro Tag. Die EK-Reichweite bleibt bei 6 bis 11 Tagen.
+- Schwellen unveraendert: *niedrig* unter dem Mindestbestand, *kritisch* unter dem halben
+  Mindestbestand.
+- Zu tun: `dist/TA-kis-datagen-1.0.6.tar.gz` als Upgrade hochladen (*Upgrade app* ankreuzen) und
+  Splunk neu starten.
+
+### kis_klinik 1.0.3
+
+- *Blutdepot*: Die Anzahl in jedem Beutel steht auf einem eigenen Etikett und ist bei jedem
+  Fuellstand lesbar. Vorher lief bei rund halb vollen Beuteln der Fuellrand mitten durch die Zahl.
+- *EK gesamt* wird unter 600 gelb und unter 400 rot (Soll 935).
+- Zu tun: `dist/kis_klinik-1.0.3.spl` als Upgrade hochladen und Splunk neu starten.
+
 ### TA-kis-datagen 1.0.5
 
 - Nach einem Neustart oder Upgrade, bei dem der Input laenger als die erlaubte Luecke stand,
