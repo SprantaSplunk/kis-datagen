@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="dark light">
+<title>Extension frame</title>
+<style>
+:root { color-scheme: dark; }
+:root.light { color-scheme: light; }
+html, body, #root { width: 100%; height: 100%; margin: 0; overflow: hidden; background: transparent; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="module">
+// Minimal Dashboard Extension host for local testing; mirrors the public API surface only.
+const HOST = window.location.origin;
+const state = {
+    dataSources: { loading: true, dataSources: {} },
+    options: { options: {} },
+    dimensions: { width: 0, height: 0 },
+    mode: { mode: 'view' },
+    theme: { theme: 'dark' },
+    tokens: { tokens: {} },
+    error: { error: '' },
+};
+const listeners = { dataSources: new Set(), options: new Set(), dimensions: new Set(), mode: new Set(), theme: new Set(), tokens: new Set(), error: new Set() };
+
+function post(type, payload) {
+    window.parent.postMessage({ __source: 'cs_frame', type, payload }, HOST);
+}
+
+function listen(kind) {
+    return (callback, options = {}) => {
+        listeners[kind].add(callback);
+        post('subscribe', { kind, count: listeners[kind].size });
+        if (options.signal) options.signal.addEventListener('abort', () => listeners[kind].delete(callback));
+        if (options.invokeImmediately) queueMicrotask(() => callback(state[kind]));
+        return () => {
+            listeners[kind].delete(callback);
+            post('unsubscribe', { kind, count: listeners[kind].size });
+        };
+    };
+}
+
+function emit(kind, value) {
+    state[kind] = value;
+    if (kind === 'theme') document.documentElement.classList.toggle('light', value.theme === 'light');
+    for (const callback of [...listeners[kind]]) callback(value);
+}
+
+globalThis.DashboardExtensionAPI = {
+    addDataSourcesListener: listen('dataSources'),
+    getDataSources: () => state.dataSources,
+    addOptionsListener: listen('options'),
+    getOptions: () => state.options,
+    setOptions: (options) => post('setOptions', { options, ignored: state.mode.mode === 'view' }),
+    addDimensionsListener: listen('dimensions'),
+    getDimensions: () => state.dimensions,
+    addModeListener: listen('mode'),
+    getMode: () => state.mode,
+    addThemeListener: listen('theme'),
+    getTheme: () => state.theme,
+    addTokensListener: listen('tokens'),
+    getTokens: () => state.tokens,
+    addErrorListener: listen('error'),
+    getError: () => state.error,
+    setError: (error) => { emit('error', { error: String(error) }); post('setError', { error: String(error) }); },
+    clearError: () => { emit('error', { error: '' }); post('clearError', {}); },
+    addDrilldownListener: ({ node, action, payloadCallback }) => {
+        node.addEventListener('click', (event) => {
+            post('drilldown', { action, payload: payloadCallback(), via: 'listener', key: event.detail === 0 ? 'keyboard' : 'pointer' });
+        });
+    },
+    triggerDrilldown: ({ action, payload }) => post('drilldown', { action, payload, via: 'trigger' }),
+};
+
+window.addEventListener('error', (event) => post('exception', { message: String(event.message) }));
+window.addEventListener('unhandledrejection', (event) => post('exception', { message: String(event.reason) }));
+
+window.addEventListener('message', async (event) => {
+    if (event.origin !== HOST || event.source !== window.parent) return;
+    const message = event.data;
+    if (!message || message.__source !== 'cs_host') return;
+    if (message.type === 'state') {
+        const { kind, value } = message.payload;
+        if (listeners[kind]) emit(kind, value);
+    } else if (message.type === 'load') {
+        for (const [kind, value] of Object.entries(message.payload.initial)) state[kind] = value;
+        try {
+            const url = new URL(message.payload.bundle, HOST);
+            if (url.origin !== HOST) throw new Error('bundle must be same-origin');
+            await import(url.href);
+            post('ready', {});
+        } catch (err) {
+            post('exception', { message: String(err && err.stack ? err.stack : err) });
+        }
+    }
+});
+post('frame', {});
+</script>
+</body>
+</html>

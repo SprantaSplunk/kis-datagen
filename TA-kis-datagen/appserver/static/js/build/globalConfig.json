@@ -1,0 +1,519 @@
+{
+    "pages": {
+        "configuration": {
+            "tabs": [
+                {
+                    "name": "hec_setup",
+                    "title": "HEC Setup",
+                    "entity": [
+                        {
+                            "type": "radio",
+                            "field": "send_mode",
+                            "label": "Send mode",
+                            "required": true,
+                            "defaultValue": "hec",
+                            "options": {
+                                "items": [
+                                    {
+                                        "value": "hec",
+                                        "label": "HEC"
+                                    },
+                                    {
+                                        "value": "direct",
+                                        "label": "Direct (no token)"
+                                    }
+                                ]
+                            },
+                            "help": "HEC is the default. Choose Direct if the search head cannot reach the HEC endpoint – the modular input then writes straight into the index.",
+                            "modifyFieldsOnValue": [
+                                {
+                                    "fieldValue": "direct",
+                                    "fieldsToModify": [
+                                        {
+                                            "fieldId": "hec_url",
+                                            "display": false
+                                        },
+                                        {
+                                            "fieldId": "hec_token",
+                                            "display": false
+                                        },
+                                        {
+                                            "fieldId": "hec_batch_size",
+                                            "display": false
+                                        },
+                                        {
+                                            "fieldId": "hec_verify_ssl",
+                                            "display": false
+                                        }
+                                    ]
+                                },
+                                {
+                                    "fieldValue": "hec",
+                                    "fieldsToModify": [
+                                        {
+                                            "fieldId": "hec_url",
+                                            "display": true
+                                        },
+                                        {
+                                            "fieldId": "hec_token",
+                                            "display": true
+                                        },
+                                        {
+                                            "fieldId": "hec_batch_size",
+                                            "display": true
+                                        },
+                                        {
+                                            "fieldId": "hec_verify_ssl",
+                                            "display": true
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "text",
+                            "field": "hec_url",
+                            "label": "HEC URL",
+                            "required": false,
+                            "help": "Splunk Cloud: https://http-inputs-<stack>.splunkcloud.com:443  |  Enterprise: https://<host>:8088",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "pattern": "^https://[^\\s/]+(:\\d+)?/?$",
+                                    "errorMsg": "Use https://host[:port] without a path."
+                                }
+                            ]
+                        },
+                        {
+                            "type": "text",
+                            "field": "hec_token",
+                            "label": "HEC token",
+                            "required": false,
+                            "encrypted": true,
+                            "help": "Der Token muss die Indexe demo_sakh (Events) und demo_sakh_metrics (Metriken) erlauben. Wird verschluesselt im Splunk Credential Store gespeichert.",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "pattern": "^([0-9a-fA-F-]{36}|\\*+)$",
+                                    "errorMsg": "A HEC token is a 36-character GUID."
+                                }
+                            ]
+                        },
+                        {
+                            "type": "checkbox",
+                            "field": "hec_verify_ssl",
+                            "label": "Verify TLS certificate",
+                            "defaultValue": 1,
+                            "help": "Keep enabled for Splunk Cloud. Disable only for lab instances with a self-signed certificate on port 8088."
+                        },
+                        {
+                            "type": "text",
+                            "field": "hec_batch_size",
+                            "label": "Events per HEC request",
+                            "defaultValue": "500",
+                            "required": false,
+                            "validators": [
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        10,
+                                        5000
+                                    ],
+                                    "errorMsg": "10 – 5000"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "logging",
+                    "title": "Logging",
+                    "entity": [
+                        {
+                            "type": "singleSelect",
+                            "label": "Log level",
+                            "options": {
+                                "disableSearch": true,
+                                "autoCompleteFields": [
+                                    {
+                                        "value": "DEBUG",
+                                        "label": "DEBUG"
+                                    },
+                                    {
+                                        "value": "INFO",
+                                        "label": "INFO"
+                                    },
+                                    {
+                                        "value": "WARNING",
+                                        "label": "WARNING"
+                                    },
+                                    {
+                                        "value": "ERROR",
+                                        "label": "ERROR"
+                                    },
+                                    {
+                                        "value": "CRITICAL",
+                                        "label": "CRITICAL"
+                                    }
+                                ]
+                            },
+                            "defaultValue": "INFO",
+                            "field": "loglevel",
+                            "required": true,
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Log level must be one of: DEBUG, INFO, WARNING, ERROR, CRITICAL",
+                                    "pattern": "^DEBUG|INFO|WARNING|ERROR|CRITICAL$"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "title": "Setup",
+            "description": "Schritt 1: Ziel fuer die Daten festlegen (HEC oder Direct). Schritt 2: unter Inputs den Generator kis_datagen anlegen und einschalten."
+        },
+        "inputs": {
+            "services": [
+                {
+                    "name": "kis_datagen",
+                    "title": "SAKH Krankenhaus (KIS, Medizintechnik, IT-Infrastruktur)",
+                    "inputHelperModule": "kis_datagen_helper",
+                    "entity": [
+                        {
+                            "type": "text",
+                            "label": "Name",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Input Name must begin with a letter and consist exclusively of alphanumeric characters and underscores.",
+                                    "pattern": "^[a-zA-Z]\\w*$"
+                                },
+                                {
+                                    "type": "string",
+                                    "errorMsg": "Length of input name should be between 1 and 100",
+                                    "minLength": 1,
+                                    "maxLength": 100
+                                }
+                            ],
+                            "field": "name",
+                            "help": "A unique name for the data input.",
+                            "required": true
+                        },
+                        {
+                            "type": "text",
+                            "field": "interval",
+                            "label": "Neustart-Pruefung (Sekunden)",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Restart check (seconds) must be either a non-negative number, CRON interval or -1.",
+                                    "pattern": "^((?:-1|\\d+(?:\\.\\d+)?)|(([\\*\\d{1,2}\\,\\-\\/]+\\s){4}[\\*\\d{1,2}\\,\\-\\/]+))$"
+                                },
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        30,
+                                        300
+                                    ],
+                                    "errorMsg": "Restart check (seconds) must be between 30 and 300"
+                                }
+                            ],
+                            "help": "Dauerhaft laufender Input: splunkd nutzt den Wert nur, um den Generator nach einem Absturz neu zu starten.",
+                            "required": true,
+                            "defaultValue": "60"
+                        },
+                        {
+                            "type": "text",
+                            "field": "index",
+                            "label": "Event-Index",
+                            "defaultValue": "demo_sakh",
+                            "required": true,
+                            "help": "Alle Ereignisse, Logs und Snapshots (KIS, Netzwerk, CMDB).",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "pattern": "^[a-zA-Z0-9][\\w-]*$",
+                                    "errorMsg": "Buchstaben, Ziffern, _ und -"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "text",
+                            "field": "metrics_index",
+                            "label": "Metrik-Index",
+                            "defaultValue": "demo_sakh_metrics",
+                            "required": true,
+                            "help": "Index vom Typ metric fuer die Zeitreihen (Server, VMware, Datenbanken, HL7, ThousandEyes, Medizintechnik, Betten, Blutdepot, Intensiv-Vitalwerte, Notaufnahme, eHealth, Pflege, Catalyst Health).",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "pattern": "^[a-zA-Z0-9][\\w-]*$",
+                                    "errorMsg": "Buchstaben, Ziffern, _ und -"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "text",
+                            "field": "timezone",
+                            "label": "Zeitzone",
+                            "defaultValue": "Europe/Vienna",
+                            "required": true,
+                            "help": "Tagesablaeufe (Dienste, OP-Plan, Notaufnahme-Spitzen) laufen in dieser Zone.",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "pattern": "^[A-Za-z_]+(/[A-Za-z_+-]+)*$",
+                                    "errorMsg": "IANA-Name, z.B. Europe/Vienna"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "text",
+                            "field": "seed",
+                            "label": "Seed",
+                            "defaultValue": "sakh",
+                            "required": true,
+                            "help": "Gleicher Seed = gleiche Kurven nach Neustart und Backfill.",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "pattern": "^[\\w-]{1,32}$",
+                                    "errorMsg": "1-32 Zeichen: Buchstaben, Ziffern, _ und -"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "text",
+                            "field": "backfill_minutes",
+                            "label": "Backfill beim ersten Start (Minuten)",
+                            "defaultValue": "1440",
+                            "required": true,
+                            "help": "1440 = ein Tag (rund 300.000 Events und 1,3 Mio. Metrik-Datenpunkte). 0 = nur Echtzeit. Laeuft nur beim ersten Start.",
+                            "validators": [
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        0,
+                                        10080
+                                    ],
+                                    "errorMsg": "0 - 10080"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "text",
+                            "field": "max_gap_minutes",
+                            "label": "Luecken fuellen bis (Minuten)",
+                            "defaultValue": "30",
+                            "required": true,
+                            "help": "Nach Stop/Start werden kuerzere Luecken nachgeneriert, laengere uebersprungen.",
+                            "validators": [
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        0,
+                                        1440
+                                    ],
+                                    "errorMsg": "0 - 1440"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "checkbox",
+                            "field": "scenario_flu_surge",
+                            "label": "Szenario: Grippewelle - Patientenansturm in der Notaufnahme",
+                            "defaultValue": 0,
+                            "help": "Notaufnahme-Zugaenge x2,5, Innere/Paediatrie/Intensiv voll, Boarding, Rettungsstopp, mehr Influenza-Tests. Wirkt live nach ca. 10 s; Vorwarnsignale in den ersten 6 Minuten."
+                        },
+                        {
+                            "type": "checkbox",
+                            "field": "scenario_blood_shortage",
+                            "label": "Szenario: Blutkonserven-Engpass (0 negativ / A negativ)",
+                            "defaultValue": 0,
+                            "help": "Erythrozytenkonzentrate 0 neg / A neg unter Mindestbestand, elektive OPs mit Blutbedarf werden abgesetzt. Wirkt live nach ca. 10 s; Vorwarnsignale in den ersten 6 Minuten."
+                        },
+                        {
+                            "type": "checkbox",
+                            "field": "scenario_mri_cooling",
+                            "label": "Szenario: MRT-1 Kuehlungsausfall (Kaltkopf / Helium)",
+                            "defaultValue": 0,
+                            "help": "MRT-1 Kaltkopf- und Kompressorstoerung, Helium sinkt, Geraet gesperrt, MR-Termine auf MRT-2/MRT-3 umgeplant, P1-Incident. Wirkt live nach ca. 10 s; Vorwarnsignale in den ersten 6 Minuten."
+                        },
+                        {
+                            "type": "checkbox",
+                            "field": "scenario_hl7_queue",
+                            "label": "Szenario: Kommunikationsserver - HL7-Stau Labor zum KIS",
+                            "defaultValue": 0,
+                            "help": "sakh-kom01 /data voll, HL7-Warteschlange LIS zum KIS waechst, Laborbefunde fehlen im KIS, Incidents. Wirkt live nach ca. 10 s; Vorwarnsignale in den ersten 6 Minuten."
+                        },
+                        {
+                            "type": "checkbox",
+                            "field": "scenario_kis_db",
+                            "label": "Szenario: KIS-Datenbank - Sperren durch LKF-Export",
+                            "defaultValue": 0,
+                            "help": "LKF-Export sperrt die Oracle KIS-Datenbank KISPRD, KIS-Antwortzeiten und ADT-Latenz steigen, Notfall-Change. Wirkt live nach ca. 10 s; Vorwarnsignale in den ersten 6 Minuten."
+                        },
+                        {
+                            "type": "checkbox",
+                            "field": "scenario_network_building_c",
+                            "label": "Szenario: Netzwerkausfall Haus C (Intensiv und Notaufnahme)",
+                            "defaultValue": 0,
+                            "help": "Netzteil- und CRC-Warnungen, dann Ausfall Distribution Haus C: Access-Switches/APs, Intensiv- und Notaufnahme-Geraete offline, PDMS-Luecken. Wirkt live nach ca. 10 s; Vorwarnsignale in den ersten 6 Minuten."
+                        },
+                        {
+                            "type": "checkbox",
+                            "field": "scenario_cisco_psirt",
+                            "label": "Szenario: Kritische Cisco Sicherheitsluecke auf Catalyst Switches",
+                            "defaultValue": 0,
+                            "help": "Kritische (synthetische) Cisco PSIRT fuer Catalyst 9200/9300 IOS XE 17.9, Cisco IQ zeigt betroffene Assets, Notfall-Change, spaeter verdaechtiger Web-UI-Login. Wirkt live nach ca. 10 s; Vorwarnsignale in den ersten 6 Minuten."
+                        }
+                    ]
+                }
+            ],
+            "title": "Inputs",
+            "description": "Ein Input erzeugt alle Datenquellen des SAKH. Status-Schalter = Start / Stop.",
+            "table": {
+                "actions": [
+                    "edit",
+                    "delete",
+                    "clone"
+                ],
+                "header": [
+                    {
+                        "label": "Name",
+                        "field": "name"
+                    },
+                    {
+                        "label": "Type",
+                        "field": "serviceTitle"
+                    },
+                    {
+                        "label": "Interval",
+                        "field": "interval"
+                    },
+                    {
+                        "label": "Status",
+                        "field": "disabled"
+                    }
+                ],
+                "moreInfo": [
+                    {
+                        "label": "Event-Index",
+                        "field": "index"
+                    },
+                    {
+                        "label": "Metrik-Index",
+                        "field": "metrics_index"
+                    },
+                    {
+                        "label": "Zeitzone",
+                        "field": "timezone"
+                    },
+                    {
+                        "label": "Seed",
+                        "field": "seed"
+                    },
+                    {
+                        "label": "Backfill (Minuten)",
+                        "field": "backfill_minutes"
+                    },
+                    {
+                        "label": "Luecken fuellen (Minuten)",
+                        "field": "max_gap_minutes"
+                    },
+                    {
+                        "label": "Szenario: Grippewelle - Patientenansturm in der Notaufnahme",
+                        "field": "scenario_flu_surge",
+                        "mapping": {
+                            "1": "An",
+                            "true": "An",
+                            "0": "Aus",
+                            "false": "Aus"
+                        }
+                    },
+                    {
+                        "label": "Szenario: Blutkonserven-Engpass (0 negativ / A negativ)",
+                        "field": "scenario_blood_shortage",
+                        "mapping": {
+                            "1": "An",
+                            "true": "An",
+                            "0": "Aus",
+                            "false": "Aus"
+                        }
+                    },
+                    {
+                        "label": "Szenario: MRT-1 Kuehlungsausfall (Kaltkopf / Helium)",
+                        "field": "scenario_mri_cooling",
+                        "mapping": {
+                            "1": "An",
+                            "true": "An",
+                            "0": "Aus",
+                            "false": "Aus"
+                        }
+                    },
+                    {
+                        "label": "Szenario: Kommunikationsserver - HL7-Stau Labor zum KIS",
+                        "field": "scenario_hl7_queue",
+                        "mapping": {
+                            "1": "An",
+                            "true": "An",
+                            "0": "Aus",
+                            "false": "Aus"
+                        }
+                    },
+                    {
+                        "label": "Szenario: KIS-Datenbank - Sperren durch LKF-Export",
+                        "field": "scenario_kis_db",
+                        "mapping": {
+                            "1": "An",
+                            "true": "An",
+                            "0": "Aus",
+                            "false": "Aus"
+                        }
+                    },
+                    {
+                        "label": "Szenario: Netzwerkausfall Haus C (Intensiv und Notaufnahme)",
+                        "field": "scenario_network_building_c",
+                        "mapping": {
+                            "1": "An",
+                            "true": "An",
+                            "0": "Aus",
+                            "false": "Aus"
+                        }
+                    },
+                    {
+                        "label": "Szenario: Kritische Cisco Sicherheitsluecke auf Catalyst Switches",
+                        "field": "scenario_cisco_psirt",
+                        "mapping": {
+                            "1": "An",
+                            "true": "An",
+                            "0": "Aus",
+                            "false": "Aus"
+                        }
+                    }
+                ]
+            },
+            "useInputToggleConfirmation": true
+        }
+    },
+    "meta": {
+        "name": "TA-kis-datagen",
+        "restRoot": "TA_kis_datagen",
+        "version": "1.0.0",
+        "displayName": "KIS Datagen (Splunk Allgemeines Krankenhaus SAKH)",
+        "schemaVersion": "0.0.10",
+        "supportedThemes": [
+            "light",
+            "dark"
+        ],
+        "defaultView": "configuration",
+        "supportedPythonVersion": [
+            "3.9",
+            "3.13"
+        ],
+        "checkForUpdates": false,
+        "_uccVersion": "6.6.0"
+    }
+}

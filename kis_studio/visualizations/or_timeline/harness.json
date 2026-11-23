@@ -1,0 +1,24 @@
+{
+  "dataSources": {
+    "primary": {
+      "data": {
+        "fields": [
+          { "name": "room" }, { "name": "case_id" }, { "name": "procedure" }, { "name": "department" },
+          { "name": "planned_start" }, { "name": "planned_end" }, { "name": "actual_start" }, { "name": "actual_end" }, { "name": "status" }
+        ],
+        "columns": [
+          ["OP-1", "OP-1", "OP-1", "OP-2", "OP-2", "OP-3", "OP-3", "OP-4", "OP-D1"],
+          ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9"],
+          ["Laparoskopische Cholezystektomie", "Hemikolektomie rechts", "Leistenhernien-OP (TEP)", "Hueft-TEP", "Knie-TEP", "TUR-Prostata", "Radikale Prostatektomie", "Tonsillektomie", "Sectio caesarea"],
+          ["CHI", "CHI", "CHI", "UCH", "UCH", "URO", "URO", "HNO", "GYN"],
+          ["1795588200", "1795594200", "1795606200", "1795588200", "1795597200", "1795588800", "1795595400", "1795589400", "1795591200"],
+          ["1795593300", "1795605600", "1795610400", "1795596000", "1795604400", "1795594200", "1795608600", "1795592400", "1795595400"],
+          ["1795588800", "1795596000", "", "1795588500", "1795598400", "1795590600", "", "1795589400", "1795591500"],
+          ["1795594200", "", "", "1795596600", "", "1795596000", "", "1795592400", "1795595700"],
+          ["geplant", "geplant", "geplant", "geplant", "geplant", "geplant", "abgesetzt - Blutkonserven", "geplant", "geplant"]
+        ]
+      }
+    }
+  },
+  "dataControls": []
+}

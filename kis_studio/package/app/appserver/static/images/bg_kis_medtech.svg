@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="2032" viewBox="0 0 1920 2032">
+  <defs>
+    <radialGradient id="glowA" cx="0.12" cy="0.02" r="0.7">
+      <stop offset="0" stop-color="#60a5fa" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#60a5fa" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="0.95" cy="0.85" r="0.75">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="base" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#071022"/>
+      <stop offset="1" stop-color="#040812"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#101d3a" stop-opacity="0.82"/>
+      <stop offset="1" stop-color="#0a1328" stop-opacity="0.74"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#60a5fa" stop-opacity="0.45"/>
+      <stop offset="0.5" stop-color="#9fb1c9" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0.35"/>
+    </linearGradient>
+    <linearGradient id="titleFill" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#60a5fa"/>
+    </linearGradient>
+    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#9fb1c9" fill-opacity="0.10"/>
+    </pattern>
+    <style>
+      .pt { font: 700 13px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; letter-spacing: 1.6px; fill: #cfe0f7; }
+      .ph { font: 500 12px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; fill: #8ea3bf; }
+      .sec { font: 800 13px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; letter-spacing: 3px; fill: #60a5fa; }
+    </style>
+  </defs>
+  <rect width="1920" height="2032" fill="url(#base)"/>
+  <rect width="1920" height="2032" fill="url(#dots)"/>
+  <rect width="1920" height="2032" fill="url(#glowA)"/>
+  <rect width="1920" height="2032" fill="url(#glowB)"/>
+  <g>
+    <ellipse cx="1620" cy="70" rx="180" ry="60" fill="none" stroke="#60a5fa" stroke-opacity="0.16" stroke-width="1.2" transform="rotate(-12 1620 70)"/>
+    <ellipse cx="1620" cy="70" rx="250" ry="86" fill="none" stroke="#60a5fa" stroke-opacity="0.14" stroke-width="1.2" transform="rotate(-12 1620 70)"/>
+    <ellipse cx="1620" cy="70" rx="320" ry="112" fill="none" stroke="#60a5fa" stroke-opacity="0.12" stroke-width="1.2" transform="rotate(-12 1620 70)"/>
+    <ellipse cx="1620" cy="70" rx="390" ry="138" fill="none" stroke="#60a5fa" stroke-opacity="0.1" stroke-width="1.2" transform="rotate(-12 1620 70)"/>
+    <ellipse cx="1620" cy="70" rx="460" ry="164" fill="none" stroke="#60a5fa" stroke-opacity="0.08" stroke-width="1.2" transform="rotate(-12 1620 70)"/>
+    <ellipse cx="1620" cy="70" rx="530" ry="190" fill="none" stroke="#60a5fa" stroke-opacity="0.06" stroke-width="1.2" transform="rotate(-12 1620 70)"/>
+    <circle cx="1627.1" cy="-70.4" r="2.1" fill="#60a5fa" fill-opacity="0.6"/>
+    <circle cx="2053.9" cy="-39.6" r="1.4" fill="#60a5fa" fill-opacity="0.3"/>
+    <circle cx="1685.4" cy="182.8" r="2.1" fill="#60a5fa" fill-opacity="0.6"/>
+    <circle cx="1898.2" cy="13.1" r="3.2" fill="#60a5fa" fill-opacity="0.6"/>
+    <circle cx="1555.1" cy="9.6" r="1.8" fill="#60a5fa" fill-opacity="0.6"/>
+    <circle cx="1889.6" cy="-64.2" r="1.6" fill="#60a5fa" fill-opacity="0.7"/>
+    <circle cx="1460.4" cy="169.9" r="2.6" fill="#60a5fa" fill-opacity="0.7"/>
+    <circle cx="1790.7" cy="49.5" r="2.3" fill="#60a5fa" fill-opacity="0.4"/>
+    <circle cx="1092.2" cy="87.4" r="2.7" fill="#60a5fa" fill-opacity="0.3"/>
+    <circle cx="1471.7" cy="33.3" r="1.4" fill="#60a5fa" fill-opacity="0.6"/>
+    <circle cx="1464.5" cy="37.4" r="3" fill="#60a5fa" fill-opacity="0.4"/>
+    <circle cx="1160.5" cy="77.6" r="2.8" fill="#60a5fa" fill-opacity="0.5"/>
+    <circle cx="1842.2" cy="152.9" r="2.5" fill="#60a5fa" fill-opacity="0.7"/>
+    <circle cx="2012.9" cy="-16.1" r="2" fill="#60a5fa" fill-opacity="0.4"/>
+    <circle cx="1497" cy="-115.6" r="2" fill="#60a5fa" fill-opacity="0.3"/>
+    <circle cx="1798.9" cy="77" r="1.7" fill="#60a5fa" fill-opacity="0.5"/>
+    <circle cx="1745.6" cy="116.4" r="2.1" fill="#60a5fa" fill-opacity="0.5"/>
+    <circle cx="1669.1" cy="209.3" r="2.6" fill="#60a5fa" fill-opacity="0.6"/>
+    <circle cx="1091" cy="58.4" r="2.8" fill="#60a5fa" fill-opacity="0.5"/>
+    <circle cx="1511.3" cy="-11" r="1.3" fill="#60a5fa" fill-opacity="0.4"/>
+    <circle cx="1394.5" cy="31.1" r="1.9" fill="#60a5fa" fill-opacity="0.7"/>
+    <circle cx="1512.4" cy="-38.5" r="1.5" fill="#60a5fa" fill-opacity="0.6"/>
+    <circle cx="1748" cy="24.4" r="1.2" fill="#60a5fa" fill-opacity="0.5"/>
+    <circle cx="1434.4" cy="130.3" r="1.2" fill="#60a5fa" fill-opacity="0.7"/>
+    <circle cx="1764.9" cy="200.3" r="3.3" fill="#60a5fa" fill-opacity="0.4"/>
+    <circle cx="1639.2" cy="185" r="1.8" fill="#60a5fa" fill-opacity="0.4"/>
+  </g>
+  <rect x="0" y="198" width="1920" height="1" fill="#60a5fa" fill-opacity="0.18"/>
+  <text x="40" y="44" style="font: 800 13px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; letter-spacing: 4px; fill: #60a5fa;">KIS STUDIO · SPLUNK ALLGEMEINES KRANKENHAUS · MEDIZINTECHNIK</text>
+  <text x="38" y="94" style="font: 800 44px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; letter-spacing: -0.5px; fill: url(#titleFill);">Medizintechnik und IoT</text>
+  <text x="40" y="124" style="font: 500 16px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; fill: #9fb1c9;">MRT, CT, Beatmung, Monitoring, Infusionspumpen und Laboranalysatoren – Status, Alarme, Helium und STK-Faelligkeiten</text>
+  <g>
+    <text x="40" y="226" class="sec">GERAETEPARK</text>
+    <line x1="161.4" y1="221" x2="1880" y2="221" stroke="#60a5fa" stroke-opacity="0.18"/>
+    <text x="40" y="426" class="sec">RADIOLOGISCHE GROSSGERAETE</text>
+    <line x1="302.4" y1="421" x2="1880" y2="421" stroke="#60a5fa" stroke-opacity="0.18"/>
+    <text x="40" y="1176" class="sec">ALLE GERAETEKLASSEN</text>
+    <line x1="236.6" y1="1171" x2="1880" y2="1171" stroke="#60a5fa" stroke-opacity="0.18"/>
+  </g>
+  <g>
+    <rect x="40" y="242" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="58" y="242" width="120" height="2" rx="1" fill="#60a5fa" fill-opacity="0.85"/>
+    <rect x="60" y="258" width="4" height="16" rx="2" fill="#60a5fa"/>
+    <text x="72" y="271" class="pt">VERNETZTE GERAETE</text>
+    <rect x="350" y="242" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="368" y="242" width="120" height="2" rx="1" fill="#60a5fa" fill-opacity="0.85"/>
+    <rect x="370" y="258" width="4" height="16" rx="2" fill="#60a5fa"/>
+    <text x="382" y="271" class="pt">ONLINE</text>
+    <rect x="660" y="242" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="678" y="242" width="120" height="2" rx="1" fill="#60a5fa" fill-opacity="0.85"/>
+    <rect x="680" y="258" width="4" height="16" rx="2" fill="#60a5fa"/>
+    <text x="692" y="271" class="pt">OFFLINE</text>
+    <rect x="970" y="242" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="988" y="242" width="120" height="2" rx="1" fill="#60a5fa" fill-opacity="0.85"/>
+    <rect x="990" y="258" width="4" height="16" rx="2" fill="#60a5fa"/>
+    <text x="1002" y="271" class="pt">AKTIVE ALARME</text>
+    <rect x="1280" y="242" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="1298" y="242" width="120" height="2" rx="1" fill="#60a5fa" fill-opacity="0.85"/>
+    <rect x="1300" y="258" width="4" height="16" rx="2" fill="#60a5fa"/>
+    <text x="1312" y="271" class="pt">MRT-1 HELIUM</text>
+    <rect x="1590" y="242" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="1608" y="242" width="120" height="2" rx="1" fill="#60a5fa" fill-opacity="0.85"/>
+    <rect x="1610" y="258" width="4" height="16" rx="2" fill="#60a5fa"/>
+    <text x="1622" y="271" class="pt">STK UEBERFAELLIG</text>
+    <rect x="40" y="442" width="1840" height="340" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="58" y="442" width="120" height="2" rx="1" fill="#60a5fa" fill-opacity="0.85"/>
+    <rect x="60" y="458" width="4" height="16" rx="2" fill="#60a5fa"/>
+    <text x="72" y="471" class="pt">MRT UND CT</text>
+    <text x="1860" y="471" class="ph" text-anchor="end">Klick auf ein Geraet zeigt Schild- und Kuehlwassertemperatur</text>
+    <rect x="40" y="802" width="910" height="340" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="58" y="802" width="120" height="2" rx="1" fill="#60a5fa" fill-opacity="0.85"/>
+    <rect x="60" y="818" width="4" height="16" rx="2" fill="#60a5fa"/>
+    <text x="72" y="831" class="pt">HELIUMSTAND (%)</text>
+    <rect x="970" y="802" width="910" height="340" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="988" y="802" width="120" height="2" rx="1" fill="#60a5fa" fill-opacity="0.85"/>
+    <rect x="990" y="818" width="4" height="16" rx="2" fill="#60a5fa"/>
+    <text x="1002" y="831" class="pt">KUEHLUNG DES GEWAEHLTEN GERAETS</text>
+    <rect x="40" y="1192" width="755" height="360" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="58" y="1192" width="120" height="2" rx="1" fill="#60a5fa" fill-opacity="0.85"/>
+    <rect x="60" y="1208" width="4" height="16" rx="2" fill="#60a5fa"/>
+    <text x="72" y="1221" class="pt">STATUS JE GERAETEKLASSE</text>
+    <rect x="815" y="1192" width="600" height="360" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="833" y="1192" width="120" height="2" rx="1" fill="#60a5fa" fill-opacity="0.85"/>
+    <rect x="835" y="1208" width="4" height="16" rx="2" fill="#60a5fa"/>
+    <text x="847" y="1221" class="pt">ONLINE JE HAUS (%)</text>
+    <rect x="1435" y="1192" width="445" height="360" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="1453" y="1192" width="120" height="2" rx="1" fill="#60a5fa" fill-opacity="0.85"/>
+    <rect x="1455" y="1208" width="4" height="16" rx="2" fill="#60a5fa"/>
+    <text x="1467" y="1221" class="pt">ALARME JE GERAETETYP</text>
+    <rect x="40" y="1572" width="1065" height="420" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="58" y="1572" width="120" height="2" rx="1" fill="#60a5fa" fill-opacity="0.85"/>
+    <rect x="60" y="1588" width="4" height="16" rx="2" fill="#60a5fa"/>
+    <text x="72" y="1601" class="pt">OFFLINE ODER MIT ALARM</text>
+    <rect x="1125" y="1572" width="755" height="420" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="1143" y="1572" width="120" height="2" rx="1" fill="#60a5fa" fill-opacity="0.85"/>
+    <rect x="1145" y="1588" width="4" height="16" rx="2" fill="#60a5fa"/>
+    <text x="1157" y="1601" class="pt">STK / MTK FAELLIG (MPBV)</text>
+  </g>
+</svg>

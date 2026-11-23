@@ -1,0 +1,61 @@
+{
+  "showTitleAndDescription": true,
+  "includeInToolbar": true,
+  "includeInVizSwitcher": true,
+  "showDrilldown": true,
+  "canSetTokens": ["dynamic"],
+  "hasEventHandlers": true,
+  "config": {
+    "name": "Klinik-Lageplan",
+    "description": "Haeuser, Etagen und Stationen mit Bettenbelegung; Klick filtert nach Abteilung, Station oder Haus",
+    "category": "SAKH",
+    "icon": null,
+    "dataContract": {
+      "requiredDataSources": ["primary"],
+      "optionalDataSources": []
+    },
+    "size": {
+      "initialWidth": 1200,
+      "initialHeight": 420
+    },
+    "optionsSchema": {
+      "warn": { "type": "number", "default": 88 },
+      "crit": { "type": "number", "default": 95 },
+      "drillField": { "type": "string", "enum": ["department", "ward", "building"], "default": "department" },
+      "drilldownToken": { "type": "string", "default": "dept" },
+      "showFree": { "type": "boolean", "default": true }
+    },
+    "editorConfig": [
+      {
+        "label": "Schwellwerte Belegung (%)",
+        "layout": [
+          [
+            { "editor": "editor.number", "label": "Angespannt ab", "option": "warn" },
+            { "editor": "editor.number", "label": "Kritisch ab", "option": "crit" }
+          ],
+          [{ "editor": "editor.checkbox", "label": "Freie Betten anzeigen", "option": "showFree" }]
+        ]
+      },
+      {
+        "label": "Interaktion",
+        "layout": [
+          [
+            {
+              "editor": "editor.select",
+              "label": "Klick liefert",
+              "option": "drillField",
+              "editorProps": {
+                "values": [
+                  { "label": "Abteilung", "value": "department" },
+                  { "label": "Station", "value": "ward" },
+                  { "label": "Haus", "value": "building" }
+                ]
+              }
+            }
+          ],
+          [{ "editor": "editor.text", "label": "Drilldown-Feldname", "option": "drilldownToken" }]
+        ]
+      }
+    ]
+  }
+}

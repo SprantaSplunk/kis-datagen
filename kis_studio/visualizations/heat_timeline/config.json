@@ -1,0 +1,79 @@
+{
+  "showTitleAndDescription": true,
+  "includeInToolbar": true,
+  "includeInVizSwitcher": true,
+  "showDrilldown": true,
+  "canSetTokens": ["dynamic"],
+  "hasEventHandlers": true,
+  "config": {
+    "name": "Heat Timeline",
+    "description": "Spot when and where a metric ran hot, one row per series over time",
+    "category": "SAKH",
+    "icon": null,
+    "dataContract": {
+      "requiredDataSources": ["primary"],
+      "optionalDataSources": []
+    },
+    "size": {
+      "initialWidth": 900,
+      "initialHeight": 300
+    },
+    "optionsSchema": {
+      "scaleMode": { "type": "string", "enum": ["relative", "thresholds"], "default": "relative" },
+      "higherIsBetter": { "type": "boolean", "default": false },
+      "warn": { "type": "number", "default": 50 },
+      "crit": { "type": "number", "default": 80 },
+      "unit": { "type": "string", "default": "" },
+      "decimals": { "type": "number", "default": 1 },
+      "maxSeries": { "type": "number", "default": 24 },
+      "drilldownToken": { "type": "string", "default": "series" }
+    },
+    "editorConfig": [
+      {
+        "label": "Colour scale",
+        "layout": [
+          [
+            {
+              "editor": "editor.select",
+              "label": "Scale",
+              "option": "scaleMode",
+              "editorProps": {
+                "values": [
+                  { "label": "Relative to the result", "value": "relative" },
+                  { "label": "Fixed thresholds", "value": "thresholds" }
+                ]
+              }
+            }
+          ],
+          [
+            { "editor": "editor.checkbox", "label": "Higher values are better", "option": "higherIsBetter" }
+          ],
+          [
+            { "editor": "editor.number", "label": "Degraded threshold", "option": "warn" },
+            { "editor": "editor.number", "label": "Critical threshold", "option": "crit" }
+          ]
+        ]
+      },
+      {
+        "label": "Values",
+        "layout": [
+          [
+            { "editor": "editor.text", "label": "Unit", "option": "unit" },
+            { "editor": "editor.number", "label": "Decimals", "option": "decimals" }
+          ],
+          [
+            { "editor": "editor.number", "label": "Maximum rows", "option": "maxSeries" }
+          ]
+        ]
+      },
+      {
+        "label": "Interaction",
+        "layout": [
+          [
+            { "editor": "editor.text", "label": "Drilldown field name", "option": "drilldownToken" }
+          ]
+        ]
+      }
+    ]
+  }
+}

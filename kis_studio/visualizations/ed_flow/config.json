@@ -1,0 +1,40 @@
+{
+  "showTitleAndDescription": true,
+  "includeInToolbar": true,
+  "includeInVizSwitcher": true,
+  "showDrilldown": true,
+  "canSetTokens": ["dynamic"],
+  "hasEventHandlers": true,
+  "config": {
+    "name": "Notaufnahme-Fluss",
+    "description": "Wartende Patientinnen und Patienten je Manchester-Triage-Stufe mit laengster Wartezeit gegen das Ziel",
+    "category": "SAKH",
+    "icon": null,
+    "dataContract": {
+      "requiredDataSources": ["primary"],
+      "optionalDataSources": []
+    },
+    "size": {
+      "initialWidth": 900,
+      "initialHeight": 340
+    },
+    "optionsSchema": {
+      "drilldownToken": { "type": "string", "default": "triage" },
+      "maxDots": { "type": "number", "default": 40 },
+      "animate": { "type": "boolean", "default": true }
+    },
+    "editorConfig": [
+      {
+        "label": "Darstellung",
+        "layout": [
+          [{ "editor": "editor.number", "label": "Maximale Punkte je Stufe", "option": "maxDots" }],
+          [{ "editor": "editor.checkbox", "label": "Bewegung anzeigen", "option": "animate" }]
+        ]
+      },
+      {
+        "label": "Interaktion",
+        "layout": [[{ "editor": "editor.text", "label": "Drilldown-Feldname", "option": "drilldownToken" }]]
+      }
+    ]
+  }
+}

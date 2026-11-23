@@ -1,0 +1,57 @@
+{
+  "showTitleAndDescription": true,
+  "includeInToolbar": true,
+  "includeInVizSwitcher": true,
+  "showDrilldown": true,
+  "canSetTokens": ["dynamic"],
+  "hasEventHandlers": true,
+  "config": {
+    "name": "OP-Saalplan",
+    "description": "Gantt der OP-Saele: geplante Slots, tatsaechliche Zeiten, Verspaetungen und abgesetzte Eingriffe",
+    "category": "SAKH",
+    "icon": null,
+    "dataContract": {
+      "requiredDataSources": ["primary"],
+      "optionalDataSources": []
+    },
+    "size": {
+      "initialWidth": 1200,
+      "initialHeight": 420
+    },
+    "optionsSchema": {
+      "drillField": { "type": "string", "enum": ["room", "case", "department"], "default": "room" },
+      "drilldownToken": { "type": "string", "default": "room" },
+      "showNow": { "type": "boolean", "default": true },
+      "delayWarn": { "type": "number", "default": 15 }
+    },
+    "editorConfig": [
+      {
+        "label": "Darstellung",
+        "layout": [
+          [{ "editor": "editor.checkbox", "label": "Jetzt-Linie anzeigen", "option": "showNow" }],
+          [{ "editor": "editor.number", "label": "Verspaetung gelb ab (min)", "option": "delayWarn" }]
+        ]
+      },
+      {
+        "label": "Interaktion",
+        "layout": [
+          [
+            {
+              "editor": "editor.select",
+              "label": "Klick liefert",
+              "option": "drillField",
+              "editorProps": {
+                "values": [
+                  { "label": "Saal", "value": "room" },
+                  { "label": "Fall", "value": "case" },
+                  { "label": "Abteilung", "value": "department" }
+                ]
+              }
+            }
+          ],
+          [{ "editor": "editor.text", "label": "Drilldown-Feldname", "option": "drilldownToken" }]
+        ]
+      }
+    ]
+  }
+}

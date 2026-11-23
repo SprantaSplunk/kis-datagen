@@ -1,0 +1,19 @@
+{
+  "dataSources": {
+    "primary": {
+      "data": {
+        "fields": [
+          { "name": "parent" }, { "name": "parent_class" }, { "name": "child" }, { "name": "child_class" }, { "name": "child_status" }
+        ],
+        "columns": [
+          ["Klinische Dokumentation (KIS)", "Klinische Dokumentation (KIS)", "Klinische Dokumentation (KIS)", "Labordiagnostik", "Labordiagnostik", "Intensivmedizin (PDMS)", "Intensivmedizin (PDMS)", "KISPRD (Oracle)", "LISDB (Microsoft SQL Server)", "sakh-kisapp01", "sakh-lisapp01", "sakh-kom01", "sakh-pdms01", "VENT-001", "MON-001", "sakh-kisdb01"],
+          ["cmdb_ci_service_business", "cmdb_ci_service_business", "cmdb_ci_service_business", "cmdb_ci_service_business", "cmdb_ci_service_business", "cmdb_ci_service_business", "cmdb_ci_service_business", "cmdb_ci_db_instance", "cmdb_ci_db_instance", "cmdb_ci_server", "cmdb_ci_server", "cmdb_ci_server", "cmdb_ci_server", "cmdb_ci_medical_device", "cmdb_ci_medical_device", "cmdb_ci_server"],
+          ["sakh-kisapp01", "sakh-kisdb01", "sakh-dc01", "sakh-lisapp01", "sakh-kom01", "sakh-pdms01", "VENT-001", "sakh-kisdb01", "sakh-sql01", "sakh-rz1-dc01", "sakh-rz1-dc01", "sakh-rz1-dc01", "sakh-rz1-dc01", "sakh-c-acc03", "sakh-c-acc03", "sakh-c-dist01"],
+          ["cmdb_ci_server", "cmdb_ci_server", "cmdb_ci_server", "cmdb_ci_server", "cmdb_ci_server", "cmdb_ci_server", "cmdb_ci_medical_device", "cmdb_ci_server", "cmdb_ci_server", "cmdb_ci_netgear", "cmdb_ci_netgear", "cmdb_ci_netgear", "cmdb_ci_netgear", "cmdb_ci_netgear", "cmdb_ci_netgear", "cmdb_ci_netgear"],
+          ["Operational", "Operational", "Operational", "Operational", "Operational", "Operational", "Operational", "Operational", "Operational", "Operational", "Operational", "Operational", "Operational", "Non-Operational", "Non-Operational", "Non-Operational"]
+        ]
+      }
+    }
+  },
+  "dataControls": []
+}

@@ -1,0 +1,40 @@
+{
+  "showTitleAndDescription": true,
+  "includeInToolbar": true,
+  "includeInVizSwitcher": true,
+  "showDrilldown": true,
+  "canSetTokens": ["dynamic"],
+  "hasEventHandlers": true,
+  "config": {
+    "name": "Service-Abhaengigkeiten",
+    "description": "CMDB-Beziehungen in Ebenen: Business Service, Datenbank, Server und Medizintechnik, Netzwerk; Auswirkungen werden nach oben weitergegeben",
+    "category": "SAKH",
+    "icon": null,
+    "dataContract": {
+      "requiredDataSources": ["primary"],
+      "optionalDataSources": []
+    },
+    "size": {
+      "initialWidth": 1200,
+      "initialHeight": 520
+    },
+    "optionsSchema": {
+      "drilldownToken": { "type": "string", "default": "ci" },
+      "maxPerLayer": { "type": "number", "default": 24 },
+      "propagate": { "type": "boolean", "default": true }
+    },
+    "editorConfig": [
+      {
+        "label": "Darstellung",
+        "layout": [
+          [{ "editor": "editor.number", "label": "Maximal Knoten je Ebene", "option": "maxPerLayer" }],
+          [{ "editor": "editor.checkbox", "label": "Auswirkungen nach oben weitergeben", "option": "propagate" }]
+        ]
+      },
+      {
+        "label": "Interaktion",
+        "layout": [[{ "editor": "editor.text", "label": "Drilldown-Feldname", "option": "drilldownToken" }]]
+      }
+    ]
+  }
+}

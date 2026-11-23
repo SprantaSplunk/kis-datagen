@@ -1,0 +1,22 @@
+{
+  "dataSources": {
+    "primary": {
+      "data": {
+        "fields": [
+          { "name": "triage_level" }, { "name": "waiting" }, { "name": "longest_wait_min" }, { "name": "in_treatment" }, { "name": "arrivals" }
+        ],
+        "columns": [
+          ["1", "2", "3", "4", "5"],
+          ["0", "3", "12", "14", "4"],
+          ["0", "14", "48", "85", "60"],
+          ["2", "6", "11", "8", "1"],
+          ["1", "6", "22", "24", "7"]
+        ]
+      }
+    }
+  },
+  "dataControls": [
+    { "field": "waiting", "row": 2, "label": "Stufe 3 wartend", "type": "slider", "min": 0, "max": 80, "step": 1 },
+    { "field": "longest_wait_min", "row": 1, "label": "Stufe 2 Wartezeit", "type": "slider", "min": 0, "max": 60, "step": 1 }
+  ]
+}

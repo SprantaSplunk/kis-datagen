@@ -1,0 +1,51 @@
+{
+  "showTitleAndDescription": true,
+  "includeInToolbar": true,
+  "includeInVizSwitcher": true,
+  "showDrilldown": true,
+  "canSetTokens": ["dynamic"],
+  "hasEventHandlers": true,
+  "config": {
+    "name": "Intensiv-Monitorwand",
+    "description": "Zentrale Monitorwand der Intensivstation: Vitalwerte, NEWS2 und Datenluecken je Bett",
+    "category": "SAKH",
+    "icon": null,
+    "dataContract": {
+      "requiredDataSources": ["primary"],
+      "optionalDataSources": []
+    },
+    "size": {
+      "initialWidth": 1200,
+      "initialHeight": 480
+    },
+    "optionsSchema": {
+      "drilldownToken": { "type": "string", "default": "bed" },
+      "news2Warn": { "type": "number", "default": 5 },
+      "news2Crit": { "type": "number", "default": 7 },
+      "columns": { "type": "number", "default": 0 },
+      "showWave": { "type": "boolean", "default": true }
+    },
+    "editorConfig": [
+      {
+        "label": "NEWS2-Schwellen",
+        "layout": [
+          [
+            { "editor": "editor.number", "label": "Beobachten ab", "option": "news2Warn" },
+            { "editor": "editor.number", "label": "Kritisch ab", "option": "news2Crit" }
+          ]
+        ]
+      },
+      {
+        "label": "Darstellung",
+        "layout": [
+          [{ "editor": "editor.number", "label": "Spalten (0 = automatisch)", "option": "columns" }],
+          [{ "editor": "editor.checkbox", "label": "EKG-Kurve animieren", "option": "showWave" }]
+        ]
+      },
+      {
+        "label": "Interaktion",
+        "layout": [[{ "editor": "editor.text", "label": "Drilldown-Feldname", "option": "drilldownToken" }]]
+      }
+    ]
+  }
+}

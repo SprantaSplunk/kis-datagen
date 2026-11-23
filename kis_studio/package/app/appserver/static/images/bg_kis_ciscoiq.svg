@@ -1,0 +1,220 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="2130" viewBox="0 0 1920 2130">
+  <defs>
+    <radialGradient id="glowA" cx="0.12" cy="0.02" r="0.7">
+      <stop offset="0" stop-color="#049fd9" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#049fd9" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="0.95" cy="0.85" r="0.75">
+      <stop offset="0" stop-color="#34e2a0" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#34e2a0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="base" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#071022"/>
+      <stop offset="1" stop-color="#040812"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#101d3a" stop-opacity="0.82"/>
+      <stop offset="1" stop-color="#0a1328" stop-opacity="0.74"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#049fd9" stop-opacity="0.45"/>
+      <stop offset="0.5" stop-color="#9fb1c9" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#34e2a0" stop-opacity="0.35"/>
+    </linearGradient>
+    <linearGradient id="titleFill" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#049fd9"/>
+    </linearGradient>
+    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#9fb1c9" fill-opacity="0.10"/>
+    </pattern>
+    <style>
+      .pt { font: 700 13px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; letter-spacing: 1.6px; fill: #cfe0f7; }
+      .ph { font: 500 12px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; fill: #8ea3bf; }
+      .sec { font: 800 13px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; letter-spacing: 3px; fill: #049fd9; }
+    </style>
+  </defs>
+  <rect width="1920" height="2130" fill="url(#base)"/>
+  <rect width="1920" height="2130" fill="url(#dots)"/>
+  <rect width="1920" height="2130" fill="url(#glowA)"/>
+  <rect width="1920" height="2130" fill="url(#glowB)"/>
+  <g>
+    <line x1="1796.8" y1="63.4" x2="1747.1" y2="168.7" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1796.8" y1="63.4" x2="1666.2" y2="60.9" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1796.8" y1="63.4" x2="1754.6" y2="107.1" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1796.8" y1="63.4" x2="1753.4" y2="56.7" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1796.8" y1="63.4" x2="1770.1" y2="111.9" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1796.8" y1="63.4" x2="1840.8" y2="69.4" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1796.8" y1="63.4" x2="1721.4" y2="69.7" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1796.8" y1="63.4" x2="1688.8" y2="94.2" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1467.3" y1="54.1" x2="1496.9" y2="19.7" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1467.3" y1="54.1" x2="1579.5" y2="35.2" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1467.3" y1="54.1" x2="1415.2" y2="130" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1467.3" y1="54.1" x2="1464.1" y2="119.7" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1467.3" y1="54.1" x2="1533.4" y2="107.3" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1467.3" y1="54.1" x2="1389.1" y2="58" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1467.3" y1="54.1" x2="1341.4" y2="70" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1467.3" y1="54.1" x2="1462.9" y2="38.9" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1266.3" y1="62.7" x2="1415.2" y2="130" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1266.3" y1="62.7" x2="1269.7" y2="45.4" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1266.3" y1="62.7" x2="1389.1" y2="58" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1266.3" y1="62.7" x2="1341.4" y2="70" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1266.3" y1="62.7" x2="1182.6" y2="135.6" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1266.3" y1="62.7" x2="1116.8" y2="80.9" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1496.9" y1="19.7" x2="1579.5" y2="35.2" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1496.9" y1="19.7" x2="1415.2" y2="130" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1496.9" y1="19.7" x2="1464.1" y2="119.7" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1496.9" y1="19.7" x2="1533.4" y2="107.3" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1496.9" y1="19.7" x2="1389.1" y2="58" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1496.9" y1="19.7" x2="1341.4" y2="70" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1496.9" y1="19.7" x2="1462.9" y2="38.9" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1747.1" y1="168.7" x2="1666.2" y2="60.9" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1747.1" y1="168.7" x2="1754.6" y2="107.1" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1747.1" y1="168.7" x2="1753.4" y2="56.7" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1747.1" y1="168.7" x2="1770.1" y2="111.9" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1747.1" y1="168.7" x2="1840.8" y2="69.4" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1747.1" y1="168.7" x2="1721.4" y2="69.7" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1747.1" y1="168.7" x2="1688.8" y2="94.2" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1579.5" y1="35.2" x2="1464.1" y2="119.7" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1579.5" y1="35.2" x2="1533.4" y2="107.3" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1579.5" y1="35.2" x2="1666.2" y2="60.9" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1579.5" y1="35.2" x2="1462.9" y2="38.9" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1579.5" y1="35.2" x2="1721.4" y2="69.7" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1579.5" y1="35.2" x2="1688.8" y2="94.2" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1415.2" y1="130" x2="1269.7" y2="45.4" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1415.2" y1="130" x2="1464.1" y2="119.7" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1415.2" y1="130" x2="1533.4" y2="107.3" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1415.2" y1="130" x2="1389.1" y2="58" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1415.2" y1="130" x2="1341.4" y2="70" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1415.2" y1="130" x2="1462.9" y2="38.9" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1269.7" y1="45.4" x2="1389.1" y2="58" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1269.7" y1="45.4" x2="1341.4" y2="70" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1269.7" y1="45.4" x2="1182.6" y2="135.6" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1269.7" y1="45.4" x2="1116.8" y2="80.9" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1464.1" y1="119.7" x2="1533.4" y2="107.3" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1464.1" y1="119.7" x2="1389.1" y2="58" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1464.1" y1="119.7" x2="1341.4" y2="70" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1464.1" y1="119.7" x2="1462.9" y2="38.9" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1533.4" y1="107.3" x2="1389.1" y2="58" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1533.4" y1="107.3" x2="1666.2" y2="60.9" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1533.4" y1="107.3" x2="1462.9" y2="38.9" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1533.4" y1="107.3" x2="1688.8" y2="94.2" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1389.1" y1="58" x2="1341.4" y2="70" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1389.1" y1="58" x2="1462.9" y2="38.9" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1341.4" y1="70" x2="1462.9" y2="38.9" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1666.2" y1="60.9" x2="1754.6" y2="107.1" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1666.2" y1="60.9" x2="1753.4" y2="56.7" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1666.2" y1="60.9" x2="1770.1" y2="111.9" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1666.2" y1="60.9" x2="1721.4" y2="69.7" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1666.2" y1="60.9" x2="1688.8" y2="94.2" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1754.6" y1="107.1" x2="1753.4" y2="56.7" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1754.6" y1="107.1" x2="1770.1" y2="111.9" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1754.6" y1="107.1" x2="1840.8" y2="69.4" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1754.6" y1="107.1" x2="1721.4" y2="69.7" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1754.6" y1="107.1" x2="1688.8" y2="94.2" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1753.4" y1="56.7" x2="1770.1" y2="111.9" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1753.4" y1="56.7" x2="1840.8" y2="69.4" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1753.4" y1="56.7" x2="1721.4" y2="69.7" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1753.4" y1="56.7" x2="1688.8" y2="94.2" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1770.1" y1="111.9" x2="1840.8" y2="69.4" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1770.1" y1="111.9" x2="1721.4" y2="69.7" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1770.1" y1="111.9" x2="1688.8" y2="94.2" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1840.8" y1="69.4" x2="1721.4" y2="69.7" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1840.8" y1="69.4" x2="1688.8" y2="94.2" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1182.6" y1="135.6" x2="1116.8" y2="80.9" stroke="#049fd9" stroke-opacity="0.1" stroke-width="1"/>
+    <line x1="1721.4" y1="69.7" x2="1688.8" y2="94.2" stroke="#049fd9" stroke-opacity="0.2" stroke-width="1"/>
+    <circle cx="1796.8" cy="63.4" r="3.1" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1467.3" cy="54.1" r="3.1" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1266.3" cy="62.7" r="4.1" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1496.9" cy="19.7" r="2.9" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1747.1" cy="168.7" r="3.4" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1579.5" cy="35.2" r="2.7" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1415.2" cy="130" r="3.2" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1269.7" cy="45.4" r="3.6" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1464.1" cy="119.7" r="2" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1533.4" cy="107.3" r="2.2" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1389.1" cy="58" r="2.9" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1341.4" cy="70" r="1.9" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1666.2" cy="60.9" r="1.9" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1754.6" cy="107.1" r="3.6" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1462.9" cy="38.9" r="3.6" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1753.4" cy="56.7" r="2.5" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1770.1" cy="111.9" r="3.6" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1840.8" cy="69.4" r="2.3" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1182.6" cy="135.6" r="2.3" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1721.4" cy="69.7" r="2.4" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1688.8" cy="94.2" r="3.1" fill="#049fd9" fill-opacity="0.6"/>
+    <circle cx="1116.8" cy="80.9" r="2.1" fill="#049fd9" fill-opacity="0.6"/>
+  </g>
+  <rect x="0" y="198" width="1920" height="1" fill="#049fd9" fill-opacity="0.18"/>
+  <text x="40" y="44" style="font: 800 13px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; letter-spacing: 4px; fill: #049fd9;">KIS STUDIO · SPLUNK ALLGEMEINES KRANKENHAUS · NETZWERK</text>
+  <text x="38" y="94" style="font: 800 44px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; letter-spacing: -0.5px; fill: url(#titleFill);">Cisco IQ – Assets, Lifecycle und Sicherheit</text>
+  <text x="40" y="124" style="font: 500 16px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; fill: #9fb1c9;">Inventar, Security Advisories, Field Notices, End-of-Life und Servicevertraege aller Cisco-Geraete (synthetische Demo-Advisories)</text>
+  <g>
+    <text x="40" y="284" class="sec">INVENTAR</text>
+    <line x1="133.2" y1="279" x2="1880" y2="279" stroke="#049fd9" stroke-opacity="0.18"/>
+    <text x="40" y="484" class="sec">SECURITY ADVISORIES (PSIRT)</text>
+    <line x1="311.8" y1="479" x2="1880" y2="479" stroke="#049fd9" stroke-opacity="0.18"/>
+    <text x="40" y="1354" class="sec">LIFECYCLE UND VERTRAEGE</text>
+    <line x1="274.20000000000005" y1="1349" x2="1880" y2="1349" stroke="#049fd9" stroke-opacity="0.18"/>
+  </g>
+  <g>
+    <rect x="40" y="300" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="58" y="300" width="120" height="2" rx="1" fill="#049fd9" fill-opacity="0.85"/>
+    <rect x="60" y="316" width="4" height="16" rx="2" fill="#049fd9"/>
+    <text x="72" y="329" class="pt">CISCO-ASSETS</text>
+    <rect x="350" y="300" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="368" y="300" width="120" height="2" rx="1" fill="#049fd9" fill-opacity="0.85"/>
+    <rect x="370" y="316" width="4" height="16" rx="2" fill="#049fd9"/>
+    <text x="382" y="329" class="pt">KRITISCH BETROFFEN</text>
+    <rect x="660" y="300" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="678" y="300" width="120" height="2" rx="1" fill="#049fd9" fill-opacity="0.85"/>
+    <rect x="680" y="316" width="4" height="16" rx="2" fill="#049fd9"/>
+    <text x="692" y="329" class="pt">END OF SUPPORT</text>
+    <rect x="970" y="300" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="988" y="300" width="120" height="2" rx="1" fill="#049fd9" fill-opacity="0.85"/>
+    <rect x="990" y="316" width="4" height="16" rx="2" fill="#049fd9"/>
+    <text x="1002" y="329" class="pt">OHNE VERTRAG</text>
+    <rect x="1280" y="300" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="1298" y="300" width="120" height="2" rx="1" fill="#049fd9" fill-opacity="0.85"/>
+    <rect x="1300" y="316" width="4" height="16" rx="2" fill="#049fd9"/>
+    <text x="1312" y="329" class="pt">VERTRAG LAEUFT AB</text>
+    <rect x="1590" y="300" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="1608" y="300" width="120" height="2" rx="1" fill="#049fd9" fill-opacity="0.85"/>
+    <rect x="1610" y="316" width="4" height="16" rx="2" fill="#049fd9"/>
+    <text x="1622" y="329" class="pt">FIELD NOTICES</text>
+    <rect x="40" y="500" width="1840" height="380" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="58" y="500" width="120" height="2" rx="1" fill="#049fd9" fill-opacity="0.85"/>
+    <rect x="60" y="516" width="4" height="16" rx="2" fill="#049fd9"/>
+    <text x="72" y="529" class="pt">ADVISORIES MIT BETROFFENEN GERAETEN</text>
+    <text x="1860" y="529" class="ph" text-anchor="end">Klick auf eine Zeile zeigt die betroffenen Geraete</text>
+    <rect x="40" y="900" width="1840" height="420" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="58" y="900" width="120" height="2" rx="1" fill="#049fd9" fill-opacity="0.85"/>
+    <rect x="60" y="916" width="4" height="16" rx="2" fill="#049fd9"/>
+    <text x="72" y="929" class="pt">BETROFFENE GERAETE</text>
+    <rect x="40" y="1370" width="445" height="340" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="58" y="1370" width="120" height="2" rx="1" fill="#049fd9" fill-opacity="0.85"/>
+    <rect x="60" y="1386" width="4" height="16" rx="2" fill="#049fd9"/>
+    <text x="72" y="1399" class="pt">LIFECYCLE</text>
+    <rect x="505" y="1370" width="445" height="340" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="523" y="1370" width="120" height="2" rx="1" fill="#049fd9" fill-opacity="0.85"/>
+    <rect x="525" y="1386" width="4" height="16" rx="2" fill="#049fd9"/>
+    <text x="537" y="1399" class="pt">VERTRAGSABDECKUNG</text>
+    <rect x="970" y="1370" width="910" height="340" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="988" y="1370" width="120" height="2" rx="1" fill="#049fd9" fill-opacity="0.85"/>
+    <rect x="990" y="1386" width="4" height="16" rx="2" fill="#049fd9"/>
+    <text x="1002" y="1399" class="pt">GERAETE JE MODELL</text>
+    <rect x="40" y="1730" width="755" height="360" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="58" y="1730" width="120" height="2" rx="1" fill="#049fd9" fill-opacity="0.85"/>
+    <rect x="60" y="1746" width="4" height="16" rx="2" fill="#049fd9"/>
+    <text x="72" y="1759" class="pt">END OF LIFE</text>
+    <rect x="815" y="1730" width="600" height="360" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="833" y="1730" width="120" height="2" rx="1" fill="#049fd9" fill-opacity="0.85"/>
+    <rect x="835" y="1746" width="4" height="16" rx="2" fill="#049fd9"/>
+    <text x="847" y="1759" class="pt">SERVICEVERTRAEGE (SNTC)</text>
+    <rect x="1435" y="1730" width="445" height="360" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="1453" y="1730" width="120" height="2" rx="1" fill="#049fd9" fill-opacity="0.85"/>
+    <rect x="1455" y="1746" width="4" height="16" rx="2" fill="#049fd9"/>
+    <text x="1467" y="1759" class="pt">FIELD NOTICES</text>
+  </g>
+</svg>

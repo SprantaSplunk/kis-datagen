@@ -1,0 +1,12 @@
+node_modules/
+kis_studio/dist/
+kis_studio/stage/
+storybook-static/
+__pycache__/
+*.pyc
+local/
+local.meta
+.DS_Store
+.env
+.env.local
+*.spl.tmp

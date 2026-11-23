@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1750" viewBox="0 0 1920 1750">
+  <defs>
+    <radialGradient id="glowA" cx="0.12" cy="0.02" r="0.7">
+      <stop offset="0" stop-color="#34e2a0" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#34e2a0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="0.95" cy="0.85" r="0.75">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="base" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#071022"/>
+      <stop offset="1" stop-color="#040812"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#101d3a" stop-opacity="0.82"/>
+      <stop offset="1" stop-color="#0a1328" stop-opacity="0.74"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#34e2a0" stop-opacity="0.45"/>
+      <stop offset="0.5" stop-color="#9fb1c9" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0.35"/>
+    </linearGradient>
+    <linearGradient id="titleFill" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#34e2a0"/>
+    </linearGradient>
+    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#9fb1c9" fill-opacity="0.10"/>
+    </pattern>
+    <style>
+      .pt { font: 700 13px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; letter-spacing: 1.6px; fill: #cfe0f7; }
+      .ph { font: 500 12px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; fill: #8ea3bf; }
+      .sec { font: 800 13px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; letter-spacing: 3px; fill: #34e2a0; }
+    </style>
+  </defs>
+  <rect width="1920" height="1750" fill="url(#base)"/>
+  <rect width="1920" height="1750" fill="url(#dots)"/>
+  <rect width="1920" height="1750" fill="url(#glowA)"/>
+  <rect width="1920" height="1750" fill="url(#glowB)"/>
+  <g>
+    <path d="M920 70 L924 70 L928 70 L932 70 L936 70 L940 70 L944 70 L948 70 L952 70 L956 70 L960 70 L964 70 L968 70 L972 78 L976 24 L980 86 L984 86 L988 70 L992 70 L996 70 L1000 70 L1004 70 L1008 70 L1012 65.5 L1016 62.2 L1020 61 L1024 62.2 L1028 65.5 L1032 70 L1036 70 L1040 70 L1044 70 L1048 70 L1052 70 L1056 70 L1060 70 L1064 70 L1068 70 L1072 70 L1076 70 L1080 70 L1084 70 L1088 70 L1092 70 L1096 70 L1100 70 L1104 70 L1108 70 L1112 70 L1116 70 L1120 70 L1124 70 L1128 70 L1132 78 L1136 24 L1140 86 L1144 86 L1148 70 L1152 70 L1156 70 L1160 70 L1164 70 L1168 70 L1172 65.5 L1176 62.2 L1180 61 L1184 62.2 L1188 65.5 L1192 70 L1196 70 L1200 70 L1204 70 L1208 70 L1212 70 L1216 70 L1220 70 L1224 70 L1228 70 L1232 70 L1236 70 L1240 70 L1244 70 L1248 70 L1252 70 L1256 70 L1260 70 L1264 70 L1268 70 L1272 70 L1276 70 L1280 70 L1284 70 L1288 70 L1292 78 L1296 24 L1300 86 L1304 86 L1308 70 L1312 70 L1316 70 L1320 70 L1324 70 L1328 70 L1332 65.5 L1336 62.2 L1340 61 L1344 62.2 L1348 65.5 L1352 70 L1356 70 L1360 70 L1364 70 L1368 70 L1372 70 L1376 70 L1380 70 L1384 70 L1388 70 L1392 70 L1396 70 L1400 70 L1404 70 L1408 70 L1412 70 L1416 70 L1420 70 L1424 70 L1428 70 L1432 70 L1436 70 L1440 70 L1444 70 L1448 70 L1452 78 L1456 24 L1460 86 L1464 86 L1468 70 L1472 70 L1476 70 L1480 70 L1484 70 L1488 70 L1492 65.5 L1496 62.2 L1500 61 L1504 62.2 L1508 65.5 L1512 70 L1516 70 L1520 70 L1524 70 L1528 70 L1532 70 L1536 70 L1540 70 L1544 70 L1548 70 L1552 70 L1556 70 L1560 70 L1564 70 L1568 70 L1572 70 L1576 70 L1580 70 L1584 70 L1588 70 L1592 70 L1596 70 L1600 70 L1604 70 L1608 70 L1612 78 L1616 24 L1620 86 L1624 86 L1628 70 L1632 70 L1636 70 L1640 70 L1644 70 L1648 70 L1652 65.5 L1656 62.2 L1660 61 L1664 62.2 L1668 65.5 L1672 70 L1676 70 L1680 70 L1684 70 L1688 70 L1692 70 L1696 70 L1700 70 L1704 70 L1708 70 L1712 70 L1716 70 L1720 70 L1724 70 L1728 70 L1732 70 L1736 70 L1740 70 L1744 70 L1748 70 L1752 70 L1756 70 L1760 70 L1764 70 L1768 70 L1772 78 L1776 24 L1780 86 L1784 86 L1788 70 L1792 70 L1796 70 L1800 70 L1804 70 L1808 70 L1812 65.5 L1816 62.2 L1820 61 L1824 62.2 L1828 65.5 L1832 70 L1836 70 L1840 70 L1844 70 L1848 70 L1852 70 L1856 70 L1860 70 L1864 70 L1868 70 L1872 70 L1876 70 L1880 70 " fill="none" stroke="#34e2a0" stroke-opacity="0.3" stroke-width="1.6"/>
+    <path d="M920 116 L924 116 L928 116 L932 116 L936 116 L940 113.7 L944 109.6 L948 107.3 L952 107.3 L956 109.6 L960 113.7 L964 116 L968 116 L972 116 L976 116 L980 116 L984 116 L988 116 L992 116 L996 116 L1000 116 L1004 116 L1008 116 L1012 116 L1016 116 L1020 116 L1024 116 L1028 116 L1032 116 L1036 116 L1040 116 L1044 116 L1048 116 L1052 116 L1056 116 L1060 124 L1064 80 L1068 80 L1072 132 L1076 116 L1080 116 L1084 116 L1088 116 L1092 116 L1096 116 L1100 113.7 L1104 109.6 L1108 107.3 L1112 107.3 L1116 109.6 L1120 113.7 L1124 116 L1128 116 L1132 116 L1136 116 L1140 116 L1144 116 L1148 116 L1152 116 L1156 116 L1160 116 L1164 116 L1168 116 L1172 116 L1176 116 L1180 116 L1184 116 L1188 116 L1192 116 L1196 116 L1200 116 L1204 116 L1208 116 L1212 116 L1216 116 L1220 124 L1224 80 L1228 80 L1232 132 L1236 116 L1240 116 L1244 116 L1248 116 L1252 116 L1256 116 L1260 113.7 L1264 109.6 L1268 107.3 L1272 107.3 L1276 109.6 L1280 113.7 L1284 116 L1288 116 L1292 116 L1296 116 L1300 116 L1304 116 L1308 116 L1312 116 L1316 116 L1320 116 L1324 116 L1328 116 L1332 116 L1336 116 L1340 116 L1344 116 L1348 116 L1352 116 L1356 116 L1360 116 L1364 116 L1368 116 L1372 116 L1376 116 L1380 124 L1384 80 L1388 80 L1392 132 L1396 116 L1400 116 L1404 116 L1408 116 L1412 116 L1416 116 L1420 113.7 L1424 109.6 L1428 107.3 L1432 107.3 L1436 109.6 L1440 113.7 L1444 116 L1448 116 L1452 116 L1456 116 L1460 116 L1464 116 L1468 116 L1472 116 L1476 116 L1480 116 L1484 116 L1488 116 L1492 116 L1496 116 L1500 116 L1504 116 L1508 116 L1512 116 L1516 116 L1520 116 L1524 116 L1528 116 L1532 116 L1536 116 L1540 124 L1544 80 L1548 80 L1552 132 L1556 116 L1560 116 L1564 116 L1568 116 L1572 116 L1576 116 L1580 113.7 L1584 109.6 L1588 107.3 L1592 107.3 L1596 109.6 L1600 113.7 L1604 116 L1608 116 L1612 116 L1616 116 L1620 116 L1624 116 L1628 116 L1632 116 L1636 116 L1640 116 L1644 116 L1648 116 L1652 116 L1656 116 L1660 116 L1664 116 L1668 116 L1672 116 L1676 116 L1680 116 L1684 116 L1688 116 L1692 116 L1696 116 L1700 124 L1704 80 L1708 80 L1712 132 L1716 116 L1720 116 L1724 116 L1728 116 L1732 116 L1736 116 L1740 113.7 L1744 109.6 L1748 107.3 L1752 107.3 L1756 109.6 L1760 113.7 L1764 116 L1768 116 L1772 116 L1776 116 L1780 116 L1784 116 L1788 116 L1792 116 L1796 116 L1800 116 L1804 116 L1808 116 L1812 116 L1816 116 L1820 116 L1824 116 L1828 116 L1832 116 L1836 116 L1840 116 L1844 116 L1848 116 L1852 116 L1856 116 L1860 124 L1864 80 L1868 80 L1872 132 L1876 116 L1880 116 " fill="none" stroke="#34e2a0" stroke-opacity="0.3" stroke-width="1.6"/>
+    <path d="M920 162 L924 162 L928 162 L932 162 L936 162 L940 162 L944 162 L948 162 L952 162 L956 162 L960 162 L964 162 L968 162 L972 162 L976 162 L980 162 L984 162 L988 162 L992 170 L996 136 L1000 178 L1004 178 L1008 162 L1012 162 L1016 162 L1020 162 L1024 162 L1028 162 L1032 157.5 L1036 154.2 L1040 153 L1044 154.2 L1048 157.5 L1052 162 L1056 162 L1060 162 L1064 162 L1068 162 L1072 162 L1076 162 L1080 162 L1084 162 L1088 162 L1092 162 L1096 162 L1100 162 L1104 162 L1108 162 L1112 162 L1116 162 L1120 162 L1124 162 L1128 162 L1132 162 L1136 162 L1140 162 L1144 162 L1148 162 L1152 170 L1156 136 L1160 178 L1164 178 L1168 162 L1172 162 L1176 162 L1180 162 L1184 162 L1188 162 L1192 157.5 L1196 154.2 L1200 153 L1204 154.2 L1208 157.5 L1212 162 L1216 162 L1220 162 L1224 162 L1228 162 L1232 162 L1236 162 L1240 162 L1244 162 L1248 162 L1252 162 L1256 162 L1260 162 L1264 162 L1268 162 L1272 162 L1276 162 L1280 162 L1284 162 L1288 162 L1292 162 L1296 162 L1300 162 L1304 162 L1308 162 L1312 170 L1316 136 L1320 178 L1324 178 L1328 162 L1332 162 L1336 162 L1340 162 L1344 162 L1348 162 L1352 157.5 L1356 154.2 L1360 153 L1364 154.2 L1368 157.5 L1372 162 L1376 162 L1380 162 L1384 162 L1388 162 L1392 162 L1396 162 L1400 162 L1404 162 L1408 162 L1412 162 L1416 162 L1420 162 L1424 162 L1428 162 L1432 162 L1436 162 L1440 162 L1444 162 L1448 162 L1452 162 L1456 162 L1460 162 L1464 162 L1468 162 L1472 170 L1476 136 L1480 178 L1484 178 L1488 162 L1492 162 L1496 162 L1500 162 L1504 162 L1508 162 L1512 157.5 L1516 154.2 L1520 153 L1524 154.2 L1528 157.5 L1532 162 L1536 162 L1540 162 L1544 162 L1548 162 L1552 162 L1556 162 L1560 162 L1564 162 L1568 162 L1572 162 L1576 162 L1580 162 L1584 162 L1588 162 L1592 162 L1596 162 L1600 162 L1604 162 L1608 162 L1612 162 L1616 162 L1620 162 L1624 162 L1628 162 L1632 170 L1636 136 L1640 178 L1644 178 L1648 162 L1652 162 L1656 162 L1660 162 L1664 162 L1668 162 L1672 157.5 L1676 154.2 L1680 153 L1684 154.2 L1688 157.5 L1692 162 L1696 162 L1700 162 L1704 162 L1708 162 L1712 162 L1716 162 L1720 162 L1724 162 L1728 162 L1732 162 L1736 162 L1740 162 L1744 162 L1748 162 L1752 162 L1756 162 L1760 162 L1764 162 L1768 162 L1772 162 L1776 162 L1780 162 L1784 162 L1788 162 L1792 170 L1796 136 L1800 178 L1804 178 L1808 162 L1812 162 L1816 162 L1820 162 L1824 162 L1828 162 L1832 157.5 L1836 154.2 L1840 153 L1844 154.2 L1848 157.5 L1852 162 L1856 162 L1860 162 L1864 162 L1868 162 L1872 162 L1876 162 L1880 162 " fill="none" stroke="#34e2a0" stroke-opacity="0.2" stroke-width="1.6"/>
+    <path d="M1742 30 h36 v36 h36 v36 h-36 v36 h-36 v-36 h-36 v-36 h36 z" fill="#34e2a0" fill-opacity="0.07"/>
+  </g>
+  <rect x="0" y="198" width="1920" height="1" fill="#34e2a0" fill-opacity="0.18"/>
+  <text x="40" y="44" style="font: 800 13px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; letter-spacing: 4px; fill: #34e2a0;">KIS STUDIO · SPLUNK ALLGEMEINES KRANKENHAUS · PATIENTENVERSORGUNG</text>
+  <text x="38" y="94" style="font: 800 44px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; letter-spacing: -0.5px; fill: url(#titleFill);">Zentrale Notaufnahme</text>
+  <text x="40" y="124" style="font: 500 16px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; fill: #9fb1c9;">Manchester-Triage, Wartezeiten, Boarding und Rettungsstopp – Klick auf eine Triage-Stufe filtert die Zugaenge</text>
+  <g>
+    <text x="40" y="284" class="sec">BOARD</text>
+    <line x1="105" y1="279" x2="1880" y2="279" stroke="#34e2a0" stroke-opacity="0.18"/>
+    <text x="40" y="484" class="sec">TRIAGE</text>
+    <line x1="114.4" y1="479" x2="1880" y2="479" stroke="#34e2a0" stroke-opacity="0.18"/>
+    <text x="40" y="914" class="sec">ZUGAENGE (FILTER PER KLICK AUF EINE TRIAGE-STUFE)</text>
+    <line x1="518.6" y1="909" x2="1880" y2="909" stroke="#34e2a0" stroke-opacity="0.18"/>
+  </g>
+  <g>
+    <rect x="40" y="300" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="58" y="300" width="120" height="2" rx="1" fill="#34e2a0" fill-opacity="0.85"/>
+    <rect x="60" y="316" width="4" height="16" rx="2" fill="#34e2a0"/>
+    <text x="72" y="329" class="pt">WARTEND</text>
+    <rect x="350" y="300" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="368" y="300" width="120" height="2" rx="1" fill="#34e2a0" fill-opacity="0.85"/>
+    <rect x="370" y="316" width="4" height="16" rx="2" fill="#34e2a0"/>
+    <text x="382" y="329" class="pt">LAENGSTE WARTEZEIT (MIN)</text>
+    <rect x="660" y="300" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="678" y="300" width="120" height="2" rx="1" fill="#34e2a0" fill-opacity="0.85"/>
+    <rect x="680" y="316" width="4" height="16" rx="2" fill="#34e2a0"/>
+    <text x="692" y="329" class="pt">DOOR-TO-DOC (MIN)</text>
+    <rect x="970" y="300" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="988" y="300" width="120" height="2" rx="1" fill="#34e2a0" fill-opacity="0.85"/>
+    <rect x="990" y="316" width="4" height="16" rx="2" fill="#34e2a0"/>
+    <text x="1002" y="329" class="pt">BOARDING</text>
+    <rect x="1280" y="300" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="1298" y="300" width="120" height="2" rx="1" fill="#34e2a0" fill-opacity="0.85"/>
+    <rect x="1300" y="316" width="4" height="16" rx="2" fill="#34e2a0"/>
+    <text x="1312" y="329" class="pt">ZUGAENGE PRO STUNDE</text>
+    <rect x="1590" y="300" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="1608" y="300" width="120" height="2" rx="1" fill="#34e2a0" fill-opacity="0.85"/>
+    <rect x="1610" y="316" width="4" height="16" rx="2" fill="#34e2a0"/>
+    <text x="1622" y="329" class="pt">STATUS</text>
+    <rect x="40" y="500" width="1065" height="380" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="58" y="500" width="120" height="2" rx="1" fill="#34e2a0" fill-opacity="0.85"/>
+    <rect x="60" y="516" width="4" height="16" rx="2" fill="#34e2a0"/>
+    <text x="72" y="529" class="pt">WARTENDE JE MANCHESTER-TRIAGE-STUFE</text>
+    <text x="1085" y="529" class="ph" text-anchor="end">Klick filtert die Zugaenge unten</text>
+    <rect x="1125" y="500" width="755" height="380" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="1143" y="500" width="120" height="2" rx="1" fill="#34e2a0" fill-opacity="0.85"/>
+    <rect x="1145" y="516" width="4" height="16" rx="2" fill="#34e2a0"/>
+    <text x="1157" y="529" class="pt">WARTEND UND BOARDING</text>
+    <rect x="40" y="930" width="910" height="340" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="58" y="930" width="120" height="2" rx="1" fill="#34e2a0" fill-opacity="0.85"/>
+    <rect x="60" y="946" width="4" height="16" rx="2" fill="#34e2a0"/>
+    <text x="72" y="959" class="pt">ZUGAENGE JE TRIAGE-STUFE</text>
+    <rect x="970" y="930" width="445" height="340" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="988" y="930" width="120" height="2" rx="1" fill="#34e2a0" fill-opacity="0.85"/>
+    <rect x="990" y="946" width="4" height="16" rx="2" fill="#34e2a0"/>
+    <text x="1002" y="959" class="pt">LEITSYMPTOME</text>
+    <rect x="1435" y="930" width="445" height="340" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="1453" y="930" width="120" height="2" rx="1" fill="#34e2a0" fill-opacity="0.85"/>
+    <rect x="1455" y="946" width="4" height="16" rx="2" fill="#34e2a0"/>
+    <text x="1467" y="959" class="pt">ANKUNFTSART</text>
+    <rect x="40" y="1290" width="600" height="420" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="58" y="1290" width="120" height="2" rx="1" fill="#34e2a0" fill-opacity="0.85"/>
+    <rect x="60" y="1306" width="4" height="16" rx="2" fill="#34e2a0"/>
+    <text x="72" y="1319" class="pt">WEITERBEHANDLUNG IN</text>
+    <rect x="660" y="1290" width="1220" height="420" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="678" y="1290" width="120" height="2" rx="1" fill="#34e2a0" fill-opacity="0.85"/>
+    <rect x="680" y="1306" width="4" height="16" rx="2" fill="#34e2a0"/>
+    <text x="692" y="1319" class="pt">LETZTE ZUGAENGE</text>
+  </g>
+</svg>

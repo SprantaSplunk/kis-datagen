@@ -1,0 +1,30 @@
+{
+  "dataSources": {
+    "primary": {
+      "data": {
+        "fields": [
+          { "name": "device_id" }, { "name": "device_type" }, { "name": "manufacturer" }, { "name": "model" }, { "name": "status" },
+          { "name": "helium_level_pct" }, { "name": "magnet_temp_k" }, { "name": "shield_temp_k" }, { "name": "cold_head_status" },
+          { "name": "tube_heat_pct" }, { "name": "exams_today" }
+        ],
+        "columns": [
+          ["MRT-1", "MRT-2", "MRT-3", "CT-1", "CT-2", "CT-3"],
+          ["MRT", "MRT", "MRT", "CT", "CT", "CT"],
+          ["Siemens Healthineers", "Siemens Healthineers", "Philips", "Siemens Healthineers", "GE HealthCare", "Philips"],
+          ["MAGNETOM Vida 3T", "MAGNETOM Sola 1.5T", "Ingenia Ambition 1.5T", "SOMATOM Force", "Revolution Apex", "Spectral CT 7500"],
+          ["Gesperrt", "in Betrieb", "in Betrieb", "in Betrieb", "in Betrieb", "Wartung"],
+          ["68.4", "88.1", "93.0", "", "", ""],
+          ["4.31", "4.2", "4.2", "", "", ""],
+          ["71.5", "42.3", "41.8", "", "", ""],
+          ["FAULT", "OK", "OK", "", "", ""],
+          ["", "", "", "62", "35", "12"],
+          ["4", "17", "12", "48", "39", "0"]
+        ]
+      }
+    }
+  },
+  "dataControls": [
+    { "field": "helium_level_pct", "row": 0, "label": "MRT-1 Helium", "type": "slider", "min": 50, "max": 100, "step": 0.5 },
+    { "field": "tube_heat_pct", "row": 3, "label": "CT-1 Roehrenlast", "type": "slider", "min": 0, "max": 100, "step": 1 }
+  ]
+}

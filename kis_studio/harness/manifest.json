@@ -1,0 +1,74 @@
+{
+  "visualizations": [
+    {
+      "id": "hospital_map",
+      "label": "Klinik-Lageplan",
+      "bundle": "../dist/hospital_map/visualization.js",
+      "config": "../visualizations/hospital_map/config.json",
+      "harness": "../visualizations/hospital_map/harness.json"
+    },
+    {
+      "id": "blood_bank",
+      "label": "Blutdepot",
+      "bundle": "../dist/blood_bank/visualization.js",
+      "config": "../visualizations/blood_bank/config.json",
+      "harness": "../visualizations/blood_bank/harness.json"
+    },
+    {
+      "id": "ed_flow",
+      "label": "Notaufnahme-Fluss",
+      "bundle": "../dist/ed_flow/visualization.js",
+      "config": "../visualizations/ed_flow/config.json",
+      "harness": "../visualizations/ed_flow/harness.json"
+    },
+    {
+      "id": "or_timeline",
+      "label": "OP-Saalplan",
+      "bundle": "../dist/or_timeline/visualization.js",
+      "config": "../visualizations/or_timeline/config.json",
+      "harness": "../visualizations/or_timeline/harness.json"
+    },
+    {
+      "id": "icu_wall",
+      "label": "Intensiv-Monitorwand",
+      "bundle": "../dist/icu_wall/visualization.js",
+      "config": "../visualizations/icu_wall/config.json",
+      "harness": "../visualizations/icu_wall/harness.json"
+    },
+    {
+      "id": "hl7_flow",
+      "label": "Schnittstellen-Fluss",
+      "bundle": "../dist/hl7_flow/visualization.js",
+      "config": "../visualizations/hl7_flow/config.json",
+      "harness": "../visualizations/hl7_flow/harness.json"
+    },
+    {
+      "id": "imaging_status",
+      "label": "Bildgebung",
+      "bundle": "../dist/imaging_status/visualization.js",
+      "config": "../visualizations/imaging_status/config.json",
+      "harness": "../visualizations/imaging_status/harness.json"
+    },
+    {
+      "id": "dependency_graph",
+      "label": "Service-Abhaengigkeiten",
+      "bundle": "../dist/dependency_graph/visualization.js",
+      "config": "../visualizations/dependency_graph/config.json",
+      "harness": "../visualizations/dependency_graph/harness.json"
+    },
+    {
+      "id": "health_rings",
+      "label": "Health Rings",
+      "bundle": "../dist/health_rings/visualization.js",
+      "config": "../visualizations/health_rings/config.json",
+      "harness": "../visualizations/health_rings/harness.json"
+    },
+    {
+      "id": "heat_timeline",
+      "label": "Heat Timeline",
+      "bundle": "../dist/heat_timeline/visualization.js",
+      "config": "../visualizations/heat_timeline/config.json",
+      "harness": "../visualizations/heat_timeline/harness.json"
+    }
+  ]
+}

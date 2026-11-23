@@ -1,0 +1,40 @@
+{
+  "showTitleAndDescription": true,
+  "includeInToolbar": true,
+  "includeInVizSwitcher": true,
+  "showDrilldown": true,
+  "canSetTokens": ["dynamic"],
+  "hasEventHandlers": true,
+  "config": {
+    "name": "Blutdepot",
+    "description": "Blutkonserven je Produkt und Blutgruppe als Beutel mit Fuellstand und Mindestbestand",
+    "category": "SAKH",
+    "icon": null,
+    "dataContract": {
+      "requiredDataSources": ["primary"],
+      "optionalDataSources": []
+    },
+    "size": {
+      "initialWidth": 900,
+      "initialHeight": 380
+    },
+    "optionsSchema": {
+      "drilldownToken": { "type": "string", "default": "blood_group" },
+      "showExpiring": { "type": "boolean", "default": true },
+      "lowFactor": { "type": "number", "default": 1 }
+    },
+    "editorConfig": [
+      {
+        "label": "Darstellung",
+        "layout": [
+          [{ "editor": "editor.checkbox", "label": "Verfall in 48 h anzeigen", "option": "showExpiring" }],
+          [{ "editor": "editor.number", "label": "Faktor auf Mindestbestand (1 = genau)", "option": "lowFactor" }]
+        ]
+      },
+      {
+        "label": "Interaktion",
+        "layout": [[{ "editor": "editor.text", "label": "Drilldown-Feldname", "option": "drilldownToken" }]]
+      }
+    ]
+  }
+}

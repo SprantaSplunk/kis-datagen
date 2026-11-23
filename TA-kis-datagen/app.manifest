@@ -1,0 +1,56 @@
+{
+    "dependencies": null,
+    "incompatibleApps": null,
+    "info": {
+        "author": [
+            {
+                "company": "Splunk",
+                "email": null,
+                "name": "Alexander Sötz"
+            }
+        ],
+        "classification": {
+            "categories": [
+                "IT Operations"
+            ],
+            "developmentStatus": "Beta",
+            "intendedAudience": "IT Professionals"
+        },
+        "commonInformationModels": null,
+        "description": "Demo-Datengenerator fuer das Splunk Allgemeine Krankenhaus (SAKH): KIS, Medizintechnik-IoT, Cisco Netzwerk inkl. Cisco IQ, Server, Datenbanken und ServiceNow CMDB. Events in demo_sakh, Metriken in demo_sakh_metrics; Versand per HEC oder direkt.",
+        "id": {
+            "group": null,
+            "name": "TA-kis-datagen",
+            "version": "1.0.0"
+        },
+        "license": {
+            "name": "LICENSE.txt",
+            "text": "./LICENSES/LICENSE.txt",
+            "uri": null
+        },
+        "privacyPolicy": {
+            "name": null,
+            "text": null,
+            "uri": null
+        },
+        "releaseDate": null,
+        "releaseNotes": {
+            "name": "README",
+            "text": "README.txt",
+            "uri": ""
+        },
+        "title": "KIS Datagen (Splunk Allgemeines Krankenhaus SAKH)"
+    },
+    "inputGroups": null,
+    "platformRequirements": null,
+    "schemaVersion": "2.0.0",
+    "supportedDeployments": [
+        "_standalone",
+        "_distributed",
+        "_search_head_clustering"
+    ],
+    "targetWorkloads": [
+        "_search_heads"
+    ],
+    "tasks": null
+}

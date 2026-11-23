@@ -1,0 +1,51 @@
+{
+  "showTitleAndDescription": true,
+  "includeInToolbar": true,
+  "includeInVizSwitcher": true,
+  "showDrilldown": true,
+  "canSetTokens": ["dynamic"],
+  "hasEventHandlers": true,
+  "config": {
+    "name": "Schnittstellen-Fluss",
+    "description": "HL7/FHIR-Kanaele des Kommunikationsservers: Nachrichtenfluss, Warteschlangen und gestoppte Kanaele",
+    "category": "SAKH",
+    "icon": null,
+    "dataContract": {
+      "requiredDataSources": ["primary"],
+      "optionalDataSources": []
+    },
+    "size": {
+      "initialWidth": 900,
+      "initialHeight": 460
+    },
+    "optionsSchema": {
+      "drilldownToken": { "type": "string", "default": "channel" },
+      "hubLabel": { "type": "string", "default": "Kommunikationsserver" },
+      "queueWarn": { "type": "number", "default": 50 },
+      "queueCrit": { "type": "number", "default": 200 },
+      "animate": { "type": "boolean", "default": true }
+    },
+    "editorConfig": [
+      {
+        "label": "Warteschlange",
+        "layout": [
+          [
+            { "editor": "editor.number", "label": "Stau ab", "option": "queueWarn" },
+            { "editor": "editor.number", "label": "Gestoppt ab", "option": "queueCrit" }
+          ]
+        ]
+      },
+      {
+        "label": "Darstellung",
+        "layout": [
+          [{ "editor": "editor.text", "label": "Beschriftung Mitte", "option": "hubLabel" }],
+          [{ "editor": "editor.checkbox", "label": "Nachrichtenfluss animieren", "option": "animate" }]
+        ]
+      },
+      {
+        "label": "Interaktion",
+        "layout": [[{ "editor": "editor.text", "label": "Drilldown-Feldname", "option": "drilldownToken" }]]
+      }
+    ]
+  }
+}

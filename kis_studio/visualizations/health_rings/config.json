@@ -1,0 +1,71 @@
+{
+  "showTitleAndDescription": true,
+  "includeInToolbar": true,
+  "includeInVizSwitcher": true,
+  "showDrilldown": true,
+  "canSetTokens": ["dynamic"],
+  "hasEventHandlers": true,
+  "config": {
+    "name": "Health Rings",
+    "description": "Compare KPI values against degraded and critical thresholds, one ring per site, domain or service",
+    "category": "SAKH",
+    "icon": null,
+    "dataContract": {
+      "requiredDataSources": ["primary"],
+      "optionalDataSources": []
+    },
+    "size": {
+      "initialWidth": 720,
+      "initialHeight": 220
+    },
+    "optionsSchema": {
+      "warn": { "type": "number", "default": 90 },
+      "crit": { "type": "number", "default": 75 },
+      "higherIsBetter": { "type": "boolean", "default": true },
+      "min": { "type": "number", "default": 0 },
+      "max": { "type": "number", "default": 100 },
+      "decimals": { "type": "number", "default": 1 },
+      "unit": { "type": "string", "default": "" },
+      "columns": { "type": "number", "default": 0 },
+      "drilldownToken": { "type": "string", "default": "name" }
+    },
+    "editorConfig": [
+      {
+        "label": "Thresholds",
+        "layout": [
+          [
+            { "editor": "editor.number", "label": "Degraded at", "option": "warn" },
+            { "editor": "editor.number", "label": "Critical at", "option": "crit" }
+          ],
+          [
+            { "editor": "editor.checkbox", "label": "Higher values are better", "option": "higherIsBetter" }
+          ]
+        ]
+      },
+      {
+        "label": "Scale and format",
+        "layout": [
+          [
+            { "editor": "editor.number", "label": "Minimum", "option": "min" },
+            { "editor": "editor.number", "label": "Maximum", "option": "max" }
+          ],
+          [
+            { "editor": "editor.number", "label": "Decimals", "option": "decimals" },
+            { "editor": "editor.text", "label": "Unit", "option": "unit" }
+          ],
+          [
+            { "editor": "editor.number", "label": "Columns (0 = automatic)", "option": "columns" }
+          ]
+        ]
+      },
+      {
+        "label": "Interaction",
+        "layout": [
+          [
+            { "editor": "editor.text", "label": "Drilldown field name", "option": "drilldownToken" }
+          ]
+        ]
+      }
+    ]
+  }
+}

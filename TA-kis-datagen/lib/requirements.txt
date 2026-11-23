@@ -1,0 +1,5 @@
+splunktaucclib>=8.2,<9
+solnlib>=7,<8
+splunk-sdk>=2.0.2
+tzdata
+certifi

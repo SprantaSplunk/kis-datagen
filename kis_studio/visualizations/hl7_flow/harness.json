@@ -1,0 +1,25 @@
+{
+  "dataSources": {
+    "primary": {
+      "data": {
+        "fields": [
+          { "name": "channel" }, { "name": "source_system" }, { "name": "target_system" }, { "name": "messages" },
+          { "name": "queue_depth" }, { "name": "avg_latency_ms" }, { "name": "status" }, { "name": "message_type" }
+        ],
+        "columns": [
+          ["KIS_LIS_ADT", "KIS_LIS_OML", "LIS_KIS_ORU", "KIS_RIS_ORM", "RIS_KIS_ORU", "KIS_PDMS_ADT", "PDMS_KIS_ORU", "KIS_APO_RDE", "BB_KIS_ORU", "OP_KIS_SIU", "KIS_ELGA_CDA", "KIS_LKF_BAR"],
+          ["KIS", "KIS", "LIS", "KIS", "RIS", "KIS", "PDMS", "KIS", "Blutbank", "OP-Management", "KIS", "KIS"],
+          ["LIS", "LIS", "KIS", "RIS", "KIS", "PDMS", "KIS", "Apotheke", "KIS", "KIS", "ELGA", "LKF-Abrechnung"],
+          ["90", "210", "560", "45", "40", "30", "300", "120", "12", "30", "28", "6"],
+          ["1", "2", "640", "0", "62", "0", "3", "1", "0", "2", "0", "0"],
+          ["210", "240", "9800", "190", "1100", "180", "260", "200", "230", "250", "900", "400"],
+          ["ok", "ok", "gestoppt", "ok", "Stau", "ok", "ok", "ok", "ok", "ok", "ok", "ok"],
+          ["ADT^A01", "OML^O21", "ORU^R01", "ORM^O01", "ORU^R01", "ADT^A02", "ORU^R01", "RDE^O11", "ORU^R01", "SIU^S12", "CDA", "BAR^P12"]
+        ]
+      }
+    }
+  },
+  "dataControls": [
+    { "field": "queue_depth", "row": 2, "label": "LIS_KIS_ORU Warteschlange", "type": "slider", "min": 0, "max": 1000, "step": 10 }
+  ]
+}

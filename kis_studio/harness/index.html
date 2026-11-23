@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KIS Studio – visualization harness</title>
+<link rel="stylesheet" href="harness.css">
+</head>
+<body>
+<header class="bar">
+  <strong>KIS Studio</strong><span class="dim">Dashboard Studio extension harness</span>
+  <span class="grow"></span>
+  <span id="status" class="status" aria-live="polite">idle</span>
+  <button id="theme" type="button" aria-label="Toggle light and dark theme">☾</button>
+</header>
+<main>
+  <aside>
+    <section>
+      <h2>Visualization</h2>
+      <select id="viz" aria-label="Visualization"></select>
+      <div class="row"><button id="reload" type="button">Reload iframe</button><button id="reset" type="button">Reset</button></div>
+    </section>
+    <section>
+      <h2>Data</h2>
+      <label><input id="loading" type="checkbox"> Loading</label>
+      <label><input id="nodata" type="checkbox"> No primary data</label>
+      <label><input id="empty" type="checkbox"> Empty result</label>
+      <div id="dataControls"></div>
+      <details><summary>Primary data (JSON)</summary><textarea id="data" spellcheck="false"></textarea><button id="applyData" type="button">Apply</button></details>
+    </section>
+    <section>
+      <h2>Options</h2>
+      <div id="options"></div>
+    </section>
+    <section>
+      <h2>Stage</h2>
+      <div class="row"><label>W <input id="width" type="number" min="40" value="900"></label><label>H <input id="height" type="number" min="40" value="460"></label></div>
+      <label>Mode <select id="mode"><option>view</option><option>edit</option></select></label>
+    </section>
+    <section>
+      <h2>Events</h2>
+      <ol id="log"></ol>
+    </section>
+  </aside>
+  <div class="stage" id="stage"><div id="frameBox"></div></div>
+</main>
+<script type="module" src="host.js"></script>
+</body>
+</html>
