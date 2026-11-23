@@ -27,7 +27,8 @@
       "decimals": { "type": "number", "default": 1 },
       "unit": { "type": "string", "default": "" },
       "columns": { "type": "number", "default": 0 },
-      "drilldownToken": { "type": "string", "default": "name" }
+      "drilldownToken": { "type": "string", "default": "name" },
+      "clickHint": { "type": "string", "default": "" }
     },
     "editorConfig": [
       {
@@ -63,6 +64,9 @@
         "layout": [
           [
             { "editor": "editor.text", "label": "Drilldown field name", "option": "drilldownToken" }
+          ],
+          [
+            { "editor": "editor.text", "label": "Click hint in tooltip", "option": "clickHint" }
           ]
         ]
       }

@@ -11,6 +11,7 @@ export const DEFAULTS = {
     unit: '',
     columns: 0,
     drilldownToken: 'name',
+    clickHint: '',
 };
 
 export function readOptions(options) {
@@ -24,6 +25,7 @@ export function readOptions(options) {
         unit: opt(options, 'unit', DEFAULTS.unit),
         columns: Math.round(Math.min(12, Math.max(0, opt(options, 'columns', DEFAULTS.columns)))),
         drilldownToken: opt(options, 'drilldownToken', DEFAULTS.drilldownToken),
+        clickHint: String(opt(options, 'clickHint', DEFAULTS.clickHint) ?? ''),
     };
 }
 
@@ -108,5 +110,5 @@ function wideModel(normalized, o) {
 }
 
 export function describe(model) {
-    return model.items.map((item) => `${item.name} ${Number.isFinite(item.value) ? item.value : 'no data'}${item.unit} ${item.status}`).join(', ');
+    return model.items.map((item) => `${item.name} ${Number.isFinite(item.value) ? item.value : 'keine Daten'}${item.unit} ${item.status}`).join(', ');
 }

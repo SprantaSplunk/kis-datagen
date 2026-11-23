@@ -127,9 +127,10 @@ export function draw(ctx, width, height, model, env) {
         ctx.fillText(ellipsize(ctx, item.name, cellW - 10), cx, cy + radius * 0.85 + labelSpace / 2);
         ctx.restore();
 
-        const tooltip = [item.name, `${Number.isFinite(item.value) ? formatNumber(item.value, o.decimals) : 'no data'}${item.unit ? ` ${item.unit}` : ''} · ${STATUS_LABEL[item.status]}`];
-        tooltip.push(`Thresholds: degraded ${item.higher ? '≤' : '≥'} ${item.warn}, critical ${item.higher ? '≤' : '≥'} ${item.crit}`);
+        const tooltip = [item.name, `${Number.isFinite(item.value) ? formatNumber(item.value, o.decimals) : 'keine Daten'}${item.unit ? ` ${item.unit}` : ''} · ${STATUS_LABEL[item.status]}`];
+        tooltip.push(`Schwellen: auffaellig ${item.higher ? '≤' : '≥'} ${item.warn}, kritisch ${item.higher ? '≤' : '≥'} ${item.crit}`);
         if (item.detail) tooltip.push(item.detail);
+        if (o.clickHint && env.mode !== 'edit') tooltip.push(o.clickHint);
         hits.push({
             id: `ring:${item.id}`,
             cx,

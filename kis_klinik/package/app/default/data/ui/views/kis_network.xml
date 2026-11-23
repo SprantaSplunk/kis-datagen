@@ -501,7 +501,8 @@
             },
             "options": {
                 "decimals": 1,
-                "drilldownToken": "building"
+                "drilldownToken": "building",
+                "clickHint": "Klick filtert die Seite auf dieses Haus"
             },
             "eventHandlers": [
                 {

@@ -86,6 +86,55 @@
             },
             "name": "Gesundheit je Bereich"
         },
+        "ds_ring_kis_beds": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_rings",
+                "query": "| where key=\"kis_beds\""
+            }
+        },
+        "ds_ring_kis_ed": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_rings",
+                "query": "| where key=\"kis_ed\""
+            }
+        },
+        "ds_ring_kis_blood": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_rings",
+                "query": "| where key=\"kis_blood\""
+            }
+        },
+        "ds_ring_kis_medtech": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_rings",
+                "query": "| where key=\"kis_medtech\""
+            }
+        },
+        "ds_ring_kis_network": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_rings",
+                "query": "| where key=\"kis_network\""
+            }
+        },
+        "ds_ring_kis_integration": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_rings",
+                "query": "| where key=\"kis_integration\""
+            }
+        },
+        "ds_ring_kis_servers": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_rings",
+                "query": "| where key=\"kis_servers\""
+            }
+        },
         "ds_trend": {
             "type": "ds.search",
             "options": {
@@ -502,13 +551,151 @@
         "viz_08": {
             "type": "kis_klinik.health_rings",
             "dataSources": {
-                "primary": "ds_rings"
+                "primary": "ds_ring_kis_beds"
             },
             "options": {
-                "drilldownToken": "area"
-            }
+                "drilldownToken": "area",
+                "clickHint": "Klick oeffnet das Detail-Dashboard"
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.linkToDashboard",
+                    "options": {
+                        "app": "kis_klinik",
+                        "dashboard": "kis_beds",
+                        "tokens": [],
+                        "newTab": false
+                    }
+                }
+            ]
         },
         "viz_09": {
+            "type": "kis_klinik.health_rings",
+            "dataSources": {
+                "primary": "ds_ring_kis_ed"
+            },
+            "options": {
+                "drilldownToken": "area",
+                "clickHint": "Klick oeffnet das Detail-Dashboard"
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.linkToDashboard",
+                    "options": {
+                        "app": "kis_klinik",
+                        "dashboard": "kis_ed",
+                        "tokens": [],
+                        "newTab": false
+                    }
+                }
+            ]
+        },
+        "viz_10": {
+            "type": "kis_klinik.health_rings",
+            "dataSources": {
+                "primary": "ds_ring_kis_blood"
+            },
+            "options": {
+                "drilldownToken": "area",
+                "clickHint": "Klick oeffnet das Detail-Dashboard"
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.linkToDashboard",
+                    "options": {
+                        "app": "kis_klinik",
+                        "dashboard": "kis_blood",
+                        "tokens": [],
+                        "newTab": false
+                    }
+                }
+            ]
+        },
+        "viz_11": {
+            "type": "kis_klinik.health_rings",
+            "dataSources": {
+                "primary": "ds_ring_kis_medtech"
+            },
+            "options": {
+                "drilldownToken": "area",
+                "clickHint": "Klick oeffnet das Detail-Dashboard"
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.linkToDashboard",
+                    "options": {
+                        "app": "kis_klinik",
+                        "dashboard": "kis_medtech",
+                        "tokens": [],
+                        "newTab": false
+                    }
+                }
+            ]
+        },
+        "viz_12": {
+            "type": "kis_klinik.health_rings",
+            "dataSources": {
+                "primary": "ds_ring_kis_network"
+            },
+            "options": {
+                "drilldownToken": "area",
+                "clickHint": "Klick oeffnet das Detail-Dashboard"
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.linkToDashboard",
+                    "options": {
+                        "app": "kis_klinik",
+                        "dashboard": "kis_network",
+                        "tokens": [],
+                        "newTab": false
+                    }
+                }
+            ]
+        },
+        "viz_13": {
+            "type": "kis_klinik.health_rings",
+            "dataSources": {
+                "primary": "ds_ring_kis_integration"
+            },
+            "options": {
+                "drilldownToken": "area",
+                "clickHint": "Klick oeffnet das Detail-Dashboard"
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.linkToDashboard",
+                    "options": {
+                        "app": "kis_klinik",
+                        "dashboard": "kis_integration",
+                        "tokens": [],
+                        "newTab": false
+                    }
+                }
+            ]
+        },
+        "viz_14": {
+            "type": "kis_klinik.health_rings",
+            "dataSources": {
+                "primary": "ds_ring_kis_servers"
+            },
+            "options": {
+                "drilldownToken": "area",
+                "clickHint": "Klick oeffnet das Detail-Dashboard"
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.linkToDashboard",
+                    "options": {
+                        "app": "kis_klinik",
+                        "dashboard": "kis_servers",
+                        "tokens": [],
+                        "newTab": false
+                    }
+                }
+            ]
+        },
+        "viz_15": {
             "type": "splunk.line",
             "dataSources": {
                 "primary": "ds_trend"
@@ -535,7 +722,7 @@
                 "lineWidth": 2
             }
         },
-        "viz_10": {
+        "viz_16": {
             "type": "splunk.table",
             "dataSources": {
                 "primary": "ds_incidents"
@@ -952,12 +1139,72 @@
                 "position": {
                     "x": 52,
                     "y": 1006,
-                    "w": 1816,
+                    "w": 259,
                     "h": 244
                 }
             },
             {
                 "item": "viz_09",
+                "type": "block",
+                "position": {
+                    "x": 311,
+                    "y": 1006,
+                    "w": 259,
+                    "h": 244
+                }
+            },
+            {
+                "item": "viz_10",
+                "type": "block",
+                "position": {
+                    "x": 571,
+                    "y": 1006,
+                    "w": 259,
+                    "h": 244
+                }
+            },
+            {
+                "item": "viz_11",
+                "type": "block",
+                "position": {
+                    "x": 830,
+                    "y": 1006,
+                    "w": 259,
+                    "h": 244
+                }
+            },
+            {
+                "item": "viz_12",
+                "type": "block",
+                "position": {
+                    "x": 1090,
+                    "y": 1006,
+                    "w": 259,
+                    "h": 244
+                }
+            },
+            {
+                "item": "viz_13",
+                "type": "block",
+                "position": {
+                    "x": 1349,
+                    "y": 1006,
+                    "w": 259,
+                    "h": 244
+                }
+            },
+            {
+                "item": "viz_14",
+                "type": "block",
+                "position": {
+                    "x": 1609,
+                    "y": 1006,
+                    "w": 259,
+                    "h": 244
+                }
+            },
+            {
+                "item": "viz_15",
                 "type": "block",
                 "position": {
                     "x": 52,
@@ -967,7 +1214,7 @@
                 }
             },
             {
-                "item": "viz_10",
+                "item": "viz_16",
                 "type": "block",
                 "position": {
                     "x": 827,

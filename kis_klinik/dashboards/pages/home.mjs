@@ -4,6 +4,17 @@ import { IDX, MIDX, ringRows } from '../lib/spl.mjs';
 const BEDS = `${IDX} sourcetype="sakh:kis:beds" earliest=-15m
 | stats latest(beds_total) as beds_total latest(occupied) as occupied latest(free) as free latest(occupancy_pct) as occupancy_pct latest(floor) as floor latest(ward_name) as ward_name by ward building department`;
 
+// name, value, unit, min, max, warn, crit, better, target dashboard
+const RINGS = [
+    ['Bettenbelegung', 'round(beds, 1)', '%', 0, 100, 88, 95, 'lower', 'kis_beds'],
+    ['Notaufnahme wartend', 'ed', '', 0, 80, 15, 30, 'lower', 'kis_ed'],
+    ['Blut EK min. Fuellung', 'round(blood, 0)', '%', 0, 120, 45, 25, 'higher', 'kis_blood'],
+    ['Medizintechnik online', 'medtech', '%', 0, 100, 98, 90, 'higher', 'kis_medtech'],
+    ['Netzwerk erreichbar', 'net', '%', 0, 100, 99, 95, 'higher', 'kis_network'],
+    ['HL7 Warteschlange', 'hl7', '', 0, 500, 50, 200, 'lower', 'kis_integration'],
+    ['KIS-DB Abfrage', 'round(kisdb, 0)', 'ms', 0, 200, 20, 60, 'lower', 'kis_servers'],
+];
+
 const HEALTH = `| mstats latest(_value) as v WHERE ${MIDX} metric_name="sakh.beds.occupancy_pct" BY ward
 | stats avg(v) as beds
 | appendcols [| mstats latest(_value) as v WHERE ${MIDX} metric_name="sakh.ed.waiting" | stats max(v) as ed]
@@ -12,15 +23,7 @@ const HEALTH = `| mstats latest(_value) as v WHERE ${MIDX} metric_name="sakh.bed
 | appendcols [| mstats latest(_value) as v WHERE ${MIDX} metric_name="sakh.network.reachable" BY device | stats avg(v) as net | eval net=round(100*net, 1)]
 | appendcols [| mstats latest(_value) as v WHERE ${MIDX} metric_name="sakh.hl7.queue_depth" BY channel | stats sum(v) as hl7]
 | appendcols [| mstats latest(_value) as v WHERE ${MIDX} metric_name="sakh.db.avg_query_ms" instance="KISPRD" | stats max(v) as kisdb]
-${ringRows([
-    ['Bettenbelegung', 'round(beds, 1)', '%', 0, 100, 88, 95, 'lower', 'kis_beds'],
-    ['Notaufnahme wartend', 'ed', '', 0, 80, 15, 30, 'lower', 'kis_ed'],
-    ['Blut EK min. Fuellung', 'round(blood, 0)', '%', 0, 120, 45, 25, 'higher', 'kis_blood'],
-    ['Medizintechnik online', 'medtech', '%', 0, 100, 98, 90, 'higher', 'kis_medtech'],
-    ['Netzwerk erreichbar', 'net', '%', 0, 100, 99, 95, 'higher', 'kis_network'],
-    ['HL7 Warteschlange', 'hl7', '', 0, 500, 50, 200, 'lower', 'kis_integration'],
-    ['KIS-DB Abfrage', 'round(kisdb, 0)', 'ms', 0, 200, 20, 60, 'lower', 'kis_servers'],
-])}`;
+${ringRows(RINGS)}`;
 
 export default {
     id: 'kis_home',
@@ -40,6 +43,7 @@ export default {
         ds_k_inc: search(`${IDX} sourcetype="snow:incident" earliest=-48h | stats latest(state) as state latest(priority) as priority by number | where priority<=2 AND state!="Geloest" | stats count as "Offene P1/P2"`),
         ds_k_net: search(`| mstats latest(_value) as v WHERE ${MIDX} metric_name="sakh.network.reachable" BY device | where v=0 | stats count as "Netzwerk offline"`),
         ds_rings: search(HEALTH, { name: 'Gesundheit je Bereich' }),
+        ...Object.fromEntries(RINGS.map(([, , , , , , , , target]) => [`ds_ring_${target}`, chain('ds_rings', `| where key="${target}"`)])),
         ds_trend: search(`| mstats sum(sakh.beds.occupied) as o sum(sakh.beds.beds_total) as t WHERE ${MIDX} BY building span=15m
 | eval pct=round(100 * o / t, 1), building="Haus ".building
 | timechart span=15m avg(pct) by building`, { name: 'Belegung je Haus' }),
@@ -77,7 +81,12 @@ export default {
             section: 'Bereiche',
             h: 300,
             panels: [
-                { cols: 12, title: 'Gesundheit je Bereich', hint: 'Details ueber die Bereichsnavigation oben', viz: custom('health_rings', 'ds_rings', { drilldownToken: 'area' }) },
+                {
+                    cols: 12,
+                    title: 'Gesundheit je Bereich',
+                    hint: 'Klick auf einen Tacho oeffnet das Detail-Dashboard',
+                    viz: RINGS.map(([, , , , , , , , target]) => custom('health_rings', `ds_ring_${target}`, { drilldownToken: 'area', clickHint: 'Klick oeffnet das Detail-Dashboard' }, [link(target)])),
+                },
             ],
         },
         {

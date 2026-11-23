@@ -58,7 +58,7 @@ export default {
         {
             h: 380,
             panels: [
-                { cols: 4, title: 'Health je Haus', viz: custom('health_rings', 'ds_rings', { decimals: 1, drilldownToken: 'building' }, [setToken('building')]) },
+                { cols: 4, title: 'Health je Haus', viz: custom('health_rings', 'ds_rings', { decimals: 1, drilldownToken: 'building', clickHint: 'Klick filtert die Seite auf dieses Haus' }, [setToken('building')]) },
                 { cols: 8, title: 'Health je Switch', hint: 'Klick auf eine Zeile filtert das Syslog', viz: custom('heat_timeline', 'ds_heat', { scaleMode: 'thresholds', higherIsBetter: true, warn: 7, crit: 4, maxSeries: 60, decimals: 0, drilldownToken: 'device' }, [setToken('device')]) },
             ],
         },

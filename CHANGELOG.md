@@ -2,6 +2,17 @@
 
 ## 2026-11-23
 
+### kis_klinik 1.0.7
+
+- *Klinik-Uebersicht*, *Gesundheit je Bereich*: Ein Klick auf einen Tacho oeffnet das passende
+  Detail-Dashboard, z. B. Bettenbelegung → *Betten*, Notaufnahme wartend → *Notaufnahme*,
+  HL7 Warteschlange → *HL7 & eHealth*, KIS-DB Abfrage → *Server & Datenbanken*. Bisher passierte
+  beim Klick nichts.
+- Die Tachos zeigen ihren Status jetzt auf Deutsch (In Ordnung, Auffaellig, Kritisch, Keine Daten),
+  auch im Tooltip. Das gilt ebenso fuer *Health je Haus* im Netzwerk-Dashboard und die
+  Heatmaps.
+- Zu tun: `dist/kis_klinik-1.0.7.spl` als Upgrade hochladen und Splunk neu starten.
+
 ### kis_klinik 1.0.6
 
 - *Medizintechnik*, *STK / MTK faellig (MPBV)*: Die Erklaerung der Abkuerzungen lag ueber dem

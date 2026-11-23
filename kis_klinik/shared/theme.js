@@ -50,10 +50,10 @@ export function paletteFor(theme) {
 }
 
 export const STATUS_LABEL = {
-    ok: 'Healthy',
-    warn: 'Degraded',
-    crit: 'Critical',
-    none: 'No data',
+    ok: 'In Ordnung',
+    warn: 'Auffaellig',
+    crit: 'Kritisch',
+    none: 'Keine Daten',
 };
 
 export function statusColor(palette, status) {

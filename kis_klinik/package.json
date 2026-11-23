@@ -1,6 +1,6 @@
 {
 	"name": "kis_klinik",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"description": "KIS Klinik - Dashboard Studio app for the Splunk Allgemeines Krankenhaus (SAKH)",
 	"author": "Alexander Sötz",
 	"type": "module",

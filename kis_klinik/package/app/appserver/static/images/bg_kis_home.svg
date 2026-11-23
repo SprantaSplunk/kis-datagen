@@ -65,7 +65,7 @@
     <rect x="40" y="962" width="1840" height="300" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
     <rect x="58" y="980" width="8" height="8" rx="2" fill="#0b7fab"/>
     <text x="74" y="990" class="pt">Gesundheit je Bereich</text>
-    <text x="1862" y="990" class="ph" text-anchor="end">Details ueber die Bereichsnavigation oben</text>
+    <text x="1862" y="990" class="ph" text-anchor="end">Klick auf einen Tacho oeffnet das Detail-Dashboard</text>
     <line x1="41" y1="1002.5" x2="1879" y2="1002.5" stroke="#edf1f5"/>
     <rect x="40" y="1282" width="755" height="380" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
     <rect x="58" y="1300" width="8" height="8" rx="2" fill="#0b7fab"/>
