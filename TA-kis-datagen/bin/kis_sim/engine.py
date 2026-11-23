@@ -16,6 +16,7 @@ class Context:
     def __init__(self, seed, clock, scen, model):
         self.seed, self.clock, self.scen, self.m = seed, clock, scen, model
         self.first = {"cisco_iq": True, "cmdb": True, "changes": True}
+        self.lis_critical = {}
 
 
 class Simulation:

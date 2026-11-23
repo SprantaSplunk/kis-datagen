@@ -8,7 +8,7 @@ Events aus `demo_sakh`, Zeitreihen per `mstats` aus `demo_sakh_metrics`.
 ## Installation
 
 1. `TA-kis-datagen` installieren und den Input starten (siehe dessen README).
-2. `kis_klinik-1.0.7.spl` installieren (*Apps → Manage Apps → Install app from file*,
+2. `kis_klinik-1.0.8.spl` installieren (*Apps → Manage Apps → Install app from file*,
    Splunk Cloud: ACS). Benoetigt Splunk Enterprise oder Splunk Cloud Platform 10.4 oder neuer
    (Dashboard-Studio-Erweiterungen).
 3. *KIS Klinik (SAKH)* oeffnen – Start ist die *Klinik-Uebersicht*.

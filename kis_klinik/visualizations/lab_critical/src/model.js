@@ -55,6 +55,10 @@ export function toModel(normalized, options) {
         priority: findField(normalized, ['priority', 'prioritaet']),
         delivery: findField(normalized, ['delivery_status', 'zustellung']),
         patient: findField(normalized, ['patient_id', 'patient']),
+        ackState: findField(normalized, ['ack_state']),
+        ackMin: findField(normalized, ['ack_min']),
+        ackRole: findField(normalized, ['ack_role']),
+        escalated: findField(normalized, ['escalated']),
     };
     if ((f.code < 0 && f.name < 0) || f.value < 0) {
         return { error: 'Kritische Laborwerte braucht die Spalten "test_code" (oder "test_name") und "value" (optional "ref_low", "ref_high", "crit_low", "crit_high", "ward", "_time", "delivery_status").' };
@@ -90,6 +94,12 @@ export function toModel(normalized, options) {
             delivery,
             pending: Boolean(delivery) && !/zugestellt|delivered|ok/i.test(delivery),
             patient: toText(cell(row, f.patient)).trim(),
+            ackMin: toNumber(cell(row, f.ackMin)),
+            ackRole: toText(cell(row, f.ackRole)).trim(),
+            escalated: toText(cell(row, f.escalated)).trim() === '1',
+            unacked: f.ackState >= 0
+                ? toText(cell(row, f.ackState)).trim().toLowerCase() === 'offen'
+                : f.ackMin >= 0 && !Number.isFinite(toNumber(cell(row, f.ackMin))),
         });
     }
     if (!tests.size) return { empty: 'Keine kritischen Laborwerte im Zeitraum' };
@@ -98,6 +108,7 @@ export function toModel(normalized, options) {
         t.results.sort((a, b) => (a.time || 0) - (b.time || 0));
         t.latest = t.results[t.results.length - 1];
         t.pending = t.results.filter((r) => r.pending).length;
+        t.unacked = t.results.filter((r) => r.unacked).length;
         if (!Number.isFinite(t.critLow) || t.critLow <= 0) t.critLow = undefined;
         if (!Number.isFinite(t.critHigh)) t.critHigh = undefined;
     }
@@ -109,5 +120,6 @@ export function toModel(normalized, options) {
 export function describe(model) {
     const top = model.rows[0];
     const pending = model.rows.reduce((n, t) => n + t.pending, 0);
-    return `${model.total} kritische Laborwerte in ${model.rows.length + model.hidden.length} Tests. Haeufigster: ${top.name} (${top.results.length}).${pending ? ` ${pending} noch nicht im KIS.` : ''}`;
+    const unacked = model.rows.reduce((n, t) => n + t.unacked, 0);
+    return `${model.total} kritische Laborwerte in ${model.rows.length + model.hidden.length} Tests. Haeufigster: ${top.name} (${top.results.length}).${unacked ? ` ${unacked} nicht quittiert.` : ''}${pending ? ` ${pending} noch nicht im KIS.` : ''}`;
 }

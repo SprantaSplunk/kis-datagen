@@ -19,7 +19,7 @@ from kis_sim.scenarios import NAMES  # noqa: E402
 
 NOW = 1795600800.0  # Wed 2026-11-25 09:00 CET
 EVENT_SOURCETYPES = {
-    "sakh:kis:adt", "sakh:kis:beds", "sakh:ed:tracking", "sakh:lis:result", "sakh:bloodbank:inventory",
+    "sakh:kis:adt", "sakh:kis:beds", "sakh:ed:tracking", "sakh:lis:result", "sakh:lis:critical", "sakh:bloodbank:inventory",
     "sakh:bloodbank:transfusion", "sakh:ris:order", "sakh:pacs:dicom", "sakh:or:case", "sakh:pdms:vitals",
     "sakh:pharmacy", "sakh:nursing:staffing", "sakh:billing", "sakh:kis:audit", "sakh:nursecall", "sakh:ehealth",
     "cisco:dnac:devicehealth", "cisco:ios", "cisco:iq:asset", "cisco:iq:advisory", "cisco:iq:fieldnotice",
@@ -81,6 +81,31 @@ class BaseVolume(unittest.TestCase):
                 self.assertLess(d["value"], d["crit_low"])
             else:
                 self.assertGreater(d["value"], d["crit_high"])
+
+    def test_critical_values_acknowledged(self):
+        results = {d["order_id"]: t for t, st, _s, _h, d in self.events
+                   if st == "sakh:lis:result" and d.get("flag") in ("HH", "LL")}
+        steps = {}
+        for t, st, _s, _h, d in self.events:
+            if st == "sakh:lis:critical":
+                steps.setdefault(d["order_id"], {})[d["action"]] = (t, d)
+        for oid, t in results.items():
+            got = steps.get(oid, {})
+            if t < NOW - 180 * 60:
+                self.assertIn("quittiert", got, oid)
+            for action, (when, d) in got.items():
+                self.assertAlmostEqual(when, t + d["minutes"] * 60, delta=4)
+            if "quittiert" in got:
+                self.assertIn("mitgeteilt", got)
+                ack = got["quittiert"][1]
+                self.assertGreater(ack["minutes"], got["mitgeteilt"][1]["minutes"])
+                self.assertEqual(ack["minutes"] > 30, "eskaliert" in got, oid)
+        acked = [s["quittiert"][1]["minutes"] for s in steps.values() if "quittiert" in s]
+        acked.sort()
+        self.assertTrue(5 <= acked[len(acked) // 2] <= 20, acked[len(acked) // 2])
+        for oid, got in steps.items():
+            if oid not in results:
+                self.assertLess(min(w for w, _ in got.values()), NOW - 7 * 3600 + 180 * 60, oid)
 
     def test_more_than_30_sources(self):
         self.assertGreaterEqual(len(EVENT_SOURCETYPES | METRICS_ONLY), 30)

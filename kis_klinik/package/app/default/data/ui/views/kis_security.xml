@@ -627,6 +627,26 @@
                         "value": "#f9dde1"
                     },
                     {
+                        "match": "eskaliert an Oberarzt",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "noch nicht mitgeteilt",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "telefonisch mitgeteilt",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "in Warteschlange",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "zugestellt",
+                        "value": "#d9f0e3"
+                    },
+                    {
                         "match": "Rettungsstopp",
                         "value": "#f9dde1"
                     },
@@ -894,6 +914,26 @@
                         "value": "#f9dde1"
                     },
                     {
+                        "match": "eskaliert an Oberarzt",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "noch nicht mitgeteilt",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "telefonisch mitgeteilt",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "in Warteschlange",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "zugestellt",
+                        "value": "#d9f0e3"
+                    },
+                    {
                         "match": "Rettungsstopp",
                         "value": "#f9dde1"
                     },
@@ -1147,6 +1187,26 @@
                     {
                         "match": "ueberfaellig",
                         "value": "#f9dde1"
+                    },
+                    {
+                        "match": "eskaliert an Oberarzt",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "noch nicht mitgeteilt",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "telefonisch mitgeteilt",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "in Warteschlange",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "zugestellt",
+                        "value": "#d9f0e3"
                     },
                     {
                         "match": "Rettungsstopp",
@@ -1429,6 +1489,26 @@
                         "value": "#f9dde1"
                     },
                     {
+                        "match": "eskaliert an Oberarzt",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "noch nicht mitgeteilt",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "telefonisch mitgeteilt",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "in Warteschlange",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "zugestellt",
+                        "value": "#d9f0e3"
+                    },
+                    {
                         "match": "Rettungsstopp",
                         "value": "#f9dde1"
                     },
@@ -1682,6 +1762,26 @@
                     {
                         "match": "ueberfaellig",
                         "value": "#f9dde1"
+                    },
+                    {
+                        "match": "eskaliert an Oberarzt",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "noch nicht mitgeteilt",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "telefonisch mitgeteilt",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "in Warteschlange",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "zugestellt",
+                        "value": "#d9f0e3"
                     },
                     {
                         "match": "Rettungsstopp",

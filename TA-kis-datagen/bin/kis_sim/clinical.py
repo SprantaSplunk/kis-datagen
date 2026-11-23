@@ -201,6 +201,56 @@ def lis(ctx, ts):
     return out
 
 
+LIS_ACK_WINDOW = 180 * 60
+LIS_ESCALATE_MIN = 30
+
+
+def _critical_steps(ctx, t, d):
+    """Notification, optional escalation and acknowledgement of one critical result: [(time, step)]."""
+    r = rng(ctx.seed, "lisack", d["order_id"])
+    night = 1 - daytime(ctx.clock.hour(t), 7.0, 19.0)
+    notify = 1.5 + r.lognormvariate(math.log(3.0), 0.5)
+    react = r.lognormvariate(math.log(4.0 + 4.0 * night), 0.6)
+    in_kis = d.get("delivered_to_kis", True)
+    if not in_kis:
+        react *= 2.5
+    if r.random() < 0.03:
+        react += LIS_ESCALATE_MIN
+    ack = min(notify + react, LIS_ACK_WINDOW / 60 - 5)
+    escalated = ack > LIS_ESCALATE_MIN
+    lab = "MTL-%02d" % r.randint(1, 24)
+    steps = [(notify, {"action": "mitgeteilt", "channel": "Telefon", "staff": lab, "role": "Labor (MTL)", "escalation_level": 0})]
+    if escalated:
+        steps.append((LIS_ESCALATE_MIN, {"action": "eskaliert", "channel": "Telefon", "staff": lab, "role": "Labor (MTL)",
+                                         "escalation_level": 1, "escalated_to": "Oberarzt"}))
+        ack = max(ack, LIS_ESCALATE_MIN + 1.5 + r.random() * 10)
+    steps.append((ack, {"action": "quittiert", "channel": "KIS" if in_kis else "Telefon (Befund nicht im KIS)",
+                        "staff": "u%05d" % r.randint(0, 2399),
+                        "role": "Oberarzt" if escalated else "Dienstarzt" if night > 0.5 else "Stationsarzt",
+                        "escalation_level": 1 if escalated else 0}))
+    return [(t + minutes * 60, dict(step, minutes=round(minutes, 1))) for minutes, step in steps]
+
+
+def lis_critical(ctx, ts):
+    """sakh:lis:critical - telephone notification, escalation and acknowledgement of critical lab values."""
+    cache = ctx.lis_critical
+    for tick in [k for k in cache if k < ts - LIS_ACK_WINDOW - 120]:
+        del cache[tick]
+    out = []
+    first = (int(ts - 60 - LIS_ACK_WINDOW) // 60) * 60
+    for tick in range(first, int(ts) + 1, 60):
+        if tick not in cache:
+            cache[tick] = [(e[0], e[4]) for e in lis(ctx, tick) if e[4].get("flag") in ("HH", "LL")]
+        for t, d in cache[tick]:
+            for when, step in _critical_steps(ctx, t, d):
+                if ts - 60 < when <= ts:
+                    out.append(ev(when, "sakh:lis:critical", "lis:critical", "sakh-lisapp01", dict(
+                        {k: d[k] for k in ("order_id", "patient_id", "department", "ward", "test_code", "test_name",
+                                           "value", "unit", "flag", "priority", "delivered_to_kis")},
+                        result_time=round(t, 3), **step)))
+    return out
+
+
 # ------------------------------------------------------------------- blood bank
 def blood_inventory(ctx, ts):
     """sakh:bloodbank:inventory - stock per product and ABO/Rh group every 10 minutes."""
@@ -652,6 +702,7 @@ GENERATORS = [
     ("beds", 300, beds),
     ("ed", 60, ed_tracking),
     ("lis", 60, lis),
+    ("lis_critical", 60, lis_critical),
     ("blood_inventory", 600, blood_inventory),
     ("transfusion", 60, transfusion),
     ("ris", 60, ris),

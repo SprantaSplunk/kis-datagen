@@ -2,6 +2,30 @@
 
 ## 2026-11-23
 
+### TA-kis-datagen 1.0.8
+
+- Neuer Sourcetype `sakh:lis:critical` (Index `demo_sakh`): Jeder kritische Laborwert wird
+  telefonisch an die Station mitgeteilt (`action=mitgeteilt`, Labor-MTL) und von der Station
+  quittiert (`action=quittiert`). Ist er nach 30 Minuten nicht quittiert, eskaliert das Labor an den
+  Oberarzt (`action=eskaliert`). Jedes Ereignis nennt Mitarbeiter, Rolle, Kanal und die Minuten
+  seit dem Befund (`minutes`).
+- Typische Werte: Median etwa 10 Minuten bis zur Quittierung, nachts langsamer, rund 5 % werden
+  eskaliert. Bei aktivem Szenario *Kommunikationsserver - HL7-Stau Labor zum KIS* erreicht ein Teil
+  der Befunde das KIS nicht; diese werden langsamer und nur telefonisch quittiert.
+- Zu tun: `dist/TA-kis-datagen-1.0.8.tar.gz` als Upgrade installieren und Splunk neu starten.
+
+### kis_klinik 1.0.8
+
+- *Labor und Radiologie*, neue Sektion *Meldung kritischer Werte*: Kennzahlen *Kritisch, nicht
+  quittiert*, *Davon ueber 30 min*, *Zeit bis Quittierung (Median)* und *Quittiert innerhalb
+  30 min*, dazu die Tabelle *Offene kritische Befunde* (Station, Minuten seit Befund, Test, Wert,
+  mitgeteilt oder eskaliert, KIS-Zustellung) und das Diagramm *Zeit bis Quittierung* je Stunde.
+- *Kritische Werte je Test*: Nicht quittierte Befunde haben einen roten Halo. Der Tooltip nennt,
+  nach wie vielen Minuten und von wem quittiert wurde, und ob eskaliert wurde.
+- Befunde aus der Zeit vor dem Upgrade des Generators zaehlen nicht als offen.
+- Zu tun: `dist/kis_klinik-1.0.8.spl` als Upgrade hochladen und Splunk neu starten. Die neuen
+  Kennzahlen fuellen sich erst, wenn TA-kis-datagen 1.0.8 laeuft.
+
 ### kis_klinik 1.0.7
 
 - *Klinik-Uebersicht*, *Gesundheit je Bereich*: Ein Klick auf einen Tacho oeffnet das passende

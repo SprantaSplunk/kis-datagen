@@ -65,16 +65,28 @@ export function draw(ctx, width, height, model, env) {
         ctx.textBaseline = 'middle';
         let lx = x0;
         const items = [
-            ['zone', withAlpha(ok, 0.28), 'Referenzbereich'],
+            ['zone', withAlpha(ok, 0.28), 'Referenz'],
             ['zone', withAlpha(warn, 0.22), 'auffaellig'],
             ['zone', withAlpha(crit, 0.2), 'jenseits Alarmgrenze'],
-            ['dot', crit, 'kritischer Befund'],
-            ['ring', warn, 'noch nicht im KIS'],
+            ['dot', crit, 'Befund'],
+            ['halo', crit, 'nicht quittiert'],
+            ['ring', warn, 'nicht im KIS'],
         ];
         for (const [kind, color, text] of items) {
+            if (kind === 'halo' && !model.rows.some((t) => t.results.some((x) => x.unacked || Number.isFinite(x.ackMin)))) continue;
+            if (lx + 24 + ctx.measureText(text).width > width - 8) break;
             if (kind === 'zone') {
                 ctx.fillStyle = color;
                 roundRect(ctx, lx, 6, 18, 10, 3);
+                ctx.fill();
+            } else if (kind === 'halo') {
+                ctx.beginPath();
+                ctx.arc(lx + 9, 11, 7, 0, Math.PI * 2);
+                ctx.fillStyle = withAlpha(color, 0.25);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(lx + 9, 11, 3.5, 0, Math.PI * 2);
+                ctx.fillStyle = color;
                 ctx.fill();
             } else {
                 ctx.beginPath();
@@ -186,6 +198,12 @@ export function draw(ctx, width, height, model, env) {
             const latest = res === t.latest;
             const py = cy + (hash(i, ri) - 0.5) * th * 0.6;
             const rr = latest ? r * 1.35 : r;
+            if (res.unacked) {
+                ctx.beginPath();
+                ctx.arc(px, py, rr * 2.2, 0, Math.PI * 2);
+                ctx.fillStyle = withAlpha(crit, 0.22);
+                ctx.fill();
+            }
             ctx.beginPath();
             ctx.arc(px, py, rr, 0, Math.PI * 2);
             if (res.pending) {
@@ -212,18 +230,32 @@ export function draw(ctx, width, height, model, env) {
             ctx.fillStyle = crit;
             ctx.font = font(clamp(rowH * 0.3, 9, 14), 800);
             const arrow = lv.high ? '\u2191' : '\u2193';
-            ctx.fillText(ellipsize(ctx, `${arrow} ${formatNumber(lv.value, dec)} ${t.unit}`, rightW - 8), rx, sub ? cy - nameSize * 0.45 : cy);
+            const lift = sub && rowH > 56 && (t.unacked || t.pending) ? (clamp(rowH * 0.22, 8, 11) + 4) / 2 : 0;
+            ctx.fillText(ellipsize(ctx, `${arrow} ${formatNumber(lv.value, dec)} ${t.unit}`, rightW - 8), rx, sub ? cy - nameSize * 0.45 - lift : cy);
             if (sub) {
                 ctx.font = font(clamp(rowH * 0.22, 8, 11), 600);
                 const parts = [lv.ward, hhmm(lv.time)].filter(Boolean).join(' · ');
-                const pend = t.pending ? `${parts ? ' · ' : ''}${t.pending} nicht im KIS` : '';
+                const ownLine = lift > 0;
+                const lineH = clamp(rowH * 0.22, 8, 11) + 4;
+                const y2 = cy + nameSize * 0.6 - (ownLine ? lineH / 2 : 0);
+                const segments = [
+                    [t.unacked ? `${t.unacked} ${ownLine ? 'nicht quittiert' : 'offen'}` : '', crit],
+                    [t.pending ? `${t.pending} nicht im KIS` : '', warn],
+                ].filter(([text]) => text);
                 ctx.fillStyle = palette.muted;
-                ctx.fillText(ellipsize(ctx, `zuletzt ${parts}`, rightW - 8), rx, cy + nameSize * 0.6);
-                if (pend) {
-                    const wPart = Math.min(rightW - 8, ctx.measureText(`zuletzt ${parts}`).width);
-                    ctx.fillStyle = warn;
-                    ctx.fillText(ellipsize(ctx, pend, Math.max(0, rightW - 8 - wPart)), rx + wPart, cy + nameSize * 0.6);
-                }
+                const head = `zuletzt ${parts}`;
+                ctx.fillText(ellipsize(ctx, head, rightW - 8), rx, y2);
+                let sx = ownLine ? rx : rx + Math.min(rightW - 8, ctx.measureText(head).width);
+                const sy = ownLine ? y2 + lineH : y2;
+                segments.forEach(([text, color], i) => {
+                    const label = `${i || !ownLine ? ' · ' : ''}${text}`;
+                    const room = rx + rightW - 8 - sx;
+                    if (room < 12) return;
+                    ctx.fillStyle = color;
+                    const shown = ellipsize(ctx, label, room);
+                    ctx.fillText(shown, sx, sy);
+                    sx += ctx.measureText(shown).width;
+                });
             }
         }
         ctx.restore();
@@ -233,7 +265,7 @@ export function draw(ctx, width, height, model, env) {
         const tip = [
             `${t.name}${t.unit ? ` (${t.unit})` : ''}`,
             `Referenz ${formatNumber(t.refLow, dec)}–${formatNumber(t.refHigh, dec)} · Alarm ${t.critLow !== undefined ? `< ${formatNumber(t.critLow, dec)}` : ''}${t.critLow !== undefined && t.critHigh !== undefined ? ' / ' : ''}${t.critHigh !== undefined ? `> ${formatNumber(t.critHigh, dec)}` : ''}`,
-            `${t.results.length} kritisch: ${highs} zu hoch, ${t.results.length - highs} zu niedrig${t.pending ? ` · ${t.pending} nicht im KIS` : ''}`,
+            `${t.results.length} kritisch: ${highs} zu hoch, ${t.results.length - highs} zu niedrig${t.unacked ? ` · ${t.unacked} nicht quittiert` : ''}${t.pending ? ` · ${t.pending} nicht im KIS` : ''}`,
             selected ? 'Klick hebt die Auswahl auf' : 'Klick filtert "Kritische Werte je Station" auf diesen Test',
         ];
         hits.push({
@@ -253,6 +285,12 @@ export function draw(ctx, width, height, model, env) {
                 `${t.name}: ${formatNumber(res.value, dec)} ${t.unit} ${res.high ? '(zu hoch)' : '(zu niedrig)'}`,
                 [res.ward, hhmm(res.time), res.priority].filter(Boolean).join(' · '),
             ];
+            if (Number.isFinite(res.ackMin)) {
+                lines.push(`quittiert nach ${formatNumber(res.ackMin, 0)} min${res.ackRole ? ` (${res.ackRole})` : ''}${res.escalated ? ', nach Eskalation' : ''}`);
+            } else if (res.unacked) {
+                const since = Number.isFinite(res.time) ? Math.max(0, Math.round((Date.now() - res.time) / 60000)) : NaN;
+                lines.push(`noch nicht quittiert${Number.isFinite(since) ? ` (seit ${since} min)` : ''}${res.escalated ? ', eskaliert an Oberarzt' : ''}`);
+            }
             if (res.delivery) lines.push(`KIS: ${res.delivery}`);
             if (res.patient) lines.push(`Fall-ID ${res.patient}`);
             hits.push({ id: `res:${t.code}:${i}`, x: px - r - 2, y: py - r - 2, w: 2 * r + 4, h: 2 * r + 4, label: lines[0], tooltip: lines, hover: true });

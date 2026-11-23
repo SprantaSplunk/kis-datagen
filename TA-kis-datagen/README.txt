@@ -26,7 +26,7 @@ Die App legt beide Indexe an (`default/indexes.conf`, 30 Tage Aufbewahrung):
 
 ## Einrichtung
 
-1. App installieren (`TA-kis-datagen-1.0.7.tar.gz`).
+1. App installieren (`TA-kis-datagen-1.0.8.tar.gz`).
 2. *Configuration → HEC Setup*: Modus HEC, URL und Token eintragen (Token wird geprueft und
    verschluesselt gespeichert). Ohne HEC: Modus *Direct*.
 3. *Inputs → Create New Input → SAKH Krankenhaus*: Name vergeben, Standardwerte passen
@@ -44,6 +44,7 @@ Volumen: rund 280.000 Events (ca. 100 MB) und 1,3 Mio. Metrik-Datenpunkte pro Ta
 | KIS | `sakh:kis:audit` | Zugriffsprotokoll inkl. Antwortzeit und Break-the-Glass |
 | Notaufnahme | `sakh:ed:tracking` | Zugaenge mit Manchester-Triage, Board-Status alle 5 min |
 | Labor | `sakh:lis:result` | Befunde mit Flags, TAT und Zustellstatus ins KIS |
+| Labor | `sakh:lis:critical` | Kritische Werte: telefonisch mitgeteilt, nach 30 min eskaliert, quittiert (wer, wie, nach wie vielen Minuten) |
 | Blutdepot | `sakh:bloodbank:inventory` | Bestand EK/TK/FFP je Blutgruppe alle 10 min |
 | Blutdepot | `sakh:bloodbank:transfusion` | Ausgaben und Transfusionen |
 | Radiologie | `sakh:ris:order` | RIS-Auftraege je Modalitaet und Geraet |
