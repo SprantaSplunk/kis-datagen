@@ -5,6 +5,7 @@ import { RHYTHMS, ecgProfile, ecgValue, hash01, keyTimes } from './ecg.js';
 
 const HR_COLOR = '#34e2a0';
 const SPO2_COLOR = '#22d3ee';
+const SEL_COLOR = '#7dd3fc';
 const STATUS_DE = { ok: 'stabil', warn: 'beobachten', crit: 'kritisch', none: 'keine Daten' };
 
 function grid(count, width, height, fixed) {
@@ -28,8 +29,10 @@ export function draw(ctx, width, height, model, env) {
     const gap = 6;
     const cw = (width - gap * (g.cols + 1)) / g.cols;
     const ch = (height - gap * (g.rows + 1)) / g.rows;
+    const chosen = env.token ? env.token(o.drilldownToken) : undefined;
 
     model.beds.forEach((b, i) => {
+        const selected = b.bed === chosen;
         const x = gap + (i % g.cols) * (cw + gap);
         const y = gap + Math.floor(i / g.cols) * (ch + gap);
         const sc = statusColor(palette, b.status);
@@ -44,6 +47,24 @@ export function draw(ctx, width, height, model, env) {
         roundRect(ctx, x, y, cw, ch, 8);
         ctx.stroke();
         ctx.shadowBlur = 0;
+        if (selected) {
+            ctx.lineWidth = 3.5;
+            ctx.strokeStyle = SEL_COLOR;
+            roundRect(ctx, x + 1.5, y + 1.5, cw - 3, ch - 3, 7);
+            ctx.stroke();
+            const tag = 'Verlauf';
+            ctx.font = font(clamp(ch * 0.085, 7, 11), 800);
+            const tw = ctx.measureText(tag).width + 12;
+            const th = clamp(ch * 0.085, 7, 11) + 6;
+            ctx.fillStyle = SEL_COLOR;
+            roundRect(ctx, x + (cw - tw) / 2, y + 5, tw, th, th / 2);
+            ctx.fill();
+            ctx.fillStyle = '#0f172a';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(tag, x + cw / 2, y + 5 + th / 2 + 0.5);
+            ctx.textAlign = 'left';
+        }
 
         const pad = clamp(cw * 0.05, 4, 10);
         const titleSize = clamp(ch * 0.13, 8, 15);
@@ -176,15 +197,16 @@ export function draw(ctx, width, height, model, env) {
             if (Number.isFinite(b.news)) tooltip.push(`NEWS2 ${formatNumber(b.news, 0)}${b.vent ? ' · beatmet' : ''}`);
         }
         if (b.pid) tooltip.push(`Fall-ID ${b.pid}`);
+        tooltip.push(selected ? 'Klick hebt die Auswahl fuer den Verlauf auf' : 'Klick zeigt den Verlauf dieses Betts');
         hits.push({
             id: `bed:${b.id}`,
             x,
             y,
             w: cw,
             h: ch,
-            label: `Bett ${b.bed}: ${b.offline ? 'keine Daten' : `Herzfrequenz ${formatNumber(b.hr, 0)}, Sauerstoff ${formatNumber(b.spo2, 0)}`}, ${STATUS_DE[b.status]}`,
+            label: `Bett ${b.bed}: ${b.offline ? 'keine Daten' : `Herzfrequenz ${formatNumber(b.hr, 0)}, Sauerstoff ${formatNumber(b.spo2, 0)}`}, ${STATUS_DE[b.status]}${selected ? ' (im Verlauf)' : ''}`,
             tooltip,
-            payload: { name: o.drilldownToken, value: b.bed },
+            payload: { name: o.drilldownToken, value: selected ? '*' : b.bed },
         });
     });
     return hits;

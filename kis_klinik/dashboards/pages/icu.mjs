@@ -1,4 +1,4 @@
-import { chain, custom, kpi, line, search, setToken, table } from '../lib/studio.mjs';
+import { chain, custom, dynamicDropdown, kpi, line, search, setToken, table } from '../lib/studio.mjs';
 import { IDX, MIDX } from '../lib/spl.mjs';
 
 const LATEST = `${IDX} sourcetype="sakh:pdms:vitals" earliest=-10m
@@ -14,6 +14,7 @@ export default {
     inputs: ['time'],
     tokens: { bed: '*', vent: '*' },
     extraInputs: {
+        input_bed: dynamicDropdown({ title: 'Bett (Verlauf)', token: 'bed', ds: 'ds_bed_list', field: 'bed', allLabel: 'Stationsmittel (alle Betten)' }),
         input_vent: {
             type: 'input.dropdown',
             title: 'Beatmung (Monitorwand)',
@@ -30,6 +31,7 @@ export default {
     },
     dataSources: {
         ds_latest: search(LATEST, { name: 'Vitalwerte (letzte 10 min)' }),
+        ds_bed_list: chain('ds_latest', '| sort bed | fields bed'),
         ds_wall: chain('ds_latest', '| fillnull value="unbekannt" ventilated | search ventilated="$vent$"'),
         ds_k_beds: chain('ds_latest', '| stats count as "Belegte Betten"'),
         ds_k_vent: chain('ds_latest', '| where ventilated="true" OR ventilated=1 | stats count as Beatmet'),
@@ -42,7 +44,7 @@ export default {
         ds_heat_news: search(`| mstats max(_value) as value WHERE ${MIDX} metric_name="sakh.icu.news2" BY bed span=10m
 | timechart span=10m limit=0 max(value) by bed`),
         ds_bed: search(`| mstats avg(_value) as v WHERE ${MIDX} metric_name IN ("sakh.icu.hr", "sakh.icu.spo2", "sakh.icu.rr", "sakh.icu.nibp_sys") bed="$bed$" BY metric_name span=5m
-| eval series=case(metric_name="sakh.icu.hr", "HF", metric_name="sakh.icu.spo2", "SpO2", metric_name="sakh.icu.rr", "AF", true(), "RR sys")
+| eval scope=if("$bed$"="*", "Mittel", "$bed$"), series=scope." · ".case(metric_name="sakh.icu.hr", "HF", metric_name="sakh.icu.spo2", "SpO2", metric_name="sakh.icu.rr", "AF", true(), "RR sys")
 | timechart span=5m avg(v) by series`, { name: 'Verlauf ausgewaehltes Bett' }),
         ds_vent: search(`${IDX} sourcetype="sakh:medtech:telemetry" device_type=VENT department=ICU earliest=-15m
 | stats latest(in_use) as in_use latest(mode) as Modus latest(fio2_pct) as "FiO2 %" latest(peep_cmh2o) as PEEP latest(tidal_volume_ml) as "Vt ml" latest(status) as Status latest(connectivity) as Verbindung latest(manufacturer) as Hersteller latest(model) as Modell by device_id ward
@@ -70,13 +72,20 @@ export default {
                 {
                     cols: 12,
                     title: 'Belegte Intensivbetten',
-                    hint: 'Filter "Beatmung" oben; Klick auf ein Bett zeigt den Verlauf. Rechts oben je Bett: Ableitung und Rhythmus (SR, VHF, VES, LSB, SM, AVB1)',
+                    hint: 'Filter "Beatmung" oben; Klick auf ein Bett zeigt dessen Verlauf darunter. Rechts oben je Bett: Ableitung und Rhythmus (SR, VHF, VES, LSB, SM, AVB1)',
                     viz: custom('icu_wall', 'ds_wall', { drilldownToken: 'bed' }, [setToken('bed')]),
                 },
             ],
         },
         {
             section: 'Verlauf',
+            h: 380,
+            panels: [
+                { cols: 7, title: 'Verlauf des gewaehlten Betts', hint: 'Bett per Klick auf der Monitorwand oder Auswahl "Bett (Verlauf)" oben; ohne Auswahl Stationsmittel', viz: line('ds_bed', { legend: 'bottom' }) },
+                { cols: 5, title: 'Alarme je Bett', viz: table('ds_alarms', { count: 9 }) },
+            ],
+        },
+        {
             h: 360,
             panels: [
                 { cols: 6, title: 'Herzfrequenz je Bett', viz: custom('heat_timeline', 'ds_heat_hr', { scaleMode: 'thresholds', higherIsBetter: false, warn: 110, crit: 130, unit: '/min', maxSeries: 40, decimals: 0 }) },
@@ -85,14 +94,7 @@ export default {
         },
         {
             h: 380,
-            panels: [
-                { cols: 5, title: 'Verlauf des gewaehlten Betts', viz: line('ds_bed') },
-                { cols: 7, title: 'Beatmungsgeraete', viz: table('ds_vent', { count: 10, status: ['Status'] }) },
-            ],
-        },
-        {
-            h: 360,
-            panels: [{ cols: 12, title: 'Alarme je Bett', viz: table('ds_alarms', { count: 10 }) }],
+            panels: [{ cols: 12, title: 'Beatmungsgeraete', viz: table('ds_vent', { count: 10, status: ['Status'] }) }],
         },
     ],
 };

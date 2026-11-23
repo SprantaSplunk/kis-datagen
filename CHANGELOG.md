@@ -2,6 +2,19 @@
 
 ## 2026-11-23
 
+### kis_klinik 1.0.5
+
+- *Intensivstation*: Neues Auswahlfeld *Bett (Verlauf)* mit allen belegten Betten und
+  *Stationsmittel (alle Betten)*. Ohne Auswahl zeigte *Verlauf des gewaehlten Betts* bisher
+  stillschweigend den Mittelwert aller Betten.
+- Die Legende des Verlaufs nennt jetzt das Bett, z. B. "ICU-1-02 · HF", oder "Mittel · HF" fuer das
+  Stationsmittel.
+- *Intensiv-Monitorwand*: Das gewaehlte Bett hat einen hellblauen Rahmen und das Etikett *Verlauf*.
+  Ein zweiter Klick auf das Bett hebt die Auswahl auf.
+- *Verlauf des gewaehlten Betts* und *Alarme je Bett* stehen direkt unter der Monitorwand,
+  *Beatmungsgeraete* ganz unten.
+- Zu tun: `dist/kis_klinik-1.0.5.spl` als Upgrade hochladen und Splunk neu starten.
+
 ### kis_klinik 1.0.4
 
 - *OP-Management*, Saalplan *OP-Saele heute*: Ein Klick auf eine Saalzeile oder einen Fall waehlt
