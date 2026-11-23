@@ -1,7 +1,9 @@
 // Small design system on top of the Dashboard Studio JSON definition.
-import { background, navButton } from './svg.mjs';
+import { FLAVOR, recolor } from './flavor.mjs';
 
-export const APP = 'kis_studio';
+const { background, navButton } = await import(FLAVOR.svg);
+
+export const APP = FLAVOR.app;
 export const WIDTH = 1920;
 const MARGIN = 40;
 const GUTTER = 20;
@@ -364,9 +366,12 @@ const SUB_Y = 212;
 const SUB_H = 36;
 const SUB_W = 218;
 
+const tone = (d) => ({ ...d, accent: FLAVOR.color(d.accent), accent2: FLAVOR.color(d.accent2) });
+
 export function buildPage(spec, registry) {
-    const domain = DOMAINS.find((d) => d.id === spec.domain);
-    if (!domain) throw new Error(`${spec.id}: unknown domain ${spec.domain}`);
+    const found = DOMAINS.find((d) => d.id === spec.domain);
+    if (!found) throw new Error(`${spec.id}: unknown domain ${spec.domain}`);
+    const domain = tone(found);
     const siblings = registry.filter((p) => p.domain === spec.domain && !p.hidden);
     const visualizations = {};
     const structure = [];
@@ -375,7 +380,7 @@ export function buildPage(spec, registry) {
     const sections = [];
 
     // domain navigation
-    DOMAINS.filter((d) => !d.hidden).forEach((d, i) => {
+    DOMAINS.filter((d) => !d.hidden).map(tone).forEach((d, i) => {
         const target = registry.find((p) => p.domain === d.id);
         const active = d.id === domain.id;
         const file = `nav_${d.id}${active ? '_on' : ''}.svg`;
@@ -453,7 +458,7 @@ export function buildPage(spec, registry) {
         domain,
         title: spec.title,
         subtitle: spec.subtitle,
-        kicker: `KIS Studio · Splunk Allgemeines Krankenhaus · ${domain.label}`,
+        kicker: `${FLAVOR.label} · Splunk Allgemeines Krankenhaus · ${domain.label}`,
         panels,
         sections,
     });
@@ -488,9 +493,9 @@ export function buildPage(spec, registry) {
             globalInputs: order,
         },
     };
-    const json = JSON.stringify(definition, null, 4);
+    const json = recolor(JSON.stringify(definition, null, 4));
     if (json.includes(']]>')) throw new Error(`${spec.id}: definition contains a CDATA terminator`);
-    const xml = `<dashboard version="2" theme="dark">
+    const xml = `<dashboard version="2" theme="${FLAVOR.theme}">
     <label>${xmlEsc(spec.navLabel)}</label>
     <description>${xmlEsc(spec.description)}</description>
     <definition><![CDATA[${json}]]></definition>

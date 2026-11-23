@@ -1,11 +1,12 @@
 # kis-datagen – Splunk Allgemeines Krankenhaus (SAKH)
 
-Zwei Splunk-Apps fuer Demos rund um ein oesterreichisches Krankenhausinformationssystem (KIS):
+Splunk-Apps fuer Demos rund um ein oesterreichisches Krankenhausinformationssystem (KIS):
 
 | App | Version | Datei | Zweck |
 | --- | --- | --- | --- |
 | [TA-kis-datagen](TA-kis-datagen/README.txt) | 1.0.3 | `dist/TA-kis-datagen-1.0.3.tar.gz` | Datengenerator: KIS, Medizintechnik, Cisco-Netzwerk inkl. Cisco IQ, Server, Datenbanken, ServiceNow – per HEC oder direkt |
 | [kis_studio](kis_studio/README.md) | 1.0.5 | `dist/kis_studio-1.0.5.spl` | Dashboard Studio: 15 Dashboards, 10 interaktive Canvas-Visualisierungen |
+| [kis_klinik](kis_studio/README.md#kis-klinik) | 1.0.0 | `dist/kis_klinik-1.0.0.spl` | Dieselben Dashboards und Visualisierungen in hellem, klinischem Design; parallel zu kis_studio installierbar |
 
 Indexe (werden von TA-kis-datagen angelegt):
 
@@ -21,6 +22,7 @@ Der HEC-Token muss beide Indexe erlauben.
 1. `dist/TA-kis-datagen-1.0.3.tar.gz` installieren, *Configuration → HEC Setup* ausfuellen.
 2. *Inputs → Create New Input → SAKH Krankenhaus* anlegen (Standardwerte passen, Backfill 24 h).
 3. `dist/kis_studio-1.0.5.spl` installieren (Splunk 10.4+), *KIS Studio (SAKH)* oeffnen.
+   Alternativ oder zusaetzlich `dist/kis_klinik-1.0.0.spl` fuer *KIS Klinik (SAKH)* im hellen Design.
 4. Fuer eine Demo ein Szenario im Input einschalten, z. B. *Netzwerkausfall Haus C* oder
    *Blutkonserven-Engpass*. Die Vorwarnsignale erscheinen sofort, die Auswirkung nach rund 6 Minuten.
 

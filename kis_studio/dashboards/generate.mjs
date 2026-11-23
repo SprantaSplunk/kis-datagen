@@ -2,13 +2,15 @@
 // Generates the Studio dashboards, navigation and artwork into package/app.
 //   node dashboards/generate.mjs           write views, nav and images
 //   node dashboards/generate.mjs --queries print every data source as one resolved search (for validation)
+//   KIS_FLAVOR=klinik node dashboards/generate.mjs   same pages for kis_klinik (package/klinik)
 import { mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { FLAVOR } from './lib/flavor.mjs';
 import { DOMAINS, buildPage, pinBaseFields } from './lib/studio.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const appDir = join(here, '..', 'package', 'app');
+const appDir = join(here, '..', 'package', FLAVOR.appDir);
 const pagesDir = join(here, 'pages');
 
 const ORDER = [
@@ -90,7 +92,7 @@ const navItems = DOMAINS.map((domain) => {
 }).filter(Boolean);
 writeFileSync(
     join(navDir, 'default.xml'),
-    `<nav search_view="search" color="#22d3ee">
+    `<nav search_view="search" color="${FLAVOR.navColor}">
 ${navItems.join('\n')}
   <collection label="Search">
     <view name="search" />
@@ -100,4 +102,4 @@ ${navItems.join('\n')}
 `
 );
 
-console.log(`Generated ${specs.length} dashboards and ${images.size} images`);
+console.log(`Generated ${specs.length} dashboards and ${images.size} images for ${FLAVOR.app}`);

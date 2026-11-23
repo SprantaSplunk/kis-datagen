@@ -1,0 +1,29 @@
+<nav search_view="search" color="#0b7fab">
+  <view name="kis_home" default="true" />
+  <collection label="Patientenversorgung">
+    <view name="kis_beds" />
+    <view name="kis_ed" />
+    <view name="kis_or" />
+    <view name="kis_icu" />
+  </collection>
+  <collection label="Diagnostik &amp; Versorgung">
+    <view name="kis_lab" />
+    <view name="kis_blood" />
+    <view name="kis_pharmacy" />
+  </collection>
+  <view name="kis_medtech" />
+  <collection label="Netzwerk">
+    <view name="kis_network" />
+    <view name="kis_ciscoiq" />
+  </collection>
+  <collection label="IT-Betrieb">
+    <view name="kis_servers" />
+    <view name="kis_integration" />
+    <view name="kis_cmdb" />
+  </collection>
+  <view name="kis_security" />
+  <collection label="Search">
+    <view name="search" />
+    <view name="dashboards" />
+  </collection>
+</nav>

@@ -57,6 +57,15 @@ kommt aus den Events in `demo_sakh`.
 Alle Visualisierungen unterstuetzen HiDPI, helles und dunkles Theme, Tastaturbedienung,
 Tooltips, `prefers-reduced-motion` und Drilldowns mit flachem `{name, value}`-Payload.
 
+## KIS Klinik
+
+`kis_klinik` (*KIS Klinik (SAKH)*) ist die zweite App aus demselben Projekt: gleiche Seiten, Suchen,
+Layouts und Visualisierungen, aber im hellen Theme mit weissem Kopfbereich, flachen Reitern, weissen
+Karten und gedeckten Klinikfarben (Krankenhaus-Blau, Petrol). Beide Apps lassen sich parallel
+installieren. Die Variante waehlt `KIS_FLAVOR=klinik` (`dashboards/lib/flavor.mjs`); das Artwork kommt
+aus `dashboards/lib/svg-klinik.mjs`, die App-Dateien liegen unter `package/klinik/`. Seiten werden nur
+einmal in `dashboards/pages/*.mjs` gepflegt, danach beide Varianten erzeugen.
+
 ## Hinweise
 
 - `default/props.conf` (nicht exportiert) extrahiert die JSON-Felder der Vendor-Sourcetypes
@@ -75,6 +84,8 @@ npm run build:prod                  # Visualisierungen bauen
 npm run check                       # Harness in Chrome (Leer-/Fehlerdaten, Resize, Theme, Optionen, Drilldown, Tastatur, Reduced Motion)
 npm run check:esm                   # Bundles sind eigenstaendige ES-Module ohne Imports
 npm run package                     # dist/kis_studio-<version>-<hash>.spl
+npm run dashboards:klinik           # dieselben Seiten fuer kis_klinik nach package/klinik/
+npm run package:klinik              # dist/kis_klinik-<version>-<hash>.spl
 ```
 
 - `dashboards/lib/studio.mjs`: Raster, Farben, Bereiche, Filter, Visualisierungs-Helfer, Seitenaufbau.

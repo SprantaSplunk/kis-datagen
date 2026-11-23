@@ -17,6 +17,8 @@ import chalk from 'chalk';
 import { create as createTar } from 'tar';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+// --app-dir=package/klinik packages the second app (kis_klinik) from the same visualization bundles
+const APP_DIR = (process.argv.find((a) => a.startsWith('--app-dir=')) || '--app-dir=package/app').split('=')[1];
 
 const colors = {
     success: (text) => chalk.green(text),
@@ -85,9 +87,9 @@ function parseAppConf(content) {
 }
 
 function getAppConfPath(projectRoot) {
-    const appConfPath = join(join(projectRoot, 'package', 'app'), 'app.conf');
+    const appConfPath = join(projectRoot, APP_DIR, 'app.conf');
     if (!existsSync(appConfPath)) {
-        throw new Error('Missing package/app/app.conf. Run from a project created with init.');
+        throw new Error(`Missing ${APP_DIR}/app.conf. Run from a project created with init.`);
     }
     return appConfPath;
 }
@@ -275,7 +277,7 @@ const GENERATED_FILES = new Set(['app.conf', 'visualizations.conf']);
 
 function stageAppContent(projectRoot, stageAppDir) {
     console.log(colors.info('Copying dashboards and static app files...'));
-    const appDir = join(projectRoot, 'package', 'app');
+    const appDir = join(projectRoot, APP_DIR);
     for (const entry of readdirSync(appDir, { withFileTypes: true })) {
         if (entry.name.startsWith('.') || GENERATED_FILES.has(entry.name)) continue;
         if (entry.isDirectory()) {

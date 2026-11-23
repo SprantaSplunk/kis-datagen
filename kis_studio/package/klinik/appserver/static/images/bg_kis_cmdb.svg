@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="2380" viewBox="0 0 1920 2380">
+  <defs>
+    <filter id="card" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#13294b" flood-opacity="0.07"/>
+    </filter>
+    <style>
+      .pt { font: 600 15px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #13294b; }
+      .ph { font: 400 12.5px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #6b7785; }
+      .sec { font: 700 15px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #13294b; }
+    </style>
+  </defs>
+  <rect width="1920" height="2380" fill="#eef1f5"/>
+  <rect width="1920" height="200" fill="#ffffff"/>
+  <rect width="1920" height="4" fill="#0b7fab"/>
+  <rect x="0" y="199" width="1920" height="1" fill="#d6dde6"/>
+  <g>
+    <rect fill="none" stroke="#c3cedb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x="1670" y="44" width="190" height="30" rx="5"/><circle cx="1690" cy="59" r="4" fill="#c3cedb"/><path fill="none" stroke="#c3cedb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M1790 59 h50"/>
+    <rect fill="none" stroke="#c3cedb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x="1670" y="84" width="190" height="30" rx="5"/><circle cx="1690" cy="99" r="4" fill="#c3cedb"/><path fill="none" stroke="#c3cedb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M1790 99 h50"/>
+    <rect fill="none" stroke="#c3cedb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x="1670" y="124" width="190" height="30" rx="5"/><circle cx="1690" cy="139" r="4" fill="#c3cedb"/><path fill="none" stroke="#c3cedb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M1790 139 h50"/>
+  </g>
+  <circle cx="54" cy="40" r="14" fill="#0b7fab"/>
+  <path d="M51 31 h6 v6 h6 v6 h-6 v6 h-6 v-6 h-6 v-6 h6 z" fill="#ffffff"/>
+  <text x="78" y="45" style="font: 600 13px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; letter-spacing: 0.3px; fill: #5b6878;">KIS Klinik · Splunk Allgemeines Krankenhaus · IT-Betrieb</text>
+  <rect x="1590" y="26" width="290" height="28" rx="14" fill="#f2f5f8" stroke="#d6dde6"/>
+  <text x="1735" y="45" text-anchor="middle" style="font: 600 12px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #5b6878;">Synthetische Demo-Daten · keine Patientendaten</text>
+  <text x="40" y="96" style="font: 600 36px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #13294b;">ServiceNow CMDB und ITSM</text>
+  <text x="40" y="124" style="font: 400 16px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #5b6878;">Business Services und ihre Abhaengigkeiten, Incidents, Changes und Asset-Bestand</text>
+  <g>
+    <text x="40" y="284" class="sec">Service Management</text>
+    <rect x="40" y="290" width="28" height="3" rx="1.5" fill="#0f8f84"/>
+    <text x="40" y="484" class="sec">Abhaengigkeiten</text>
+    <rect x="40" y="490" width="28" height="3" rx="1.5" fill="#0f8f84"/>
+  </g>
+  <g>
+    <rect x="40" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="318" width="8" height="8" rx="2" fill="#0f8f84"/>
+    <text x="74" y="328" class="pt">Offene Incidents</text>
+    <line x1="41" y1="340.5" x2="329" y2="340.5" stroke="#edf1f5"/>
+    <rect x="350" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="368" y="318" width="8" height="8" rx="2" fill="#0f8f84"/>
+    <text x="384" y="328" class="pt">P1 offen</text>
+    <line x1="351" y1="340.5" x2="639" y2="340.5" stroke="#edf1f5"/>
+    <rect x="660" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="678" y="318" width="8" height="8" rx="2" fill="#0f8f84"/>
+    <text x="694" y="328" class="pt">Major Incidents</text>
+    <line x1="661" y1="340.5" x2="949" y2="340.5" stroke="#edf1f5"/>
+    <rect x="970" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="988" y="318" width="8" height="8" rx="2" fill="#0f8f84"/>
+    <text x="1004" y="328" class="pt">Offene Changes</text>
+    <line x1="971" y1="340.5" x2="1259" y2="340.5" stroke="#edf1f5"/>
+    <rect x="1280" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1298" y="318" width="8" height="8" rx="2" fill="#0f8f84"/>
+    <text x="1314" y="328" class="pt">Notfall-Changes</text>
+    <line x1="1281" y1="340.5" x2="1569" y2="340.5" stroke="#edf1f5"/>
+    <rect x="1590" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1608" y="318" width="8" height="8" rx="2" fill="#0f8f84"/>
+    <text x="1624" y="328" class="pt">Configuration Items</text>
+    <line x1="1591" y1="340.5" x2="1879" y2="340.5" stroke="#edf1f5"/>
+    <rect x="40" y="500" width="1840" height="620" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="518" width="8" height="8" rx="2" fill="#0f8f84"/>
+    <text x="74" y="528" class="pt">Business Services bis zum Netzwerk</text>
+    <text x="1862" y="528" class="ph" text-anchor="end">Rot = ausgefallen oder offener P1/P2, gelb = betroffen. Hover zeigt die Kette, Klick filtert die Incidents</text>
+    <line x1="41" y1="540.5" x2="1879" y2="540.5" stroke="#edf1f5"/>
+    <rect x="40" y="1140" width="1840" height="420" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="1158" width="8" height="8" rx="2" fill="#0f8f84"/>
+    <text x="74" y="1168" class="pt">Offene Incidents (Filter per Klick im Graphen)</text>
+    <line x1="41" y1="1180.5" x2="1879" y2="1180.5" stroke="#edf1f5"/>
+    <rect x="40" y="1580" width="755" height="360" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="1598" width="8" height="8" rx="2" fill="#0f8f84"/>
+    <text x="74" y="1608" class="pt">Neue Incidents je Gruppe</text>
+    <line x1="41" y1="1620.5" x2="794" y2="1620.5" stroke="#edf1f5"/>
+    <rect x="815" y="1580" width="600" height="360" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="833" y="1598" width="8" height="8" rx="2" fill="#0f8f84"/>
+    <text x="849" y="1608" class="pt">Incidents je Business Service</text>
+    <line x1="816" y1="1620.5" x2="1414" y2="1620.5" stroke="#edf1f5"/>
+    <rect x="1435" y="1580" width="445" height="360" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1453" y="1598" width="8" height="8" rx="2" fill="#0f8f84"/>
+    <text x="1469" y="1608" class="pt">CIs je Klasse</text>
+    <line x1="1436" y1="1620.5" x2="1879" y2="1620.5" stroke="#edf1f5"/>
+    <rect x="40" y="1960" width="1065" height="380" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="1978" width="8" height="8" rx="2" fill="#0f8f84"/>
+    <text x="74" y="1988" class="pt">Changes</text>
+    <text x="1087" y="1988" class="ph" text-anchor="end">Laufende und anstehende zuerst, abgeschlossene der letzten 3 Tage am Ende</text>
+    <line x1="41" y1="2000.5" x2="1104" y2="2000.5" stroke="#edf1f5"/>
+    <rect x="1125" y="1960" width="290" height="380" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1143" y="1978" width="8" height="8" rx="2" fill="#0f8f84"/>
+    <text x="1159" y="1988" class="pt">Changes je Status</text>
+    <line x1="1126" y1="2000.5" x2="1414" y2="2000.5" stroke="#edf1f5"/>
+    <rect x="1435" y="1960" width="445" height="380" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1453" y="1978" width="8" height="8" rx="2" fill="#0f8f84"/>
+    <text x="1469" y="1988" class="pt">Assets</text>
+    <line x1="1436" y1="2000.5" x2="1879" y2="2000.5" stroke="#edf1f5"/>
+  </g>
+</svg>

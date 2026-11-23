@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="2130" viewBox="0 0 1920 2130">
+  <defs>
+    <filter id="card" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#13294b" flood-opacity="0.07"/>
+    </filter>
+    <style>
+      .pt { font: 600 15px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #13294b; }
+      .ph { font: 400 12.5px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #6b7785; }
+      .sec { font: 700 15px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #13294b; }
+    </style>
+  </defs>
+  <rect width="1920" height="2130" fill="#eef1f5"/>
+  <rect width="1920" height="200" fill="#ffffff"/>
+  <rect width="1920" height="4" fill="#0b7fab"/>
+  <rect x="0" y="199" width="1920" height="1" fill="#d6dde6"/>
+  <g>
+    <line fill="none" stroke="#c3cedb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x1="1610" y1="70" x2="1690" y2="120"/>
+    <line fill="none" stroke="#c3cedb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x1="1690" y1="120" x2="1770" y2="60"/>
+    <line fill="none" stroke="#c3cedb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x1="1770" y1="60" x2="1840" y2="118"/>
+    <line fill="none" stroke="#c3cedb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x1="1690" y1="120" x2="1720" y2="160"/>
+    <line fill="none" stroke="#c3cedb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x1="1840" y1="118" x2="1720" y2="160"/>
+    <line fill="none" stroke="#c3cedb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x1="1610" y1="70" x2="1720" y2="160"/>
+    <circle cx="1610" cy="70" r="9" fill="#ffffff" stroke="#c3cedb" stroke-width="2"/>
+    <circle cx="1690" cy="120" r="9" fill="#ffffff" stroke="#c3cedb" stroke-width="2"/>
+    <circle cx="1770" cy="60" r="9" fill="#ffffff" stroke="#c3cedb" stroke-width="2"/>
+    <circle cx="1840" cy="118" r="9" fill="#ffffff" stroke="#c3cedb" stroke-width="2"/>
+    <circle cx="1720" cy="160" r="9" fill="#ffffff" stroke="#c3cedb" stroke-width="2"/>
+  </g>
+  <circle cx="54" cy="40" r="14" fill="#0b7fab"/>
+  <path d="M51 31 h6 v6 h6 v6 h-6 v6 h-6 v-6 h-6 v-6 h6 z" fill="#ffffff"/>
+  <text x="78" y="45" style="font: 600 13px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; letter-spacing: 0.3px; fill: #5b6878;">KIS Klinik · Splunk Allgemeines Krankenhaus · Netzwerk</text>
+  <rect x="1590" y="26" width="290" height="28" rx="14" fill="#f2f5f8" stroke="#d6dde6"/>
+  <text x="1735" y="45" text-anchor="middle" style="font: 600 12px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #5b6878;">Synthetische Demo-Daten · keine Patientendaten</text>
+  <text x="40" y="96" style="font: 600 36px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #13294b;">Cisco IQ – Assets, Lifecycle und Sicherheit</text>
+  <text x="40" y="124" style="font: 400 16px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #5b6878;">Inventar, Security Advisories, Field Notices, End-of-Life und Servicevertraege aller Cisco-Geraete (synthetische Demo-Advisories)</text>
+  <g>
+    <text x="40" y="284" class="sec">Inventar</text>
+    <rect x="40" y="290" width="28" height="3" rx="1.5" fill="#0a72a6"/>
+    <text x="40" y="484" class="sec">Security Advisories (PSIRT)</text>
+    <rect x="40" y="490" width="28" height="3" rx="1.5" fill="#0a72a6"/>
+    <text x="40" y="1354" class="sec">Lifecycle und Vertraege</text>
+    <rect x="40" y="1360" width="28" height="3" rx="1.5" fill="#0a72a6"/>
+  </g>
+  <g>
+    <rect x="40" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="318" width="8" height="8" rx="2" fill="#0a72a6"/>
+    <text x="74" y="328" class="pt">Cisco-Assets</text>
+    <line x1="41" y1="340.5" x2="329" y2="340.5" stroke="#edf1f5"/>
+    <rect x="350" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="368" y="318" width="8" height="8" rx="2" fill="#0a72a6"/>
+    <text x="384" y="328" class="pt">Kritisch betroffen</text>
+    <line x1="351" y1="340.5" x2="639" y2="340.5" stroke="#edf1f5"/>
+    <rect x="660" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="678" y="318" width="8" height="8" rx="2" fill="#0a72a6"/>
+    <text x="694" y="328" class="pt">End of Support</text>
+    <line x1="661" y1="340.5" x2="949" y2="340.5" stroke="#edf1f5"/>
+    <rect x="970" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="988" y="318" width="8" height="8" rx="2" fill="#0a72a6"/>
+    <text x="1004" y="328" class="pt">Ohne Vertrag</text>
+    <line x1="971" y1="340.5" x2="1259" y2="340.5" stroke="#edf1f5"/>
+    <rect x="1280" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1298" y="318" width="8" height="8" rx="2" fill="#0a72a6"/>
+    <text x="1314" y="328" class="pt">Vertrag laeuft ab</text>
+    <line x1="1281" y1="340.5" x2="1569" y2="340.5" stroke="#edf1f5"/>
+    <rect x="1590" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1608" y="318" width="8" height="8" rx="2" fill="#0a72a6"/>
+    <text x="1624" y="328" class="pt">Field Notices</text>
+    <line x1="1591" y1="340.5" x2="1879" y2="340.5" stroke="#edf1f5"/>
+    <rect x="40" y="500" width="1840" height="380" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="518" width="8" height="8" rx="2" fill="#0a72a6"/>
+    <text x="74" y="528" class="pt">Advisories mit betroffenen Geraeten</text>
+    <text x="1862" y="528" class="ph" text-anchor="end">Klick auf eine Zeile zeigt die betroffenen Geraete</text>
+    <line x1="41" y1="540.5" x2="1879" y2="540.5" stroke="#edf1f5"/>
+    <rect x="40" y="900" width="1840" height="420" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="918" width="8" height="8" rx="2" fill="#0a72a6"/>
+    <text x="74" y="928" class="pt">Betroffene Geraete</text>
+    <line x1="41" y1="940.5" x2="1879" y2="940.5" stroke="#edf1f5"/>
+    <rect x="40" y="1370" width="445" height="340" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="1388" width="8" height="8" rx="2" fill="#0a72a6"/>
+    <text x="74" y="1398" class="pt">Lifecycle</text>
+    <line x1="41" y1="1410.5" x2="484" y2="1410.5" stroke="#edf1f5"/>
+    <rect x="505" y="1370" width="445" height="340" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="523" y="1388" width="8" height="8" rx="2" fill="#0a72a6"/>
+    <text x="539" y="1398" class="pt">Vertragsabdeckung</text>
+    <line x1="506" y1="1410.5" x2="949" y2="1410.5" stroke="#edf1f5"/>
+    <rect x="970" y="1370" width="910" height="340" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="988" y="1388" width="8" height="8" rx="2" fill="#0a72a6"/>
+    <text x="1004" y="1398" class="pt">Geraete je Modell</text>
+    <line x1="971" y1="1410.5" x2="1879" y2="1410.5" stroke="#edf1f5"/>
+    <rect x="40" y="1730" width="755" height="360" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="1748" width="8" height="8" rx="2" fill="#0a72a6"/>
+    <text x="74" y="1758" class="pt">End of Life</text>
+    <line x1="41" y1="1770.5" x2="794" y2="1770.5" stroke="#edf1f5"/>
+    <rect x="815" y="1730" width="600" height="360" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="833" y="1748" width="8" height="8" rx="2" fill="#0a72a6"/>
+    <text x="849" y="1758" class="pt">Servicevertraege (SNTC)</text>
+    <line x1="816" y1="1770.5" x2="1414" y2="1770.5" stroke="#edf1f5"/>
+    <rect x="1435" y="1730" width="445" height="360" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1453" y="1748" width="8" height="8" rx="2" fill="#0a72a6"/>
+    <text x="1469" y="1758" class="pt">Field Notices</text>
+    <line x1="1436" y1="1770.5" x2="1879" y2="1770.5" stroke="#edf1f5"/>
+  </g>
+</svg>

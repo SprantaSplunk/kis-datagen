@@ -11,6 +11,8 @@
 		"preview": "node build.mjs --entry=visualization.js && node generate-theme-vars.mjs && storybook dev -p 6006",
 		"package": "node package.mjs",
 		"dashboards": "node dashboards/generate.mjs",
+		"dashboards:klinik": "KIS_FLAVOR=klinik node dashboards/generate.mjs",
+		"package:klinik": "node package.mjs --app-dir=package/klinik",
 		"check": "node harness/check.mjs",
 		"check:esm": "node --experimental-vm-modules harness/check-esm.mjs"
 	},

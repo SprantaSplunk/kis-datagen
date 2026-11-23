@@ -2,6 +2,17 @@
 
 ## 2026-11-23
 
+### kis_klinik 1.0.0
+
+- Neue App *KIS Klinik (SAKH)* mit denselben 15 Dashboards, Daten, Filtern, Drilldowns und
+  Canvas-Visualisierungen wie *KIS Studio (SAKH)*, aber im hellen, klinischen Design: weisser
+  Kopfbereich mit Klinik-Logo, flache Reiter in der Bereichsfarbe, weisse Karten ohne Leuchteffekte
+  und gedeckte Farben (Krankenhaus-Blau, Petrol). Die Triage-Farben nach Manchester bleiben gleich.
+- Die *Intensiv-Monitorwand* bleibt wie ein echter Patientenmonitor dunkel.
+- Laeuft parallel zu kis_studio und nutzt dieselben Indexe `demo_sakh` und `demo_sakh_metrics`.
+- Zu tun: `dist/kis_klinik-1.0.0.spl` installieren (Splunk 10.4+), Splunk neu starten und
+  *KIS Klinik (SAKH)* oeffnen. kis_studio bleibt unveraendert und muss nicht neu installiert werden.
+
 ### TA-kis-datagen 1.0.3
 
 - PDMS-Vitalwerte (`sakh:pdms:vitals`) haben das neue Feld `rhythm` mit dem Herzrhythmus je

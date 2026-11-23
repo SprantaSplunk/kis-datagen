@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1702" viewBox="0 0 1920 1702">
+  <defs>
+    <filter id="card" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#13294b" flood-opacity="0.07"/>
+    </filter>
+    <style>
+      .pt { font: 600 15px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #13294b; }
+      .ph { font: 400 12.5px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #6b7785; }
+      .sec { font: 700 15px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #13294b; }
+    </style>
+  </defs>
+  <rect width="1920" height="1702" fill="#eef1f5"/>
+  <rect width="1920" height="200" fill="#ffffff"/>
+  <rect width="1920" height="4" fill="#0b7fab"/>
+  <rect x="0" y="199" width="1920" height="1" fill="#d6dde6"/>
+  <g>
+    <path fill="none" stroke="#c3cedb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M1510 92 h120 l14 -34 l18 72 l16 -58 l10 20 h150"/>
+    <path fill="none" stroke="#c3cedb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M1826 56 h24 v24 h24 v24 h-24 v24 h-24 v-24 h-24 v-24 h24 z"/>
+  </g>
+  <circle cx="54" cy="40" r="14" fill="#0b7fab"/>
+  <path d="M51 31 h6 v6 h6 v6 h-6 v6 h-6 v-6 h-6 v-6 h6 z" fill="#ffffff"/>
+  <text x="78" y="45" style="font: 600 13px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; letter-spacing: 0.3px; fill: #5b6878;">KIS Klinik · Splunk Allgemeines Krankenhaus · Klinik-Uebersicht</text>
+  <rect x="1590" y="26" width="290" height="28" rx="14" fill="#f2f5f8" stroke="#d6dde6"/>
+  <text x="1735" y="45" text-anchor="middle" style="font: 600 12px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #5b6878;">Synthetische Demo-Daten · keine Patientendaten</text>
+  <text x="40" y="96" style="font: 600 36px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #13294b;">Splunk Allgemeines Krankenhaus – Lagebild</text>
+  <text x="40" y="124" style="font: 400 16px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #5b6878;">Betten, Notaufnahme, Blutdepot, Medizintechnik, Netzwerk und IT auf einen Blick</text>
+  <g>
+    <text x="40" y="226" class="sec">Lage jetzt</text>
+    <rect x="40" y="232" width="28" height="3" rx="1.5" fill="#0b7fab"/>
+    <text x="40" y="426" class="sec">Klinik-Lageplan</text>
+    <rect x="40" y="432" width="28" height="3" rx="1.5" fill="#0b7fab"/>
+    <text x="40" y="946" class="sec">Bereiche</text>
+    <rect x="40" y="952" width="28" height="3" rx="1.5" fill="#0b7fab"/>
+  </g>
+  <g>
+    <rect x="40" y="242" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="260" width="8" height="8" rx="2" fill="#0b7fab"/>
+    <text x="74" y="270" class="pt">Freie Betten</text>
+    <line x1="41" y1="282.5" x2="329" y2="282.5" stroke="#edf1f5"/>
+    <rect x="350" y="242" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="368" y="260" width="8" height="8" rx="2" fill="#0b7fab"/>
+    <text x="384" y="270" class="pt">Bettenbelegung</text>
+    <line x1="351" y1="282.5" x2="639" y2="282.5" stroke="#edf1f5"/>
+    <rect x="660" y="242" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="678" y="260" width="8" height="8" rx="2" fill="#0b7fab"/>
+    <text x="694" y="270" class="pt">Notaufnahme wartend</text>
+    <line x1="661" y1="282.5" x2="949" y2="282.5" stroke="#edf1f5"/>
+    <rect x="970" y="242" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="988" y="260" width="8" height="8" rx="2" fill="#0b7fab"/>
+    <text x="1004" y="270" class="pt">Blut kritisch</text>
+    <line x1="971" y1="282.5" x2="1259" y2="282.5" stroke="#edf1f5"/>
+    <rect x="1280" y="242" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1298" y="260" width="8" height="8" rx="2" fill="#0b7fab"/>
+    <text x="1314" y="270" class="pt">Netzwerk offline</text>
+    <line x1="1281" y1="282.5" x2="1569" y2="282.5" stroke="#edf1f5"/>
+    <rect x="1590" y="242" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1608" y="260" width="8" height="8" rx="2" fill="#0b7fab"/>
+    <text x="1624" y="270" class="pt">Offene P1/P2</text>
+    <line x1="1591" y1="282.5" x2="1879" y2="282.5" stroke="#edf1f5"/>
+    <rect x="40" y="442" width="1840" height="470" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="460" width="8" height="8" rx="2" fill="#0b7fab"/>
+    <text x="74" y="470" class="pt">Stationen nach Haus und Etage</text>
+    <text x="1862" y="470" class="ph" text-anchor="end">Klick auf eine Station oeffnet das Bettenmanagement fuer die Abteilung</text>
+    <line x1="41" y1="482.5" x2="1879" y2="482.5" stroke="#edf1f5"/>
+    <rect x="40" y="962" width="1840" height="300" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="980" width="8" height="8" rx="2" fill="#0b7fab"/>
+    <text x="74" y="990" class="pt">Gesundheit je Bereich</text>
+    <text x="1862" y="990" class="ph" text-anchor="end">Details ueber die Bereichsnavigation oben</text>
+    <line x1="41" y1="1002.5" x2="1879" y2="1002.5" stroke="#edf1f5"/>
+    <rect x="40" y="1282" width="755" height="380" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="1300" width="8" height="8" rx="2" fill="#0b7fab"/>
+    <text x="74" y="1310" class="pt">Belegung je Haus (%)</text>
+    <line x1="41" y1="1322.5" x2="794" y2="1322.5" stroke="#edf1f5"/>
+    <rect x="815" y="1282" width="1065" height="380" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="833" y="1300" width="8" height="8" rx="2" fill="#0b7fab"/>
+    <text x="849" y="1310" class="pt">Offene Incidents</text>
+    <line x1="816" y1="1322.5" x2="1879" y2="1322.5" stroke="#edf1f5"/>
+  </g>
+</svg>
