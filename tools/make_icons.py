@@ -1,4 +1,4 @@
-"""Writes the app icons (36/72 px PNG) of all apps: medical cross on a rounded tile.
+"""Writes the app icons (36/72 px PNG) of both apps: medical cross on a rounded tile.
 
     python3 tools/make_icons.py
 """
@@ -10,8 +10,7 @@ import zlib
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 TARGETS = {
     os.path.join(ROOT, "TA-kis-datagen", "static"): ((14, 23, 46), (52, 226, 160)),
-    os.path.join(ROOT, "kis_studio", "package", "app", "static"): ((10, 18, 36), (34, 211, 238)),
-    os.path.join(ROOT, "kis_studio", "package", "klinik", "static"): ((11, 127, 171), (255, 255, 255)),
+    os.path.join(ROOT, "kis_klinik", "package", "app", "static"): ((11, 127, 171), (255, 255, 255)),
 }
 
 

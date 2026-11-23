@@ -1,6 +1,6 @@
 node_modules/
-kis_studio/dist/
-kis_studio/stage/
+kis_klinik/dist/
+kis_klinik/stage/
 storybook-static/
 __pycache__/
 *.pyc

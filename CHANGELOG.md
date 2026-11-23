@@ -2,6 +2,17 @@
 
 ## 2026-11-23
 
+### kis_klinik 1.0.1
+
+- KIS Studio (`kis_studio`) wird nicht mehr weiterentwickelt und ist aus dem Repository entfernt.
+  *KIS Klinik (SAKH)* ist ab jetzt die einzige Dashboard-App; Dashboards, Suchen und
+  Visualisierungen sind unveraendert gegenueber 1.0.0.
+- Die App-Beschreibung verweist nicht mehr auf KIS Studio.
+- Zu tun: `dist/kis_klinik-1.0.1.spl` als Upgrade hochladen (*Upgrade app* ankreuzen). In Splunk
+  *KIS Studio (SAKH)* unter *Apps → Manage Apps* deinstallieren (oder `splunk remove app kis_studio`)
+  und Splunk neu starten. Eigene Anpassungen in `kis_studio/local/` vorher sichern, sie werden
+  mitgeloescht.
+
 ### kis_klinik 1.0.0
 
 - Neue App *KIS Klinik (SAKH)* mit denselben 15 Dashboards, Daten, Filtern, Drilldowns und
