@@ -4,7 +4,7 @@ Zwei Splunk-Apps fuer Demos rund um ein oesterreichisches Krankenhausinformation
 
 | App | Version | Datei | Zweck |
 | --- | --- | --- | --- |
-| [TA-kis-datagen](TA-kis-datagen/README.txt) | 1.0.0 | `dist/TA-kis-datagen-1.0.0.tar.gz` | Datengenerator: KIS, Medizintechnik, Cisco-Netzwerk inkl. Cisco IQ, Server, Datenbanken, ServiceNow – per HEC oder direkt |
+| [TA-kis-datagen](TA-kis-datagen/README.txt) | 1.0.1 | `dist/TA-kis-datagen-1.0.1.tar.gz` | Datengenerator: KIS, Medizintechnik, Cisco-Netzwerk inkl. Cisco IQ, Server, Datenbanken, ServiceNow – per HEC oder direkt |
 | [kis_studio](kis_studio/README.md) | 1.0.0 | `dist/kis_studio-1.0.0.spl` | Dashboard Studio: 15 Dashboards, 10 interaktive Canvas-Visualisierungen |
 
 Indexe (werden von TA-kis-datagen angelegt):
@@ -18,7 +18,7 @@ Der HEC-Token muss beide Indexe erlauben.
 
 ## Schnellstart
 
-1. `dist/TA-kis-datagen-1.0.0.tar.gz` installieren, *Configuration → HEC Setup* ausfuellen.
+1. `dist/TA-kis-datagen-1.0.1.tar.gz` installieren, *Configuration → HEC Setup* ausfuellen.
 2. *Inputs → Create New Input → SAKH Krankenhaus* anlegen (Standardwerte passen, Backfill 24 h).
 3. `dist/kis_studio-1.0.0.spl` installieren (Splunk 10.4+), *KIS Studio (SAKH)* oeffnen.
 4. Fuer eine Demo ein Szenario im Input einschalten, z. B. *Netzwerkausfall Haus C* oder

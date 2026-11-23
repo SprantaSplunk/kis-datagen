@@ -2,6 +2,15 @@
 
 ## 2026-11-23
 
+### TA-kis-datagen 1.0.1
+
+- Behoben: Auf der Seite *Inputs* liess sich kein Input anlegen ("Something went wrong"). Splunk hat
+  den Input *SAKH Krankenhaus (KIS, Medizintechnik, IT-Infrastruktur)* nicht geladen, weil die App das
+  reservierte Argument `index` selbst deklariert hat. Der *Event-Index* bleibt im Input einstellbar.
+- App-Logo ergaenzt (kein 404 mehr auf `appLogo.png`).
+- Zu tun: `dist/TA-kis-datagen-1.0.1.tar.gz` ueber die bestehende Installation hochladen
+  (*Upgrade app* ankreuzen), danach Splunk neu starten und den Input anlegen.
+
 ### TA-kis-datagen 1.0.0
 
 - Neues Add-on mit dem Input *SAKH Krankenhaus (KIS, Medizintechnik, IT-Infrastruktur)*: ein Input

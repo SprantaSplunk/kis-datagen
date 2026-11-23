@@ -214,5 +214,19 @@ class Scenarios(unittest.TestCase):
         self.assertFalse(any(e[1] == "cisco:iq:advisory" and "sakhdemo" in e[4]["advisoryId"] for e in ev))
 
 
+class SchemeTest(unittest.TestCase):
+    """splunkd refuses to initialise a modular input whose scheme declares a reserved argument."""
+
+    RESERVED = {"index", "host", "source", "sourcetype", "interval", "disabled"}
+
+    def test_no_reserved_scheme_arguments(self):
+        with open(os.path.join(BIN, "kis_datagen.py"), encoding="utf-8") as fh:
+            src = fh.read()
+        declared = set(re.findall(r"smi\.Argument\(\s*'(\w+)'", src))
+        declared |= set(re.findall(r"'(\w+)'", re.search(r"for arg in \(([^)]*)\)", src).group(1)))
+        self.assertIn("metrics_index", declared)
+        self.assertFalse(declared & self.RESERVED, declared & self.RESERVED)
+
+
 if __name__ == "__main__":
     unittest.main()
