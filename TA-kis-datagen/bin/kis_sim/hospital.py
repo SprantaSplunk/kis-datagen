@@ -117,6 +117,25 @@ LAB_TESTS = [
     ("ABO", "Blutgruppe / Antikoerpersuchtest", "", 0, 0, "Immunhaematologie", 0, 0),
     ("KREUZ", "Kreuzprobe", "", 0, 0, "Immunhaematologie", 0, 0),
 ]
+# decimals the analyzer reports
+LAB_DECIMALS = {"HB": 1, "LEUKO": 1, "THROMBO": 0, "NA": 0, "K": 1, "KREA": 2, "CRP": 1, "TROP": 0,
+                "LAKTAT": 1, "INR": 1, "GLU": 0, "PCT": 2}
+# critical results: (flag, nearest value, farthest value, share); most values land close to the
+# alarm limit, and the clinically common direction dominates (low Hb from bleeding, high K in renal failure)
+LAB_CRITICAL = {
+    "HB": [("LL", 6.9, 4.8, 0.95), ("HH", 20.1, 21.5, 0.05)],
+    "LEUKO": [("LL", 0.9, 0.2, 0.4), ("HH", 30.5, 60.0, 0.6)],
+    "THROMBO": [("LL", 29, 5, 0.85), ("HH", 1001, 1300, 0.15)],
+    "NA": [("LL", 119, 112, 0.7), ("HH", 161, 168, 0.3)],
+    "K": [("LL", 2.7, 2.2, 0.35), ("HH", 6.3, 7.6, 0.65)],
+    "KREA": [("HH", 5.05, 9.5, 1.0)],
+    "CRP": [("HH", 301, 420, 1.0)],
+    "TROP": [("HH", 101, 2500, 1.0)],
+    "LAKTAT": [("HH", 4.1, 9.0, 1.0)],
+    "INR": [("HH", 4.6, 7.5, 1.0)],
+    "GLU": [("LL", 39, 25, 0.5), ("HH", 401, 650, 0.5)],
+    "PCT": [("HH", 10.1, 60.0, 1.0)],
+}
 
 BLOOD_GROUPS = ["0-", "0+", "A-", "A+", "B-", "B+", "AB-", "AB+"]
 BLOOD_SHARE = {"0-": 0.06, "0+": 0.30, "A-": 0.07, "A+": 0.37, "B-": 0.02, "B+": 0.12, "AB-": 0.01, "AB+": 0.05}

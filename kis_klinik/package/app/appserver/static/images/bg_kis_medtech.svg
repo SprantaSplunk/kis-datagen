@@ -89,7 +89,7 @@
     <rect x="1125" y="1572" width="755" height="420" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
     <rect x="1143" y="1590" width="8" height="8" rx="2" fill="#2f6fc4"/>
     <text x="1159" y="1600" class="pt">STK / MTK faellig (MPBV)</text>
-    <text x="1862" y="1600" class="ph" text-anchor="end">STK = Sicherheitstechnische Kontrolle, MTK = Messtechnische Kontrolle, Tage = Tage bis zur STK</text>
-    <line x1="1126" y1="1612.5" x2="1879" y2="1612.5" stroke="#edf1f5"/>
+    <text x="1159" y="1619" class="ph">STK = Sicherheitstechnische Kontrolle, MTK = Messtechnische Kontrolle, Tage = Tage bis zur STK</text>
+    <line x1="1126" y1="1629.5" x2="1879" y2="1629.5" stroke="#edf1f5"/>
   </g>
 </svg>

@@ -69,6 +69,13 @@
       "bundle": "../dist/heat_timeline/visualization.js",
       "config": "../visualizations/heat_timeline/config.json",
       "harness": "../visualizations/heat_timeline/harness.json"
+    },
+    {
+      "id": "lab_critical",
+      "label": "Kritische Laborwerte",
+      "bundle": "../dist/lab_critical/visualization.js",
+      "config": "../visualizations/lab_critical/config.json",
+      "harness": "../visualizations/lab_critical/harness.json"
     }
   ]
 }

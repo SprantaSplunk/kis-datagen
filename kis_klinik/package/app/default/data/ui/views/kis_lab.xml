@@ -98,13 +98,20 @@
                     }
                 }
             }
+        },
+        "tokens": {
+            "default": {
+                "lab_test": {
+                    "value": "*"
+                }
+            }
         }
     },
     "dataSources": {
         "ds_lis": {
             "type": "ds.search",
             "options": {
-                "query": "index=demo_sakh sourcetype=\"sakh:lis:result\" department=\"$dept$\"\n| fields Wert Zeit _time c category count critical delivered_to_kis delivery_status flag m n pos priority tat_min test_code test_name u unit value ward",
+                "query": "index=demo_sakh sourcetype=\"sakh:lis:result\" department=\"$dept$\"\n| fields Richtung Station _time c category count crit_high crit_low critical delivered_to_kis delivery_status flag m n patient_id pos priority ref_high ref_low tat_min test_code test_name u unit value ward",
                 "enableSmartSources": true
             },
             "name": "Laborbefunde"
@@ -165,11 +172,18 @@
                 "query": "| timechart span=10m count by delivery_status"
             }
         },
-        "ds_crit_table": {
+        "ds_crit": {
             "type": "ds.chain",
             "options": {
                 "extend": "ds_lis",
-                "query": "| where flag=\"HH\" OR flag=\"LL\"\n| eval Zeit=strftime(_time, \"%H:%M\"), Wert=value.\" \".unit\n| table Zeit ward test_name Wert flag priority delivery_status\n| rename ward as Station test_name as Test flag as Flag priority as Prioritaet delivery_status as Zustellung | head 40\n| appendpipe [| stats count | where count=0 | eval Zeit=\"Keine kritischen Werte im Zeitraum\" | fields - count]"
+                "query": "| where flag=\"HH\" OR flag=\"LL\"\n| table _time test_code test_name value unit ref_low ref_high crit_low crit_high flag ward priority delivery_status patient_id\n| head 300"
+            }
+        },
+        "ds_crit_ward": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_lis",
+                "query": "| search (flag=\"HH\" OR flag=\"LL\") test_code=\"$lab_test$\"\n| eval Richtung=if(flag=\"HH\", \"zu hoch\", \"zu niedrig\")\n| chart count over ward by Richtung | rename ward as Station\n| appendpipe [| stats count | where count=0 | eval Station=\"Keine kritischen Werte im Zeitraum\" | fields - count]"
             }
         },
         "ds_ris": {
@@ -591,261 +605,45 @@
             }
         },
         "viz_09": {
-            "type": "splunk.table",
+            "type": "kis_klinik.lab_critical",
             "dataSources": {
-                "primary": "ds_crit_table"
+                "primary": "ds_crit"
+            },
+            "options": {
+                "drilldownToken": "lab_test"
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.setToken",
+                    "options": {
+                        "tokens": [
+                            {
+                                "token": "lab_test",
+                                "key": "value"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "viz_10": {
+            "type": "splunk.bar",
+            "dataSources": {
+                "primary": "ds_crit_ward"
             },
             "options": {
                 "backgroundColor": "transparent",
-                "count": 10,
-                "headerVisibility": "fixed",
-                "fontSize": "small",
-                "tableFormat": {
-                    "rowBackgroundColors": "> table | seriesByIndex(0) | pick(rowBg)",
-                    "headerBackgroundColor": "#e9eef4",
-                    "rowColors": "#13294b",
-                    "headerColor": "#5b6878"
-                },
-                "columnFormat": {
-                    "Zustellung": {
-                        "rowBackgroundColors": "> table | seriesByName(\"Zustellung\") | matchValue(statusBg)"
-                    }
-                }
-            },
-            "context": {
-                "rowBg": [
-                    "#ffffff",
-                    "#f5f7fa"
+                "legendDisplay": "bottom",
+                "xAxisTitleVisibility": "hide",
+                "yAxisTitleVisibility": "hide",
+                "seriesColors": [
+                    "#c8102e",
+                    "#006d9c"
                 ],
-                "statusBg": [
-                    {
-                        "match": "Critical",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "Degraded",
-                        "value": "#fcefcc"
-                    },
-                    {
-                        "match": "Healthy",
-                        "value": "#d9f0e3"
-                    },
-                    {
-                        "match": "critical",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "high",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "error",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "warning",
-                        "value": "#fcefcc"
-                    },
-                    {
-                        "match": "medium",
-                        "value": "#fcefcc"
-                    },
-                    {
-                        "match": "stopped",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "failed",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "running",
-                        "value": "#d9f0e3"
-                    },
-                    {
-                        "match": "success",
-                        "value": "#d9f0e3"
-                    },
-                    {
-                        "match": "good",
-                        "value": "#d9f0e3"
-                    },
-                    {
-                        "match": "normal",
-                        "value": "#d9f0e3"
-                    },
-                    {
-                        "match": "Reachable",
-                        "value": "#d9f0e3"
-                    },
-                    {
-                        "match": "Unreachable",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "kritisch",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "voll",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "gestoppt",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "Gesperrt",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "Offline",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "Failed",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "Fehler",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "Vulnerable",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "ueberfaellig",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "Rettungsstopp",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "unterbesetzt",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "niedrig",
-                        "value": "#fcefcc"
-                    },
-                    {
-                        "match": "angespannt",
-                        "value": "#fcefcc"
-                    },
-                    {
-                        "match": "Stau",
-                        "value": "#fcefcc"
-                    },
-                    {
-                        "match": "Warning",
-                        "value": "#fcefcc"
-                    },
-                    {
-                        "match": "Wartung",
-                        "value": "#fcefcc"
-                    },
-                    {
-                        "match": "Expiring",
-                        "value": "#fcefcc"
-                    },
-                    {
-                        "match": "End of Sale",
-                        "value": "#fcefcc"
-                    },
-                    {
-                        "match": "End of Support",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "ueberlastet",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "ok",
-                        "value": "#d9f0e3"
-                    },
-                    {
-                        "match": "Success",
-                        "value": "#d9f0e3"
-                    },
-                    {
-                        "match": "in Betrieb",
-                        "value": "#d9f0e3"
-                    },
-                    {
-                        "match": "Covered",
-                        "value": "#d9f0e3"
-                    },
-                    {
-                        "match": "Active",
-                        "value": "#d9f0e3"
-                    },
-                    {
-                        "match": "Operational",
-                        "value": "#d9f0e3"
-                    },
-                    {
-                        "match": "Non-Operational",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "Not Covered",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "Critical",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "High",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "Medium",
-                        "value": "#fcefcc"
-                    },
-                    {
-                        "match": "Error",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "Emergency",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "verdaechtig",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "Neu",
-                        "value": "#fcefcc"
-                    },
-                    {
-                        "match": "In Bearbeitung",
-                        "value": "#fcefcc"
-                    },
-                    {
-                        "match": "Geloest",
-                        "value": "#d9f0e3"
-                    },
-                    {
-                        "match": "online",
-                        "value": "#d9f0e3"
-                    },
-                    {
-                        "match": "offline",
-                        "value": "#f9dde1"
-                    },
-                    {
-                        "match": "normal",
-                        "value": "#d9f0e3"
-                    }
-                ]
+                "stackMode": "stacked"
             }
         },
-        "viz_10": {
+        "viz_11": {
             "type": "splunk.bar",
             "dataSources": {
                 "primary": "ds_modality"
@@ -870,7 +668,7 @@
                 "stackMode": "stacked"
             }
         },
-        "viz_11": {
+        "viz_12": {
             "type": "splunk.column",
             "dataSources": {
                 "primary": "ds_wait"
@@ -894,7 +692,7 @@
                 ]
             }
         },
-        "viz_12": {
+        "viz_13": {
             "type": "splunk.column",
             "dataSources": {
                 "primary": "ds_pacs"
@@ -919,7 +717,7 @@
                 "stackMode": "stacked"
             }
         },
-        "viz_13": {
+        "viz_14": {
             "type": "splunk.table",
             "dataSources": {
                 "primary": "ds_moved"
@@ -1169,7 +967,7 @@
                 ]
             }
         },
-        "viz_14": {
+        "viz_15": {
             "type": "splunk.pie",
             "dataSources": {
                 "primary": "ds_device"
@@ -1192,7 +990,7 @@
                 "showDonutHole": true
             }
         },
-        "viz_15": {
+        "viz_16": {
             "type": "splunk.table",
             "dataSources": {
                 "primary": "ds_pacs_fail"
@@ -1447,7 +1245,7 @@
         "type": "absolute",
         "options": {
             "width": 1920,
-            "height": 2020,
+            "height": 2060,
             "display": "auto-scale",
             "backgroundColor": "#eef1f5",
             "backgroundImage": {
@@ -1644,27 +1442,27 @@
                 "position": {
                     "x": 52,
                     "y": 874,
-                    "w": 1816,
-                    "h": 324
+                    "w": 1196,
+                    "h": 364
                 }
             },
             {
                 "item": "viz_10",
                 "type": "block",
                 "position": {
-                    "x": 52,
-                    "y": 1304,
+                    "x": 1292,
+                    "y": 874,
                     "w": 576,
-                    "h": 284
+                    "h": 364
                 }
             },
             {
                 "item": "viz_11",
                 "type": "block",
                 "position": {
-                    "x": 672,
-                    "y": 1304,
-                    "w": 421,
+                    "x": 52,
+                    "y": 1344,
+                    "w": 576,
                     "h": 284
                 }
             },
@@ -1672,9 +1470,9 @@
                 "item": "viz_12",
                 "type": "block",
                 "position": {
-                    "x": 1137,
-                    "y": 1304,
-                    "w": 731,
+                    "x": 672,
+                    "y": 1344,
+                    "w": 421,
                     "h": 284
                 }
             },
@@ -1682,19 +1480,19 @@
                 "item": "viz_13",
                 "type": "block",
                 "position": {
-                    "x": 52,
-                    "y": 1664,
-                    "w": 886,
-                    "h": 304
+                    "x": 1137,
+                    "y": 1344,
+                    "w": 731,
+                    "h": 284
                 }
             },
             {
                 "item": "viz_14",
                 "type": "block",
                 "position": {
-                    "x": 982,
-                    "y": 1664,
-                    "w": 421,
+                    "x": 52,
+                    "y": 1704,
+                    "w": 886,
                     "h": 304
                 }
             },
@@ -1702,8 +1500,18 @@
                 "item": "viz_15",
                 "type": "block",
                 "position": {
+                    "x": 982,
+                    "y": 1704,
+                    "w": 421,
+                    "h": 304
+                }
+            },
+            {
+                "item": "viz_16",
+                "type": "block",
+                "position": {
                     "x": 1447,
-                    "y": 1664,
+                    "y": 1704,
                     "w": 421,
                     "h": 304
                 }

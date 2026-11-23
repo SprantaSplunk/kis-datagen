@@ -2,6 +2,33 @@
 
 ## 2026-11-23
 
+### kis_klinik 1.0.6
+
+- *Medizintechnik*, *STK / MTK faellig (MPBV)*: Die Erklaerung der Abkuerzungen lag ueber dem
+  Panel-Titel. Hinweise, die nicht neben den Titel passen, stehen jetzt in einer eigenen Zeile
+  darunter. Das betrifft auch *Wartende je Manchester-Triage-Stufe* in der Notaufnahme.
+- *Labor und Radiologie*: Die Tabelle *Kritische Werte* ist ersetzt durch die neue Visualisierung
+  *Kritische Werte je Test*. Jeder Test hat eine Skala mit Referenzbereich (gruen), auffaelligem
+  Bereich (gelb) und dem Bereich jenseits der Alarmgrenze (rot), dazu die Alarmgrenzen als rote
+  Linien. Jeder kritische Befund ist ein Punkt; ein Ring heisst "noch nicht ins KIS zugestellt".
+  Rechts stehen der letzte Wert, die Station und die Uhrzeit. Der Tooltip eines Punkts nennt Wert,
+  Station, Zeit, Prioritaet, Zustellung und Fall-ID.
+- Neues Panel *Kritische Werte je Station* (zu hoch / zu niedrig). Ein Klick auf einen Test filtert
+  es auf diesen Test, ein zweiter Klick zeigt wieder alle Tests.
+- Zu tun: `dist/kis_klinik-1.0.6.spl` als Upgrade hochladen und Splunk neu starten.
+
+### TA-kis-datagen 1.0.7
+
+- Kritische Laborwerte liegen jetzt realistisch knapp jenseits der Alarmgrenze und meist in der
+  klinisch typischen Richtung, z. B. Kalium meist zu hoch, Haemoglobin meist zu niedrig, Troponin
+  und Laktat nur zu hoch. Bisher waren sie oft extrem, etwa Natrium 184 mmol/L.
+- Auffaellige, aber nicht kritische Werte ueberschreiten die Alarmgrenze nicht mehr.
+- Laborbefunde (`sakh:lis:result`) enthalten die neuen Felder `crit_low` und `crit_high`
+  (Alarmgrenzen).
+- Zu tun: `dist/TA-kis-datagen-1.0.7.tar.gz` als Upgrade installieren und Splunk neu starten.
+  Aeltere Befunde ohne die neuen Felder zeigt *Kritische Werte je Test* mit den eingebauten Grenzen
+  an.
+
 ### kis_klinik 1.0.5
 
 - *Intensivstation*: Neues Auswahlfeld *Bett (Verlauf)* mit allen belegten Betten und

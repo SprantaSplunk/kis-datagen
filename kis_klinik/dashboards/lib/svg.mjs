@@ -16,6 +16,30 @@ const LINE = '#d6dde6';
 const PAGE = '#eef1f5';
 const BRAND = '#0b7fab';
 
+// rough width of rendered text; the SVG is rasterised by the browser, so exact metrics are not available here
+function textWidth(text, size, bold) {
+    return String(text).length * size * (bold ? 0.56 : 0.5);
+}
+
+// header layout: the hint sits right of the title when it fits, otherwise it wraps onto lines below it
+export function panelHeader({ title, hint, w }) {
+    if (!title) return { lines: [], inline: false, top: 12 };
+    if (!hint) return { lines: [], inline: false, top: 44 };
+    if (34 + textWidth(title, 15, true) + 24 + textWidth(hint, 12.5) + 18 + 40 <= w) return { lines: [hint], inline: true, top: 44 };
+    const max = w - 52;
+    const lines = [];
+    let line = '';
+    for (const word of String(hint).split(/\s+/)) {
+        const next = line ? `${line} ${word}` : word;
+        if (line && textWidth(next, 12.5) > max) {
+            lines.push(line);
+            line = word;
+        } else line = next;
+    }
+    if (line) lines.push(line);
+    return { lines, inline: false, top: 44 + lines.length * 17 };
+}
+
 // thin line pictogram per domain, drawn at the right end of the header
 function pictogram(domain, right) {
     const s = `fill="none" stroke="#c3cedb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"`;
@@ -55,10 +79,14 @@ export function background({ width, height, domain, title, subtitle, kicker, pan
     const panelSvg = panels
         .map((p) => {
             const tone = p.accent || accent;
+            const layout = panelHeader(p);
+            const hint = layout.inline
+                ? `\n    <text x="${p.x + p.w - 18}" y="${p.y + 28}" class="ph" text-anchor="end">${esc(p.hint)}</text>`
+                : layout.lines.map((l, i) => `\n    <text x="${p.x + 34}" y="${p.y + 47 + i * 17}" class="ph">${esc(l)}</text>`).join('');
             const head = p.title
                 ? `<rect x="${p.x + 18}" y="${p.y + 18}" width="8" height="8" rx="2" fill="${tone}"/>
-    <text x="${p.x + 34}" y="${p.y + 28}" class="pt">${esc(p.title)}</text>${p.hint ? `\n    <text x="${p.x + p.w - 18}" y="${p.y + 28}" class="ph" text-anchor="end">${esc(p.hint)}</text>` : ''}
-    <line x1="${p.x + 1}" y1="${p.y + 40.5}" x2="${p.x + p.w - 1}" y2="${p.y + 40.5}" stroke="#edf1f5"/>`
+    <text x="${p.x + 34}" y="${p.y + 28}" class="pt">${esc(p.title)}</text>${hint}
+    <line x1="${p.x + 1}" y1="${p.y + layout.top - 3.5}" x2="${p.x + p.w - 1}" y2="${p.y + layout.top - 3.5}" stroke="#edf1f5"/>`
                 : '';
             return `<rect x="${p.x}" y="${p.y}" width="${p.w}" height="${p.h}" rx="8" fill="#ffffff" stroke="${LINE}" filter="url(#card)"/>
     ${head}`;

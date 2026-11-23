@@ -259,7 +259,8 @@ export function createVisualization(spec) {
         const y = event.clientY - rect.top;
         const hit = hitTest(hits.filter((item) => item.hover), x, y);
         if (hit) showTooltip(hit, { x, y });
-        else if (!hoverId) tooltip.hidden = true;
+        else if (hoverId) showTooltip(hits.find((item) => item.id === hoverId));
+        else tooltip.hidden = true;
     }
     stage.addEventListener('mousemove', onPointerMove);
     stage.addEventListener('mouseleave', () => {

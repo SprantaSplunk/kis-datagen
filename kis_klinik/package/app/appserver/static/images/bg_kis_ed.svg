@@ -60,8 +60,8 @@
     <rect x="40" y="500" width="1065" height="380" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
     <rect x="58" y="518" width="8" height="8" rx="2" fill="#1e8a5a"/>
     <text x="74" y="528" class="pt">Wartende je Manchester-Triage-Stufe</text>
-    <text x="1087" y="528" class="ph" text-anchor="end">Klick auf eine Stufe filtert die Zugaenge unten, zweiter Klick oder &quot;Alle Stufen&quot; oben hebt den Filter auf</text>
-    <line x1="41" y1="540.5" x2="1104" y2="540.5" stroke="#edf1f5"/>
+    <text x="74" y="547" class="ph">Klick auf eine Stufe filtert die Zugaenge unten, zweiter Klick oder &quot;Alle Stufen&quot; oben hebt den Filter auf</text>
+    <line x1="41" y1="557.5" x2="1104" y2="557.5" stroke="#edf1f5"/>
     <rect x="1125" y="500" width="755" height="380" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
     <rect x="1143" y="518" width="8" height="8" rx="2" fill="#1e8a5a"/>
     <text x="1159" y="528" class="pt">Wartend und Boarding</text>

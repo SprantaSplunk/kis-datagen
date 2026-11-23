@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="2020" viewBox="0 0 1920 2020">
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="2060" viewBox="0 0 1920 2060">
   <defs>
     <filter id="card" x="-5%" y="-5%" width="110%" height="115%">
       <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#13294b" flood-opacity="0.07"/>
@@ -9,7 +9,7 @@
       .sec { font: 700 15px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #13294b; }
     </style>
   </defs>
-  <rect width="1920" height="2020" fill="#eef1f5"/>
+  <rect width="1920" height="2060" fill="#eef1f5"/>
   <rect width="1920" height="200" fill="#ffffff"/>
   <rect width="1920" height="4" fill="#0b7fab"/>
   <rect x="0" y="199" width="1920" height="1" fill="#d6dde6"/>
@@ -28,8 +28,8 @@
   <g>
     <text x="40" y="284" class="sec">Labor (LIS)</text>
     <rect x="40" y="290" width="28" height="3" rx="1.5" fill="#b8457c"/>
-    <text x="40" y="1244" class="sec">Radiologie (RIS / PACS)</text>
-    <rect x="40" y="1250" width="28" height="3" rx="1.5" fill="#b8457c"/>
+    <text x="40" y="1284" class="sec">Radiologie (RIS / PACS)</text>
+    <rect x="40" y="1290" width="28" height="3" rx="1.5" fill="#b8457c"/>
   </g>
   <g>
     <rect x="40" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
@@ -65,33 +65,39 @@
     <text x="1314" y="498" class="pt">Zustellung ins KIS</text>
     <text x="1862" y="498" class="ph" text-anchor="end">in Warteschlange = Kommunikationsserver</text>
     <line x1="1281" y1="510.5" x2="1879" y2="510.5" stroke="#edf1f5"/>
-    <rect x="40" y="830" width="1840" height="380" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="40" y="830" width="1220" height="420" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
     <rect x="58" y="848" width="8" height="8" rx="2" fill="#b8457c"/>
-    <text x="74" y="858" class="pt">Kritische Werte</text>
-    <line x1="41" y1="870.5" x2="1879" y2="870.5" stroke="#edf1f5"/>
-    <rect x="40" y="1260" width="600" height="340" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
-    <rect x="58" y="1278" width="8" height="8" rx="2" fill="#b8457c"/>
-    <text x="74" y="1288" class="pt">Auftraege je Modalitaet und Status</text>
-    <line x1="41" y1="1300.5" x2="639" y2="1300.5" stroke="#edf1f5"/>
-    <rect x="660" y="1260" width="445" height="340" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
-    <rect x="678" y="1278" width="8" height="8" rx="2" fill="#b8457c"/>
-    <text x="694" y="1288" class="pt">Wartezeit Routine (Tage)</text>
-    <line x1="661" y1="1300.5" x2="1104" y2="1300.5" stroke="#edf1f5"/>
-    <rect x="1125" y="1260" width="755" height="340" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
-    <rect x="1143" y="1278" width="8" height="8" rx="2" fill="#b8457c"/>
-    <text x="1159" y="1288" class="pt">PACS Datenvolumen (MB)</text>
-    <line x1="1126" y1="1300.5" x2="1879" y2="1300.5" stroke="#edf1f5"/>
-    <rect x="40" y="1620" width="910" height="360" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
-    <rect x="58" y="1638" width="8" height="8" rx="2" fill="#b8457c"/>
-    <text x="74" y="1648" class="pt">Umgeplante Untersuchungen</text>
-    <line x1="41" y1="1660.5" x2="949" y2="1660.5" stroke="#edf1f5"/>
-    <rect x="970" y="1620" width="445" height="360" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
-    <rect x="988" y="1638" width="8" height="8" rx="2" fill="#b8457c"/>
-    <text x="1004" y="1648" class="pt">Auftraege je Geraet</text>
-    <line x1="971" y1="1660.5" x2="1414" y2="1660.5" stroke="#edf1f5"/>
-    <rect x="1435" y="1620" width="445" height="360" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
-    <rect x="1453" y="1638" width="8" height="8" rx="2" fill="#b8457c"/>
-    <text x="1469" y="1648" class="pt">PACS Speicherfehler</text>
-    <line x1="1436" y1="1660.5" x2="1879" y2="1660.5" stroke="#edf1f5"/>
+    <text x="74" y="858" class="pt">Kritische Werte je Test</text>
+    <text x="1242" y="858" class="ph" text-anchor="end">gruen Referenz, rot jenseits Alarmgrenze · Ring = noch nicht im KIS · Klick filtert die Stationen</text>
+    <line x1="41" y1="870.5" x2="1259" y2="870.5" stroke="#edf1f5"/>
+    <rect x="1280" y="830" width="600" height="420" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1298" y="848" width="8" height="8" rx="2" fill="#b8457c"/>
+    <text x="1314" y="858" class="pt">Kritische Werte je Station</text>
+    <text x="1862" y="858" class="ph" text-anchor="end">gewaehlter Test oder alle</text>
+    <line x1="1281" y1="870.5" x2="1879" y2="870.5" stroke="#edf1f5"/>
+    <rect x="40" y="1300" width="600" height="340" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="1318" width="8" height="8" rx="2" fill="#b8457c"/>
+    <text x="74" y="1328" class="pt">Auftraege je Modalitaet und Status</text>
+    <line x1="41" y1="1340.5" x2="639" y2="1340.5" stroke="#edf1f5"/>
+    <rect x="660" y="1300" width="445" height="340" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="678" y="1318" width="8" height="8" rx="2" fill="#b8457c"/>
+    <text x="694" y="1328" class="pt">Wartezeit Routine (Tage)</text>
+    <line x1="661" y1="1340.5" x2="1104" y2="1340.5" stroke="#edf1f5"/>
+    <rect x="1125" y="1300" width="755" height="340" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1143" y="1318" width="8" height="8" rx="2" fill="#b8457c"/>
+    <text x="1159" y="1328" class="pt">PACS Datenvolumen (MB)</text>
+    <line x1="1126" y1="1340.5" x2="1879" y2="1340.5" stroke="#edf1f5"/>
+    <rect x="40" y="1660" width="910" height="360" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="1678" width="8" height="8" rx="2" fill="#b8457c"/>
+    <text x="74" y="1688" class="pt">Umgeplante Untersuchungen</text>
+    <line x1="41" y1="1700.5" x2="949" y2="1700.5" stroke="#edf1f5"/>
+    <rect x="970" y="1660" width="445" height="360" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="988" y="1678" width="8" height="8" rx="2" fill="#b8457c"/>
+    <text x="1004" y="1688" class="pt">Auftraege je Geraet</text>
+    <line x1="971" y1="1700.5" x2="1414" y2="1700.5" stroke="#edf1f5"/>
+    <rect x="1435" y="1660" width="445" height="360" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1453" y="1678" width="8" height="8" rx="2" fill="#b8457c"/>
+    <text x="1469" y="1688" class="pt">PACS Speicherfehler</text>
+    <line x1="1436" y1="1700.5" x2="1879" y2="1700.5" stroke="#edf1f5"/>
   </g>
 </svg>

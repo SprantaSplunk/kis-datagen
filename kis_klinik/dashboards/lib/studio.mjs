@@ -1,5 +1,5 @@
 // Small design system on top of the Dashboard Studio JSON definition.
-import { background, navButton } from './svg.mjs';
+import { background, navButton, panelHeader } from './svg.mjs';
 
 export const APP = 'kis_klinik';
 export const WIDTH = 1920;
@@ -419,7 +419,7 @@ export function buildPage(spec, registry) {
             const w = Math.round(panel.cols * COL_W + (panel.cols - 1) * GUTTER);
             const h = panel.h || row.h;
             panels.push({ x, y, w, h, title: panel.title, hint: panel.hint, accent: panel.accent });
-            const top = panel.title ? 44 : 12;
+            const top = panelHeader({ title: panel.title, hint: panel.hint, w }).top;
             const inset = panel.inset ?? 12;
             const vizList = Array.isArray(panel.viz) ? panel.viz : [panel.viz];
             vizList.forEach((viz, index) => {

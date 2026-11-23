@@ -69,6 +69,19 @@ class BaseVolume(unittest.TestCase):
             if k[0] == "EK":
                 self.assertTrue(3 <= d["days_of_supply"] <= 15, (k, d["days_of_supply"]))
 
+    def test_lab_critical_values_near_limits(self):
+        crit = [d for _t, st, _s, _h, d in self.events if st == "sakh:lis:result" and d.get("flag") in ("HH", "LL")]
+        self.assertGreater(len(crit), 10)
+        for d in crit:
+            bands = {flag: (near, far) for flag, near, far, _w in H.LAB_CRITICAL[d["test_code"]]}
+            near, far = bands[d["flag"]]
+            self.assertTrue(min(near, far) <= d["value"] <= max(near, far), (d["test_code"], d["flag"], d["value"]))
+            self.assertIsNotNone(d["crit_high"])
+            if d["flag"] == "LL":
+                self.assertLess(d["value"], d["crit_low"])
+            else:
+                self.assertGreater(d["value"], d["crit_high"])
+
     def test_more_than_30_sources(self):
         self.assertGreaterEqual(len(EVENT_SOURCETYPES | METRICS_ONLY), 30)
 

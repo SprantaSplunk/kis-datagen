@@ -175,9 +175,14 @@ def lis(ctx, ts):
                 val = lo + r.random() * span
             elif u < 0.97:
                 val = hi + r.random() * span * 0.6 if r.random() < 0.6 else max(0, lo - r.random() * span * 0.3)
+                step = 10 ** -H.LAB_DECIMALS[code]
+                val = min(val, chi - step) if code in H.LAB_CRITICAL else val
+                val = max(val, clo + step) if clo > 0 else val
             else:
-                val = chi * (1 + 0.2 * r.random()) if r.random() < 0.7 else max(0, clo * (1 - 0.2 * r.random()))
-            value = round(val, 2)
+                _flag, near, far, _share = weighted(r, [(c, c[3]) for c in H.LAB_CRITICAL[code]])
+                val = near + (far - near) * r.random() ** 2
+            val = round(val, H.LAB_DECIMALS[code])
+            value = val
             flag = "HH" if val >= chi else "LL" if (clo > 0 and val <= clo) else "H" if val > hi else \
                 "L" if val < lo else "N"
         delivered = not (hl7 > 0.2 and r.random() < 0.95 * hl7)
@@ -185,6 +190,8 @@ def lis(ctx, ts):
             "order_id": "L%09d" % r.randint(0, 999999999), "patient_id": _pid(r), "department": dept,
             "ward": _ward_of(r, dept)["ward"], "test_code": code, "test_name": name, "category": cat,
             "value": value, "unit": unit_, "ref_low": lo, "ref_high": hi, "flag": flag,
+            "crit_low": clo if code in H.LAB_CRITICAL and clo > 0 else None,
+            "crit_high": chi if code in H.LAB_CRITICAL else None,
             "critical": flag in ("HH", "LL"), "priority": prio, "tat_min": int(tat),
             "analyzer": {"Haematologie": "LAB-HAEM-1", "Gerinnung": "LAB-COAG-1",
                          "Immunhaematologie": "LAB-IH-1", "Blutgas": "LAB-BGA-1"}.get(cat, "LAB-CHEM-%d" % r.randint(1, 2)),

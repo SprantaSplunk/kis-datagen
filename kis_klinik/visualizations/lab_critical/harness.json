@@ -1,0 +1,33 @@
+{
+  "dataSources": {
+    "primary": {
+      "data": {
+        "fields": [
+          { "name": "_time" }, { "name": "test_code" }, { "name": "test_name" }, { "name": "value" }, { "name": "unit" },
+          { "name": "ref_low" }, { "name": "ref_high" }, { "name": "crit_low" }, { "name": "crit_high" }, { "name": "flag" },
+          { "name": "ward" }, { "name": "priority" }, { "name": "delivery_status" }, { "name": "patient_id" }
+        ],
+        "columns": [
+          ["2026-11-23T08:12:00.000+01:00", "2026-11-23T09:40:00.000+01:00", "2026-11-23T11:05:00.000+01:00", "2026-11-23T13:31:00.000+01:00", "2026-11-23T10:02:00.000+01:00", "2026-11-23T12:44:00.000+01:00", "2026-11-23T14:20:00.000+01:00", "2026-11-23T07:55:00.000+01:00", "2026-11-23T13:58:00.000+01:00", "2026-11-23T09:15:00.000+01:00", "2026-11-23T14:41:00.000+01:00", "2026-11-23T11:47:00.000+01:00", "2026-11-23T12:10:00.000+01:00", "2026-11-23T14:05:00.000+01:00"],
+          ["K", "K", "K", "K", "HB", "HB", "HB", "NA", "NA", "TROP", "TROP", "GLU", "GLU", "LAKTAT"],
+          ["Kalium", "Kalium", "Kalium", "Kalium", "Haemoglobin", "Haemoglobin", "Haemoglobin", "Natrium", "Natrium", "Troponin T hs", "Troponin T hs", "Glukose", "Glukose", "Laktat"],
+          ["6.4", "6.9", "2.6", "6.3", "6.4", "5.8", "6.9", "118", "163", "142", "1380", "34", "455", "5.2"],
+          ["mmol/L", "mmol/L", "mmol/L", "mmol/L", "g/dL", "g/dL", "g/dL", "mmol/L", "mmol/L", "ng/L", "ng/L", "mg/dL", "mg/dL", "mmol/L"],
+          ["3.5", "3.5", "3.5", "3.5", "12", "12", "12", "135", "135", "0", "0", "70", "70", "0.5"],
+          ["5.1", "5.1", "5.1", "5.1", "17", "17", "17", "145", "145", "14", "14", "110", "110", "2.2"],
+          ["2.8", "2.8", "2.8", "2.8", "7", "7", "7", "120", "120", "", "", "40", "40", ""],
+          ["6.2", "6.2", "6.2", "6.2", "20", "20", "20", "160", "160", "100", "100", "400", "400", "4"],
+          ["HH", "HH", "LL", "HH", "LL", "LL", "LL", "LL", "HH", "HH", "HH", "LL", "HH", "HH"],
+          ["ICU-1", "INN-2", "ONK-1", "ZNA", "CHI-1", "ICU-2", "ZNA", "INN-4", "ICU-1", "KAR-1", "ZNA", "INN-1", "ICU-2", "ICU-1"],
+          ["Notfall", "Routine", "Routine", "Notfall", "Notfall", "Notfall", "Notfall", "Routine", "Notfall", "Notfall", "Notfall", "Routine", "Notfall", "Notfall"],
+          ["zugestellt", "zugestellt", "zugestellt", "in Warteschlange", "zugestellt", "zugestellt", "zugestellt", "zugestellt", "zugestellt", "zugestellt", "in Warteschlange", "zugestellt", "zugestellt", "zugestellt"],
+          ["P0004711", "P0008123", "P0002290", "P0009911", "P0003456", "P0001200", "P0006620", "P0007781", "P0004711", "P0005532", "P0009030", "P0002211", "P0003321", "P0004711"]
+        ]
+      }
+    }
+  },
+  "dataControls": [
+    { "field": "value", "row": 3, "label": "Kalium zuletzt", "type": "slider", "min": 2, "max": 8, "step": 0.1 },
+    { "field": "value", "row": 10, "label": "Troponin zuletzt", "type": "slider", "min": 100, "max": 3000, "step": 10 }
+  ]
+}

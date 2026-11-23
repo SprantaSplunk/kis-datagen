@@ -1,0 +1,42 @@
+{
+  "showTitleAndDescription": true,
+  "includeInToolbar": true,
+  "includeInVizSwitcher": true,
+  "showDrilldown": true,
+  "canSetTokens": ["dynamic"],
+  "hasEventHandlers": true,
+  "config": {
+    "name": "Kritische Laborwerte",
+    "description": "Je Test eine Skala mit Referenzbereich und Alarmgrenzen; jeder kritische Befund als Punkt, offene Zustellung ins KIS als Ring",
+    "category": "SAKH",
+    "icon": null,
+    "dataContract": {
+      "requiredDataSources": ["primary"],
+      "optionalDataSources": []
+    },
+    "size": {
+      "initialWidth": 1100,
+      "initialHeight": 420
+    },
+    "optionsSchema": {
+      "drilldownToken": { "type": "string", "default": "lab_test" },
+      "maxRows": { "type": "number", "default": 12 },
+      "showLegend": { "type": "boolean", "default": true }
+    },
+    "editorConfig": [
+      {
+        "label": "Darstellung",
+        "layout": [
+          [
+            { "editor": "editor.number", "label": "Max. Tests", "option": "maxRows" },
+            { "editor": "editor.checkbox", "label": "Legende", "option": "showLegend" }
+          ]
+        ]
+      },
+      {
+        "label": "Interaktion",
+        "layout": [[{ "editor": "editor.text", "label": "Drilldown-Feldname", "option": "drilldownToken" }]]
+      }
+    ]
+  }
+}

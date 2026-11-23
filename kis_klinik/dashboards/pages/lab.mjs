@@ -1,4 +1,4 @@
-import { bar, chain, column, kpi, line, pie, search, table } from '../lib/studio.mjs';
+import { bar, chain, column, custom, kpi, line, pie, search, setToken, table } from '../lib/studio.mjs';
 import { IDX, none } from '../lib/spl.mjs';
 
 const LIS = `${IDX} sourcetype="sakh:lis:result" department="$dept$"`;
@@ -12,6 +12,7 @@ export default {
     subtitle: 'Befunde, kritische Werte, Durchlaufzeiten, Zustellung ins KIS, Radiologie-Auftraege und PACS',
     description: 'LIS-Befunde mit TAT und KIS-Zustellung, RIS-Auftraege je Modalitaet und DICOM-Speicherungen im PACS',
     inputs: ['time', 'dept'],
+    tokens: { lab_test: '*' },
     dataSources: {
         ds_lis: search(LIS, { name: 'Laborbefunde' }),
         ds_k_results: chain('ds_lis', '| timechart span=30m count as Befunde'),
@@ -22,11 +23,13 @@ export default {
         ds_cat: chain('ds_lis', '| timechart span=30m count by category'),
         ds_tat: chain('ds_lis', '| where category!="Mikrobiologie" | timechart span=30m avg(tat_min) by priority'),
         ds_delivery: chain('ds_lis', '| timechart span=10m count by delivery_status'),
-        ds_crit_table: chain('ds_lis', `| where flag="HH" OR flag="LL"
-| eval Zeit=strftime(_time, "%H:%M"), Wert=value." ".unit
-| table Zeit ward test_name Wert flag priority delivery_status
-| rename ward as Station test_name as Test flag as Flag priority as Prioritaet delivery_status as Zustellung | head 40
-${none('Zeit', 'Keine kritischen Werte im Zeitraum')}`),
+        ds_crit: chain('ds_lis', `| where flag="HH" OR flag="LL"
+| table _time test_code test_name value unit ref_low ref_high crit_low crit_high flag ward priority delivery_status patient_id
+| head 300`),
+        ds_crit_ward: chain('ds_lis', `| search (flag="HH" OR flag="LL") test_code="$lab_test$"
+| eval Richtung=if(flag="HH", "zu hoch", "zu niedrig")
+| chart count over ward by Richtung | rename ward as Station
+${none('Station', 'Keine kritischen Werte im Zeitraum')}`),
         ds_ris: search(RIS, { name: 'RIS-Auftraege' }),
         ds_modality: chain('ds_ris', '| chart count over modality by status'),
         ds_wait: chain('ds_ris', '| where priority="Routine" | stats avg(wait_days) as "Wartezeit (Tage)" by modality | eval "Wartezeit (Tage)"=round(\'Wartezeit (Tage)\', 1)'),
@@ -59,8 +62,16 @@ ${none('Zeit', 'Keine umgeplanten Untersuchungen im Zeitraum')}`),
             ],
         },
         {
-            h: 380,
-            panels: [{ cols: 12, title: 'Kritische Werte', viz: table('ds_crit_table', { count: 10, status: ['Zustellung'] }) }],
+            h: 420,
+            panels: [
+                {
+                    cols: 8,
+                    title: 'Kritische Werte je Test',
+                    hint: 'gruen Referenz, rot jenseits Alarmgrenze · Ring = noch nicht im KIS · Klick filtert die Stationen',
+                    viz: custom('lab_critical', 'ds_crit', { drilldownToken: 'lab_test' }, [setToken('lab_test')]),
+                },
+                { cols: 4, title: 'Kritische Werte je Station', hint: 'gewaehlter Test oder alle', viz: bar('ds_crit_ward', { stack: 'stacked', legend: 'bottom', colors: ['#c8102e', '#006d9c'] }) },
+            ],
         },
         {
             section: 'Radiologie (RIS / PACS)',
