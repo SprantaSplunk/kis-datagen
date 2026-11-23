@@ -11,6 +11,14 @@ const TRANSITION_MS = 700;
 //   draw(ctx, width, height, model, env) -> hits [{ id, x, y, w, h } | { id, cx, cy, r }, label, tooltip, payload]
 //   describe(model) -> accessible summary
 //   animated(model, options) -> whether continuous motion is drawn
+// Studio may deliver tokens flat or per namespace, as plain values or { value } objects.
+function tokenValue(tokens, name) {
+    if (!tokens || !name) return undefined;
+    const raw = name in tokens ? tokens[name] : tokens.default?.[name];
+    const value = raw && typeof raw === 'object' && 'value' in raw ? raw.value : raw;
+    return value === undefined || value === null ? undefined : String(value);
+}
+
 export function createVisualization(spec) {
     const root = document.getElementById('root') || document.body;
     const stage = document.createElement('div');
@@ -39,6 +47,7 @@ export function createVisualization(spec) {
         height: 0,
         theme: 'dark',
         mode: 'view',
+        tokens: {},
     };
     let model = null;
     let previous = null;
@@ -155,6 +164,7 @@ export function createVisualization(spec) {
             options: state.options || {},
             hoverId,
             mode: state.mode,
+            token: (name) => tokenValue(state.tokens, name),
         };
         ctx.save();
         hits = spec.draw(ctx, width, height, model, env) || [];
@@ -307,6 +317,17 @@ export function createVisualization(spec) {
             { invokeImmediately: true }
         )
     );
+    if (typeof VisualizationAPI.addTokensListener === 'function') {
+        cleanups.push(
+            VisualizationAPI.addTokensListener(
+                (next) => {
+                    state.tokens = next?.tokens || {};
+                    requestRender();
+                },
+                { invokeImmediately: true }
+            )
+        );
+    }
 
     function destroy() {
         if (destroyed) return;

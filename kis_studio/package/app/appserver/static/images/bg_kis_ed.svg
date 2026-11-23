@@ -53,8 +53,8 @@
     <line x1="105" y1="279" x2="1880" y2="279" stroke="#34e2a0" stroke-opacity="0.18"/>
     <text x="40" y="484" class="sec">TRIAGE</text>
     <line x1="114.4" y1="479" x2="1880" y2="479" stroke="#34e2a0" stroke-opacity="0.18"/>
-    <text x="40" y="914" class="sec">ZUGAENGE (FILTER PER KLICK AUF EINE TRIAGE-STUFE)</text>
-    <line x1="518.6" y1="909" x2="1880" y2="909" stroke="#34e2a0" stroke-opacity="0.18"/>
+    <text x="40" y="914" class="sec">ZUGAENGE (FILTER: TRIAGE-STUFE OBEN ODER KLICK IM FLUSS)</text>
+    <line x1="584.4" y1="909" x2="1880" y2="909" stroke="#34e2a0" stroke-opacity="0.18"/>
   </g>
   <g>
     <rect x="40" y="300" width="290" height="150" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
@@ -85,7 +85,7 @@
     <rect x="58" y="500" width="120" height="2" rx="1" fill="#34e2a0" fill-opacity="0.85"/>
     <rect x="60" y="516" width="4" height="16" rx="2" fill="#34e2a0"/>
     <text x="72" y="529" class="pt">WARTENDE JE MANCHESTER-TRIAGE-STUFE</text>
-    <text x="1085" y="529" class="ph" text-anchor="end">Klick filtert die Zugaenge unten</text>
+    <text x="1085" y="529" class="ph" text-anchor="end">Klick auf eine Stufe filtert die Zugaenge unten, zweiter Klick oder &quot;Alle Stufen&quot; oben hebt den Filter auf</text>
     <rect x="1125" y="500" width="755" height="380" rx="18" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.2"/>
     <rect x="1143" y="500" width="120" height="2" rx="1" fill="#34e2a0" fill-opacity="0.85"/>
     <rect x="1145" y="516" width="4" height="16" rx="2" fill="#34e2a0"/>

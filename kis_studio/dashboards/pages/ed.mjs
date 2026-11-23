@@ -1,5 +1,5 @@
 import { bar, chain, column, custom, kpi, line, pie, search, setToken, table } from '../lib/studio.mjs';
-import { IDX, MIDX } from '../lib/spl.mjs';
+import { IDX, MIDX, none } from '../lib/spl.mjs';
 
 const STATUS = `${IDX} sourcetype="sakh:ed:tracking" type=status`;
 const ARRIVALS = `${IDX} sourcetype="sakh:ed:tracking" type=arrival triage_level="$triage$"`;
@@ -13,6 +13,24 @@ export default {
     description: 'Notaufnahme: wartende Patientinnen und Patienten je Triage-Stufe, Wartezeiten, Zugaenge und Boarding',
     inputs: ['time'],
     tokens: { triage: '*' },
+    extraInputs: {
+        input_triage: {
+            type: 'input.dropdown',
+            title: 'Triage-Stufe',
+            options: {
+                token: 'triage',
+                defaultValue: '*',
+                items: [
+                    { label: 'Alle Stufen', value: '*' },
+                    { label: '1 sofort (rot)', value: '1' },
+                    { label: '2 sehr dringend (orange)', value: '2' },
+                    { label: '3 dringend (gelb)', value: '3' },
+                    { label: '4 normal (gruen)', value: '4' },
+                    { label: '5 nicht dringend (blau)', value: '5' },
+                ],
+            },
+        },
+    },
     dataSources: {
         ds_status: search(`${STATUS} | head 1`, { name: 'Letzter Board-Status' }),
         ds_flow: chain('ds_status', `| eval r=mvappend("1;".waiting_t1.";".longest_t1, "2;".waiting_t2.";".longest_t2, "3;".waiting_t3.";".longest_t3, "4;".waiting_t4.";".longest_t4, "5;".waiting_t5.";".longest_t5)
@@ -37,7 +55,8 @@ export default {
 | eval Zeit=strftime(_time, "%H:%M"), Triage=triage_level." ".triage_color
 | table Zeit Triage complaint target_department arrival_mode age sex
 | rename complaint as Leitsymptom target_department as Fachabteilung arrival_mode as Ankunft age as Alter sex as Geschlecht
-| head 50`),
+| head 50
+${none('Zeit', 'Keine Zugaenge mit dieser Triage-Stufe im Zeitraum')}`),
     },
     rows: [
         {
@@ -59,14 +78,14 @@ export default {
                 {
                     cols: 7,
                     title: 'Wartende je Manchester-Triage-Stufe',
-                    hint: 'Klick filtert die Zugaenge unten',
+                    hint: 'Klick auf eine Stufe filtert die Zugaenge unten, zweiter Klick oder "Alle Stufen" oben hebt den Filter auf',
                     viz: custom('ed_flow', 'ds_flow', { drilldownToken: 'triage' }, [setToken('triage')]),
                 },
                 { cols: 5, title: 'Wartend und Boarding', viz: line('ds_trend') },
             ],
         },
         {
-            section: 'Zugaenge (Filter per Klick auf eine Triage-Stufe)',
+            section: 'Zugaenge (Filter: Triage-Stufe oben oder Klick im Fluss)',
             h: 340,
             panels: [
                 { cols: 6, title: 'Zugaenge je Triage-Stufe', viz: column('ds_arrivals', { stack: 'stacked', colors: ['#e5203a', '#f97316', '#facc15', '#22c55e', '#3b82f6'] }) },

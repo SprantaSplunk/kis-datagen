@@ -18,19 +18,24 @@ export function draw(ctx, width, height, model, env) {
     const trackW = Math.max(20, width - headW - waitW - 26);
     const maxWait = Math.max(30, ...model.lanes.map((l) => Math.max(l.target, Number.isFinite(l.longest) ? l.longest : 0)));
     const moving = o.animate && !env.still;
+    const chosen = env.token ? env.token(o.drilldownToken) : undefined;
+    const filtered = model.lanes.some((lane) => String(lane.level) === chosen);
 
     model.lanes.forEach((lane, i) => {
         const y = gap + i * (laneH + gap);
         const hovered = env.hoverId === `lane:${lane.id}`;
+        const selected = filtered && String(lane.level) === chosen;
         const sc = statusColor(palette, lane.status);
 
         ctx.save();
-        ctx.fillStyle = withAlpha(lane.color, palette.name === 'dark' ? 0.12 : 0.1);
+        ctx.globalAlpha = filtered && !selected && !hovered ? 0.38 : 1;
+        ctx.save();
+        ctx.fillStyle = withAlpha(lane.color, palette.name === 'dark' ? (selected ? 0.24 : 0.12) : selected ? 0.2 : 0.1);
         roundRect(ctx, 0, y, width, laneH, 8);
         ctx.fill();
-        if (hovered) {
-            ctx.strokeStyle = palette.focus;
-            ctx.lineWidth = 2;
+        if (hovered || selected) {
+            ctx.strokeStyle = selected ? lane.color : palette.focus;
+            ctx.lineWidth = selected ? 3 : 2;
             ctx.stroke();
         }
         // header chip
@@ -120,21 +125,23 @@ export function draw(ctx, width, height, model, env) {
             ctx.fillText(Number.isFinite(lane.longest) ? `max ${formatNumber(lane.longest, 0)} min` : '–', bx, by - clamp(laneH * 0.14, 6, 11));
         }
         ctx.restore();
+        ctx.restore();
 
         const tooltip = [`Triage ${lane.level} · ${lane.label}`, `${formatNumber(lane.waiting, 0)} wartend`];
         if (Number.isFinite(lane.longest)) tooltip.push(`Laengste Wartezeit ${formatNumber(lane.longest, 0)} min · ${STATUS_DE[lane.status]}`);
         tooltip.push(lane.target === 0 ? 'Ziel: sofortige Behandlung' : `Ziel: Arztkontakt in ${lane.target} min`);
         if (Number.isFinite(lane.treatment)) tooltip.push(`${formatNumber(lane.treatment, 0)} in Behandlung`);
         if (Number.isFinite(lane.arrivals)) tooltip.push(`${formatNumber(lane.arrivals, 0)} Zugaenge im Zeitraum`);
+        tooltip.push(selected ? 'Klick hebt den Filter auf' : `Klick filtert die Zugaenge auf Stufe ${lane.level}`);
         hits.push({
             id: `lane:${lane.id}`,
             x: 0,
             y,
             w: width,
             h: laneH,
-            label: `Triage ${lane.level} ${lane.label}: ${formatNumber(lane.waiting, 0)} wartend`,
+            label: `Triage ${lane.level} ${lane.label}: ${formatNumber(lane.waiting, 0)} wartend${selected ? ' (Filter aktiv)' : ''}`,
             tooltip,
-            payload: { name: o.drilldownToken, value: String(lane.level) },
+            payload: { name: o.drilldownToken, value: selected ? '*' : String(lane.level) },
         });
     });
     return hits;

@@ -12,6 +12,40 @@
                 "token": "global_time",
                 "defaultValue": "-4h@m,now"
             }
+        },
+        "input_triage": {
+            "type": "input.dropdown",
+            "title": "Triage-Stufe",
+            "options": {
+                "token": "triage",
+                "defaultValue": "*",
+                "items": [
+                    {
+                        "label": "Alle Stufen",
+                        "value": "*"
+                    },
+                    {
+                        "label": "1 sofort (rot)",
+                        "value": "1"
+                    },
+                    {
+                        "label": "2 sehr dringend (orange)",
+                        "value": "2"
+                    },
+                    {
+                        "label": "3 dringend (gelb)",
+                        "value": "3"
+                    },
+                    {
+                        "label": "4 normal (gruen)",
+                        "value": "4"
+                    },
+                    {
+                        "label": "5 nicht dringend (blau)",
+                        "value": "5"
+                    }
+                ]
+            }
         }
     },
     "defaults": {
@@ -138,7 +172,7 @@
         "ds_last": {
             "type": "ds.search",
             "options": {
-                "query": "index=demo_sakh sourcetype=\"sakh:ed:tracking\" type=arrival triage_level=\"$triage$\"\n| eval Zeit=strftime(_time, \"%H:%M\"), Triage=triage_level.\" \".triage_color\n| table Zeit Triage complaint target_department arrival_mode age sex\n| rename complaint as Leitsymptom target_department as Fachabteilung arrival_mode as Ankunft age as Alter sex as Geschlecht\n| head 50",
+                "query": "index=demo_sakh sourcetype=\"sakh:ed:tracking\" type=arrival triage_level=\"$triage$\"\n| eval Zeit=strftime(_time, \"%H:%M\"), Triage=triage_level.\" \".triage_color\n| table Zeit Triage complaint target_department arrival_mode age sex\n| rename complaint as Leitsymptom target_department as Fachabteilung arrival_mode as Ankunft age as Alter sex as Geschlecht\n| head 50\n| appendpipe [| stats count | where count=0 | eval Zeit=\"Keine Zugaenge mit dieser Triage-Stufe im Zeitraum\" | fields - count]",
                 "enableSmartSources": true
             }
         }
@@ -1370,7 +1404,8 @@
             }
         ],
         "globalInputs": [
-            "input_time"
+            "input_time",
+            "input_triage"
         ]
     }
 }]]></definition>

@@ -2,6 +2,18 @@
 
 ## 2026-11-23
 
+### kis_studio 1.0.4
+
+- *Zentrale Notaufnahme*: Neues Auswahlfeld *Triage-Stufe* oben auf der Seite. Es zeigt den aktiven
+  Filter und setzt ihn mit *Alle Stufen* zurueck.
+- *Notaufnahme-Fluss*: Die per Klick gewaehlte Stufe wird hervorgehoben, die anderen Stufen werden
+  abgeblendet. Ein zweiter Klick auf dieselbe Stufe hebt den Filter auf. Der Tooltip sagt, was der
+  Klick bewirkt.
+- *Letzte Zugaenge* zeigt "Keine Zugaenge mit dieser Triage-Stufe im Zeitraum", statt leer zu bleiben
+  (haeufig bei Stufe 1).
+- Zu tun: `dist/kis_studio-1.0.4.spl` als Upgrade hochladen (*Upgrade app* ankreuzen) und Splunk
+  einmal neu starten. Splunk liest die Klick-Faehigkeit der Visualisierungen nur beim Start ein.
+
 ### TA-kis-datagen 1.0.2
 
 - ServiceNow-Changes (`snow:change_request`) sind jetzt realistisch: werktags 3 bis 7 neue Changes,
