@@ -33,26 +33,28 @@ export function draw(ctx, width, height, model, env) {
     });
 
     const hoverNode = env.hoverId && env.hoverId.startsWith('ci:') ? env.hoverId.slice(3) : null;
-    const related = new Set();
-    if (hoverNode) {
-        related.add(hoverNode);
-        // walk both directions so the whole dependency chain lights up
+    // walk each direction separately: alternating would climb back up through shared CIs (core switch,
+    // database) and light the whole graph
+    const walk = (forward) => {
+        const seen = new Set([hoverNode]);
         let frontier = [hoverNode];
-        for (let depth = 0; depth < 6 && frontier.length; depth += 1) {
+        for (let depth = 0; depth < 8 && frontier.length; depth += 1) {
             const next = [];
             for (const e of model.edges) {
-                if (frontier.includes(e.from) && !related.has(e.to)) {
-                    related.add(e.to);
-                    next.push(e.to);
-                }
-                if (frontier.includes(e.to) && !related.has(e.from)) {
-                    related.add(e.from);
-                    next.push(e.from);
+                const [src, dst] = forward ? [e.from, e.to] : [e.to, e.from];
+                if (frontier.includes(src) && !seen.has(dst)) {
+                    seen.add(dst);
+                    next.push(dst);
                 }
             }
             frontier = next;
         }
-    }
+        return seen;
+    };
+    const down = hoverNode ? walk(true) : new Set();
+    const up = hoverNode ? walk(false) : new Set();
+    const related = new Set([...down, ...up]);
+    const onPath = (e) => (down.has(e.from) && down.has(e.to)) || (up.has(e.from) && up.has(e.to));
 
     // edges
     const byId = new Map(model.nodes.map((n) => [n.id, n]));
@@ -68,7 +70,7 @@ export function draw(ctx, width, height, model, env) {
         const x2 = right.x;
         const y2 = right.y + right.h / 2;
         const bad = [byId.get(e.from), byId.get(e.to)].some((n) => n && n.own === 'crit');
-        const lit = hoverNode && related.has(e.from) && related.has(e.to);
+        const lit = hoverNode && onPath(e);
         ctx.strokeStyle = lit ? palette.accent : bad ? withAlpha(statusColor(palette, 'crit'), 0.7) : withAlpha(palette.muted, hoverNode ? 0.08 : 0.22);
         ctx.lineWidth = lit ? 2 : bad ? 1.6 : 1;
         if (x2 - x1 < 4) {

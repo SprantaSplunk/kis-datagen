@@ -2,6 +2,14 @@
 
 ## 2026-11-23
 
+### kis_klinik 1.0.10
+
+- *CMDB & ITSM*, Graph *Business Services bis zum Netzwerk*: Der Hover ueber einen Knoten hebt
+  nur noch dessen eigene Kette hervor, also wovon er abhaengt (bis zum Netzwerk) und wer von ihm
+  abhaengt. Bisher leuchteten ueber gemeinsam genutzte Server, Datenbanken und Switches fast alle
+  Pfade auf.
+- Zu tun: `dist/kis_klinik-1.0.10.spl` als Upgrade hochladen und Splunk neu starten.
+
 ### TA-kis-datagen 1.0.9
 
 - Je 2 Stunden bleibt ein kritischer Laborwert einer Normalstation lange unquittiert, mit Grund
