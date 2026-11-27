@@ -2,6 +2,30 @@
 
 ## 2026-11-27
 
+### TA-kis-datagen 1.1.0
+
+- Neues Pflichtfeld *Sprache / Language* im Input (*Deutsch* oder *English*, Standard *Deutsch*).
+  Mit *English* erzeugt der Input das *Splunk General Hospital*: alle Datenquellen mit englischen
+  Statuswerten, Freitexten, Stationen, Diagnosen, Geraetetypen und Quellen (z. B.
+  `bloodbank:stock` statt `blutdepot:bestand`). Feldnamen, Sourcetypes und Metriknamen bleiben
+  gleich, Abteilungskuerzel und Geraete-IDs (z. B. MRT-1) ebenso.
+- Neue Indizes `demo_sakh_en` (event) und `demo_sakh_en_metrics` (metric). Ein englischer Input mit
+  den Standard-Indizes schreibt automatisch dorthin, deutsche und englische Daten mischen sich nicht.
+- Bestehende Inputs bleiben unveraendert Deutsch.
+- Zu tun: `dist/TA-kis-datagen-1.1.0.tar.gz` als Upgrade installieren und Splunk neu starten. Fuer
+  englische Daten einen zweiten Input mit *Sprache / Language = English* anlegen und beim HEC-Token
+  unter *Allowed Indexes* `demo_sakh_en` und `demo_sakh_en_metrics` ergaenzen.
+
+### kis_clinic 1.0.0
+
+- Neue App *HIS Clinic (SGH)*: die englische Ausgabe von `kis_klinik` fuer das *Splunk General
+  Hospital* mit denselben 15 Dashboards (von *Hospital Overview* bis *Security*) und den 11
+  Canvas-Visualisierungen, auf US-Englisch, KIS heisst HIS. Liest `demo_sakh_en` und
+  `demo_sakh_en_metrics` und ist parallel zu `kis_klinik` installierbar.
+- `kis_klinik` bleibt unveraendert bei 1.0.11.
+- Zu tun: zuerst TA-kis-datagen 1.1.0 mit einem englischen Input einrichten, dann
+  `dist/kis_clinic-1.0.0.spl` installieren (Splunk 10.4+) und *HIS Clinic (SGH)* oeffnen.
+
 ### kis_klinik 1.0.11
 
 - *Klinik-Uebersicht*, *Stationen nach Haus und Etage*: Der Klick auf eine Station oeffnet das

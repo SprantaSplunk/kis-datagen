@@ -1,14 +1,16 @@
 #!/usr/bin/env node
-// Generates the Studio dashboards, navigation and artwork into package/app.
+// Generates the Studio dashboards, navigation and artwork into package/app (KIS_LANG=en: package/app_en, kis_clinic).
 //   node dashboards/generate.mjs           write views, nav and images
 //   node dashboards/generate.mjs --queries print every data source as one resolved search (for validation)
-import { mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { LANG, localize, tr } from './lib/i18n.mjs';
 import { DOMAINS, buildPage, pinBaseFields } from './lib/studio.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const appDir = join(here, '..', 'package', 'app');
+const packageDir = join(here, '..', 'package');
+const appDir = join(packageDir, LANG === 'en' ? 'app_en' : 'app');
 const pagesDir = join(here, 'pages');
 
 const ORDER = [
@@ -34,11 +36,15 @@ const modules = await Promise.all(
         .filter((file) => file.endsWith('.mjs'))
         .map((file) => import(join(pagesDir, file)).then((m) => m.default))
 );
-const specs = modules.filter(Boolean).sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
-for (const spec of specs) {
-    if (!ORDER.includes(spec.id)) throw new Error(`unknown page ${spec.id}`);
-    pinBaseFields(spec.dataSources);
-}
+const specs = modules
+    .filter(Boolean)
+    .sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id))
+    .map((spec) => {
+        if (!ORDER.includes(spec.id)) throw new Error(`unknown page ${spec.id}`);
+        pinBaseFields(spec.dataSources);
+        return localize(spec);
+    });
+for (const domain of DOMAINS) domain.label = tr(domain.label);
 
 if (process.argv.includes('--queries')) {
     const only = process.argv[process.argv.indexOf('--queries') + 1];
@@ -70,6 +76,10 @@ for (const dir of [viewsDir, imgDir]) {
     mkdirSync(dir, { recursive: true });
 }
 mkdirSync(navDir, { recursive: true });
+if (LANG === 'en') {
+    cpSync(join(packageDir, 'app', 'static'), join(appDir, 'static'), { recursive: true });
+    cpSync(join(packageDir, 'app', 'default', 'props.conf'), join(appDir, 'default', 'props.conf'));
+}
 
 const images = new Set();
 for (const spec of specs) {

@@ -16,7 +16,15 @@ Events aus `demo_sakh`, Zeitreihen per `mstats` aus `demo_sakh_metrics`.
 Die Visualisierungen werden global exportiert und stehen auch in anderen Apps zur Verfuegung
 (Kategorie *SAKH* in der Visualisierungsauswahl).
 
-## Seiten
+## Englische Ausgabe kis_clinic
+
+`kis_clinic-1.0.0.spl` (*HIS Clinic (SGH)*, Splunk General Hospital) ist dieselbe App auf
+Englisch: alle Dashboards, Hintergrundgrafiken und Visualisierungen, US-Englisch, KIS heisst HIS.
+Sie liest `demo_sakh_en` und `demo_sakh_en_metrics` und laesst sich parallel zu `kis_klinik`
+installieren. Die Daten dazu liefert ein eigener Input in `TA-kis-datagen` (ab 1.1.0) mit
+*Sprache / Language = English*; mit den Standard-Indizes schreibt er automatisch in die
+englischen Indizes. Abteilungskuerzel und Geraete-IDs (z. B. MRT-1) bleiben gleich.
+
 
 | Bereich | Seiten | Filter | Interaktion |
 | --- | --- | --- | --- |
@@ -75,7 +83,19 @@ npm run build:prod                  # Visualisierungen bauen
 npm run check                       # Harness in Chrome (Leer-/Fehlerdaten, Resize, Theme, Optionen, Drilldown, Tastatur, Reduced Motion)
 npm run check:esm                   # Bundles sind eigenstaendige ES-Module ohne Imports
 npm run package                     # dist/kis_klinik-<version>-<hash>.spl
+npm run dashboards:en               # englische Ausgabe nach package/app_en/
+npm run build:en                    # englische Visualisierungen nach dist_en/
+npm run package:en                  # dist_en/kis_clinic-<version>-<hash>.spl
 ```
+
+Die englische Ausgabe entsteht beim Bauen aus denselben Quellen (`KIS_LANG=en`):
+`dashboards/lib/i18n.mjs` uebersetzt Texte, Schluessel und SPL-Literale, das esbuild-Plugin
+`build-plugins/i18n.mjs` die Strings der Visualisierungen, `package.mjs` deren `config.json`.
+Woerterbuecher: `../TA-kis-datagen/bin/kis_sim/lang_en.json` (Datenwerte, gemeinsam mit dem
+Generator, damit SPL-Vergleiche zu den englischen Events passen) und `i18n/dashboards_en.json`
+(Oberflaeche). Ein Widerspruch zwischen beiden bricht den Build ab. Neue deutsche Texte brauchen
+einen Eintrag in `i18n/dashboards_en.json`; `dist_en/i18n-changes.txt` listet, was im
+Visualisierungs-Build uebersetzt wurde.
 
 - `dashboards/lib/studio.mjs`: Raster, Farben, Bereiche, Filter, Visualisierungs-Helfer, Seitenaufbau.
 - `dashboards/lib/svg.mjs`: Hintergrundgrafik, Panel-Rahmen und Navigationsbuttons.
@@ -83,6 +103,6 @@ npm run package                     # dist/kis_klinik-<version>-<hash>.spl
 - `dashboards/pages/*.mjs`: eine Datei je Dashboard.
 - `node dashboards/generate.mjs --queries <seite>` gibt alle Suchen einer Seite mit Standard-Tokens aus.
 
-Die generierten Dateien unter `package/app/default/data/ui/views/` und
-`package/app/appserver/static/images/` sind eingecheckt; geaendert werden die Seiten-Dateien,
+Die generierten Dateien unter `package/app/` und `package/app_en/` (Views, Navigation,
+Hintergrundgrafiken) sind eingecheckt; geaendert werden die Seiten-Dateien,
 nicht das generierte XML.

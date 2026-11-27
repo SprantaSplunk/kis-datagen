@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="2360" viewBox="0 0 1920 2360">
+  <defs>
+    <filter id="card" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#13294b" flood-opacity="0.07"/>
+    </filter>
+    <style>
+      .pt { font: 600 15px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #13294b; }
+      .ph { font: 400 12.5px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #6b7785; }
+      .sec { font: 700 15px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #13294b; }
+    </style>
+  </defs>
+  <rect width="1920" height="2360" fill="#eef1f5"/>
+  <rect width="1920" height="200" fill="#ffffff"/>
+  <rect width="1920" height="4" fill="#0b7fab"/>
+  <rect x="0" y="199" width="1920" height="1" fill="#d6dde6"/>
+  <g>
+    <path fill="none" stroke="#c3cedb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M1510 92 h120 l14 -34 l18 72 l16 -58 l10 20 h150"/>
+    <path fill="none" stroke="#c3cedb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M1826 56 h24 v24 h24 v24 h-24 v24 h-24 v-24 h-24 v-24 h24 z"/>
+  </g>
+  <circle cx="54" cy="40" r="14" fill="#0b7fab"/>
+  <path d="M51 31 h6 v6 h6 v6 h-6 v6 h-6 v-6 h-6 v-6 h6 z" fill="#ffffff"/>
+  <text x="78" y="45" style="font: 600 13px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; letter-spacing: 0.3px; fill: #5b6878;">HIS Clinic · Splunk General Hospital · Patient Care</text>
+  <rect x="1590" y="26" width="290" height="28" rx="14" fill="#f2f5f8" stroke="#d6dde6"/>
+  <text x="1735" y="45" text-anchor="middle" style="font: 600 12px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #5b6878;">Synthetic demo data · no patient data</text>
+  <text x="40" y="96" style="font: 600 36px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #13294b;">Bed Management</text>
+  <text x="40" y="124" style="font: 400 16px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #5b6878;">Occupancy, free beds, cleaning and isolation by ward – filter by department and building</text>
+  <g>
+    <text x="40" y="284" class="sec">Capacity</text>
+    <rect x="40" y="290" width="28" height="3" rx="1.5" fill="#1e8a5a"/>
+    <text x="40" y="484" class="sec">Site map</text>
+    <rect x="40" y="490" width="28" height="3" rx="1.5" fill="#1e8a5a"/>
+    <text x="40" y="1004" class="sec">Trend</text>
+    <rect x="40" y="1010" width="28" height="3" rx="1.5" fill="#1e8a5a"/>
+    <text x="40" y="1784" class="sec">Wards in detail</text>
+    <rect x="40" y="1790" width="28" height="3" rx="1.5" fill="#1e8a5a"/>
+  </g>
+  <g>
+    <rect x="40" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="318" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="74" y="328" class="pt">Total beds</text>
+    <line x1="41" y1="340.5" x2="329" y2="340.5" stroke="#edf1f5"/>
+    <rect x="350" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="368" y="318" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="384" y="328" class="pt">Free beds</text>
+    <line x1="351" y1="340.5" x2="639" y2="340.5" stroke="#edf1f5"/>
+    <rect x="660" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="678" y="318" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="694" y="328" class="pt">Occupancy</text>
+    <line x1="661" y1="340.5" x2="949" y2="340.5" stroke="#edf1f5"/>
+    <rect x="970" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="988" y="318" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="1004" y="328" class="pt">Full wards</text>
+    <line x1="971" y1="340.5" x2="1259" y2="340.5" stroke="#edf1f5"/>
+    <rect x="1280" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1298" y="318" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="1314" y="328" class="pt">Being cleaned</text>
+    <line x1="1281" y1="340.5" x2="1569" y2="340.5" stroke="#edf1f5"/>
+    <rect x="1590" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1608" y="318" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="1624" y="328" class="pt">Isolation</text>
+    <line x1="1591" y1="340.5" x2="1879" y2="340.5" stroke="#edf1f5"/>
+    <rect x="40" y="500" width="1840" height="470" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="518" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="74" y="528" class="pt">Wards</text>
+    <text x="1862" y="528" class="ph" text-anchor="end">Click a ward to filter the page by its department</text>
+    <line x1="41" y1="540.5" x2="1879" y2="540.5" stroke="#edf1f5"/>
+    <rect x="40" y="1020" width="1065" height="380" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="1038" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="74" y="1048" class="pt">Occupancy by ward (%)</text>
+    <line x1="41" y1="1060.5" x2="1104" y2="1060.5" stroke="#edf1f5"/>
+    <rect x="1125" y="1020" width="755" height="380" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1143" y="1038" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="1159" y="1048" class="pt">Occupancy by department (%)</text>
+    <line x1="1126" y1="1060.5" x2="1879" y2="1060.5" stroke="#edf1f5"/>
+    <rect x="40" y="1420" width="600" height="330" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="1438" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="74" y="1448" class="pt">Free beds by building</text>
+    <line x1="41" y1="1460.5" x2="639" y2="1460.5" stroke="#edf1f5"/>
+    <rect x="660" y="1420" width="755" height="330" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="678" y="1438" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="694" y="1448" class="pt">Admissions, discharges, transfers</text>
+    <line x1="661" y1="1460.5" x2="1414" y2="1460.5" stroke="#edf1f5"/>
+    <rect x="1435" y="1420" width="445" height="330" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1453" y="1438" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="1469" y="1448" class="pt">Admissions by department</text>
+    <line x1="1436" y1="1460.5" x2="1879" y2="1460.5" stroke="#edf1f5"/>
+    <rect x="40" y="1800" width="1840" height="520" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="1818" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="74" y="1828" class="pt">Bed board</text>
+    <line x1="41" y1="1840.5" x2="1879" y2="1840.5" stroke="#edf1f5"/>
+  </g>
+</svg>

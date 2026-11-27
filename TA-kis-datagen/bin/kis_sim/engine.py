@@ -4,6 +4,7 @@ import heapq
 import math
 
 from . import clinical, infra, itsm
+from .i18n import translator
 from .metrics import METRICS_ONLY, to_metric
 from .model import Model
 from .scenarios import NAMES, ScenarioState
@@ -30,9 +31,10 @@ class Simulation:
     """
 
     def __init__(self, emit, tz="Europe/Vienna", start_ts=None, seed="sakh", scenarios=None, onset=None,
-                 logger=None, only=None, emit_metric=None, prime=False):
+                 logger=None, only=None, emit_metric=None, prime=False, lang="de"):
         self.emit = emit
         self.emit_metric = emit_metric
+        self.tr = translator(lang)
         self.logger = logger
         self.clock = Clock(tz)
         self.scen = ScenarioState(scenarios, onset)
@@ -73,6 +75,8 @@ class Simulation:
                 t = min(t, now)
                 if self.emit_metric is not None:
                     fields = to_metric(st, data)
+                    if fields and self.tr:
+                        fields = self.tr.value(fields)
                     if fields:
                         self.metric_count += 1
                         key = "metrics:" + st
@@ -82,6 +86,8 @@ class Simulation:
                         continue
                 self.count += 1
                 self.by_sourcetype[st] = self.by_sourcetype.get(st, 0) + 1
+                if self.tr:
+                    src, data = self.tr.text(src), self.tr.value(data)
                 self.emit(t, st, src, host, data)
             heapq.heappush(self.heap, ((math.floor(ts / interval) + 1) * interval, i, name, interval, func))
 

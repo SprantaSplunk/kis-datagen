@@ -1,5 +1,7 @@
 // Clinical light artwork: white header, flat tabs, white cards with a soft shadow.
 
+import { tr } from './i18n.mjs';
+
 export function esc(text) {
     return String(text)
         .replace(/&/g, '&amp;')
@@ -119,7 +121,7 @@ export function background({ width, height, domain, title, subtitle, kicker, pan
   <path d="M51 31 h6 v6 h6 v6 h-6 v6 h-6 v-6 h-6 v-6 h6 z" fill="#ffffff"/>
   <text x="78" y="45" style="font: 600 13px ${FONT}; letter-spacing: 0.3px; fill: ${SLATE};">${esc(kicker)}</text>
   <rect x="${width - 330}" y="26" width="290" height="28" rx="14" fill="#f2f5f8" stroke="${LINE}"/>
-  <text x="${width - 185}" y="45" text-anchor="middle" style="font: 600 12px ${FONT}; fill: ${SLATE};">Synthetische Demo-Daten · keine Patientendaten</text>
+  <text x="${width - 185}" y="45" text-anchor="middle" style="font: 600 12px ${FONT}; fill: ${SLATE};">${tr('Synthetische Demo-Daten · keine Patientendaten')}</text>
   <text x="40" y="96" style="font: 600 36px ${FONT}; fill: ${INK};">${esc(title)}</text>
   <text x="40" y="124" style="font: 400 16px ${FONT}; fill: ${SLATE};">${esc(subtitle)}</text>
   <g>

@@ -21,6 +21,7 @@ from splunklib import modularinput as smi
 
 from kis_hec import HecClient, HecError
 from kis_sim.engine import Simulation
+from kis_sim.i18n import LANGUAGES
 from kis_sim.metrics import DIRECT_SOURCETYPE, METRIC_SOURCETYPE, direct_lines
 from kis_sim.scenarios import NAMES as SCENARIOS
 
@@ -163,12 +164,28 @@ def logger_for_input(name):
 
 def validate_input(definition: smi.ValidationDefinition):
     p = definition.parameters
+    if (p.get("language") or "de") not in LANGUAGES:
+        raise ValueError("Language must be de or en.")
     if not 0 <= _int(p.get("backfill_minutes"), 0) <= 10080:
         raise ValueError("Backfill must be between 0 and 10080 minutes (7 days).")
     for key, default in (("index", DEFAULT_INDEX), ("metrics_index", DEFAULT_METRICS_INDEX)):
         index = (p.get(key) or default).strip()
         if not index or not index.replace("_", "").replace("-", "").isalnum():
             raise ValueError("Index name may only contain letters, digits, _ and -.")
+
+
+def targets(item):
+    """Returns (language, index, metrics_index, remapped). English inputs left on the German default
+    indexes write to demo_sakh_en / demo_sakh_en_metrics so both languages can run side by side."""
+    lang = (item.get("language") or "de").strip().lower()
+    if lang not in LANGUAGES:
+        lang = "de"
+    index = (item.get("index") or DEFAULT_INDEX).strip()
+    metrics_index = (item.get("metrics_index") or DEFAULT_METRICS_INDEX).strip()
+    remapped = lang == "en" and (index, metrics_index) == (DEFAULT_INDEX, DEFAULT_METRICS_INDEX)
+    if remapped:
+        index, metrics_index = DEFAULT_INDEX + "_en", DEFAULT_INDEX + "_en_metrics"
+    return lang, index, metrics_index, remapped
 
 
 def make_output(mode, setup, index, metrics_index, event_writer, logger):
@@ -210,8 +227,9 @@ def run(name, item, session_key, event_writer, logger, checkpoint_dir):
         return
 
     tz_name = item.get("timezone") or "Europe/Vienna"
-    index = (item.get("index") or DEFAULT_INDEX).strip()
-    metrics_index = (item.get("metrics_index") or DEFAULT_METRICS_INDEX).strip()
+    lang, index, metrics_index, remapped = targets(item)
+    if remapped:
+        logger.info("language=en with the default indexes - writing to %s / %s", index, metrics_index)
     seed = item.get("seed") or "sakh"
     backfill = _int(item.get("backfill_minutes"), 0) * 60
     max_gap = _int(item.get("max_gap_minutes"), 15) * 60
@@ -234,10 +252,10 @@ def run(name, item, session_key, event_writer, logger, checkpoint_dir):
     flags = scenario_flags(item)
     onset = cp.get("scenario_onset") or {}
     sim = Simulation(emit, tz_name, start_ts=start, seed=seed, scenarios=flags, onset=onset, logger=logger,
-                     emit_metric=emit_metric, prime=start == now)
+                     emit_metric=emit_metric, prime=start == now, lang=lang)
     started = sim.set_scenarios(flags, now)
-    logger.info("KIS datagen started (mode=%s, index=%s, metrics_index=%s, tz=%s, start=%s, scenarios: %s)",
-                mode, index, metrics_index, tz_name, int(start), describe(flags))
+    logger.info("KIS datagen started (mode=%s, language=%s, index=%s, metrics_index=%s, tz=%s, start=%s, scenarios: %s)",
+                mode, lang, index, metrics_index, tz_name, int(start), describe(flags))
     if started:
         logger.info("Scenarios switched at start: %s", describe(started))
 
@@ -296,8 +314,7 @@ def stream_events(inputs: smi.InputDefinition, event_writer: smi.EventWriter):
             except HecError as e:
                 if e.code == 7:
                     logger.error("HEC rejected an index (Incorrect index). Both indexes must exist and be allowed "
-                                 "for the token: %s (events), %s (metrics). Retrying in 60 s.",
-                                 item.get("index") or DEFAULT_INDEX, item.get("metrics_index") or DEFAULT_METRICS_INDEX)
+                                 "for the token: %s (events), %s (metrics). Retrying in 60 s.", *targets(item)[1:3])
                 else:
                     logger.error("HEC delivery failed: %s - retrying in 60 s", e)
             except Exception as e:

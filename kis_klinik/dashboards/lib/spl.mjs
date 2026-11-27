@@ -1,7 +1,9 @@
 // Shared SPL fragments. Index and sourcetype names match TA-kis-datagen exactly.
 
-export const IDX = 'index=demo_sakh';
-export const MIDX = 'index=demo_sakh_metrics';
+import { LANG } from './i18n.mjs';
+
+export const IDX = LANG === 'en' ? 'index=demo_sakh_en' : 'index=demo_sakh';
+export const MIDX = LANG === 'en' ? 'index=demo_sakh_en_metrics' : 'index=demo_sakh_metrics';
 export const ev = (sourcetype, extra = '') => `${IDX} sourcetype="${sourcetype}"${extra ? ` ${extra}` : ''}`;
 
 // ISE / IOS / Windows raw formats (search-time, independent of installed vendor add-ons)

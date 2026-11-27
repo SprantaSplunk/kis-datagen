@@ -33,13 +33,14 @@ METRIC_PREFIXES = ("sakh.server.", "sakh.vmware.", "sakh.db.", "sakh.hl7.", "sak
                    "sakh.mri.", "sakh.lab.")
 
 
-def run(hours=2.0, scenarios=None, onset_ago=3600, metrics=True, seed="sakh"):
+def run(hours=2.0, scenarios=None, onset_ago=3600, metrics=True, seed="sakh", **kw):
     events, metric_points = [], []
     flags = {n: True for n in (scenarios or [])}
     onset = {n: NOW - onset_ago for n in (scenarios or [])}
     sim = Simulation(lambda t, st, src, host, data: events.append((t, st, src, host, data)), start_ts=NOW - hours * 3600,
                      seed=seed, scenarios=flags, onset=onset,
-                     emit_metric=(lambda t, src, host, f: metric_points.append((t, src, host, f))) if metrics else None)
+                     emit_metric=(lambda t, src, host, f: metric_points.append((t, src, host, f))) if metrics else None,
+                     **kw)
     sim.run_until(NOW)
     return sim, events, metric_points
 
@@ -294,6 +295,112 @@ class Scenarios(unittest.TestCase):
         d = [e[4] for e in ev if e[1] == "sakh:medtech:telemetry" and e[4]["device_id"] == "MRT-1"][-1]
         self.assertEqual(d["status"] in ("in Betrieb", "Wartung"), True)
         self.assertFalse(any(e[1] == "cisco:iq:advisory" and "sakhdemo" in e[4]["advisoryId"] for e in ev))
+
+
+def strings(v):
+    if isinstance(v, str):
+        yield v
+    elif isinstance(v, dict):
+        for x in v.values():
+            yield from strings(x)
+    elif isinstance(v, list):
+        for x in v:
+            yield from strings(x)
+
+
+def shape(v):
+    """Everything that must not change with the language: keys, numbers, booleans."""
+    if isinstance(v, dict):
+        return {k: shape(x) for k, x in v.items()}
+    if isinstance(v, list):
+        return [shape(x) for x in v]
+    return "s" if isinstance(v, str) else v
+
+
+class Language(unittest.TestCase):
+    GERMAN = re.compile(
+        r"(?<![A-Za-z_\-])(und|nicht|oder|mit|fuer|bei|nach|ohne|Station|Haus|kritisch|Kritisch|niedrig|Gesperrt|"
+        r"in Betrieb|Wartung|Notaufnahme|Intensiv|Intensivstation|Innere|Befund\w*|Labor|Warteschlange|Geraet\w*|Oberarzt|"
+        r"Pflege\w*|Allgemeines|Krankenhaus|Wien|abgeschlossen|Stoerung|Abteilung|Telefon)(?![A-Za-z_\-])")
+
+    @classmethod
+    def setUpClass(cls):
+        cls.de = run(hours=2, scenarios=NAMES)
+        cls.en = run(hours=2, scenarios=NAMES, lang="en")
+
+    def test_german_is_the_default(self):
+        _, a, ma = run(hours=0.5)
+        _, b, mb = run(hours=0.5, lang="de")
+        self.assertEqual(json.dumps(a, sort_keys=True), json.dumps(b, sort_keys=True))
+        self.assertEqual(json.dumps(ma, sort_keys=True), json.dumps(mb, sort_keys=True))
+
+    def test_english_has_no_german(self):
+        _, ev, m = self.en
+        left = set()
+        for _t, _st, src, _h, data in ev:
+            for s in strings([src, data]):
+                left |= {x.group(0) for x in self.GERMAN.finditer(s)}
+        for _t, _src, _h, f in m:
+            for s in strings(f):
+                left |= {x.group(0) for x in self.GERMAN.finditer(s)}
+        self.assertEqual(set(), left)
+
+    def test_same_structure_in_both_languages(self):
+        _, de, mde = self.de
+        _, en, men = self.en
+        self.assertEqual(len(de), len(en))
+        for a, b in zip(de, en):
+            self.assertEqual((a[0], a[1], a[3]), (b[0], b[1], b[3]))
+            self.assertEqual(shape(a[4]), shape(b[4]))
+        self.assertEqual([sorted(f) for *_x, f in mde], [sorted(f) for *_x, f in men])
+
+    def test_english_deterministic(self):
+        _, a, _ = run(hours=0.5, lang="en")
+        _, b, _ = run(hours=0.5, lang="en")
+        self.assertEqual(json.dumps(a, sort_keys=True), json.dumps(b, sort_keys=True))
+
+    def test_english_values(self):
+        _, ev, _ = self.en
+        inv = [e[4] for e in ev if e[1] == "sakh:bloodbank:inventory"]
+        self.assertTrue(any(d["status"] == "critical" for d in inv))
+        mri = [e[4] for e in ev if e[1] == "sakh:medtech:telemetry" and e[4]["device_id"] == "MRT-1"]
+        self.assertEqual("Blocked", mri[-1]["status"])
+        self.assertIn("bloodbank:stock", {e[2] for e in ev})
+
+    def test_python_and_js_dictionary_are_one_file(self):
+        from kis_sim import i18n
+        table = i18n.load("en")
+        self.assertTrue(table["phrases"] and table["patterns"])
+        for de in table["phrases"]:
+            self.assertEqual(de, de.strip(), de)
+
+
+class InputsConf(unittest.TestCase):
+    TA = os.path.join(BIN, "..")
+
+    def spec(self):
+        keys = set()
+        with open(os.path.join(self.TA, "README", "inputs.conf.spec"), encoding="utf-8") as fh:
+            for line in fh:
+                m = re.match(r"^(\w+) =", line)
+                if m and m.group(1) != "python":
+                    keys.add(m.group(1))
+        return keys
+
+    def test_every_spec_key_is_a_form_field(self):
+        with open(os.path.join(self.TA, "appserver/static/js/build/globalConfig.json"), encoding="utf-8") as fh:
+            service = json.load(fh)["pages"]["inputs"]["services"][0]
+        self.assertEqual(set(), self.spec() - {e["field"] for e in service["entity"]})
+
+    def test_every_spec_key_has_a_default(self):
+        with open(os.path.join(self.TA, "default", "inputs.conf"), encoding="utf-8") as fh:
+            defaults = set(re.findall(r"^(\w+) =", fh.read(), re.M))
+        self.assertEqual(set(), self.spec() - defaults)
+
+    def test_english_indexes_shipped(self):
+        with open(os.path.join(self.TA, "default", "indexes.conf"), encoding="utf-8") as fh:
+            stanzas = set(re.findall(r"^\[(\w+)\]", fh.read(), re.M))
+        self.assertEqual({"demo_sakh", "demo_sakh_metrics", "demo_sakh_en", "demo_sakh_en_metrics"}, stanzas)
 
 
 class SchemeTest(unittest.TestCase):

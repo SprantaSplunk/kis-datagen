@@ -1,7 +1,8 @@
 // Small design system on top of the Dashboard Studio JSON definition.
+import { LANG, localize, tr } from './i18n.mjs';
 import { background, navButton, panelHeader } from './svg.mjs';
 
-export const APP = 'kis_klinik';
+export const APP = LANG === 'en' ? 'kis_clinic' : 'kis_klinik';
 export const WIDTH = 1920;
 const MARGIN = 40;
 const GUTTER = 20;
@@ -459,7 +460,7 @@ export function buildPage(spec, registry) {
         domain,
         title: spec.title,
         subtitle: spec.subtitle,
-        kicker: `KIS Klinik · Splunk Allgemeines Krankenhaus · ${domain.label}`,
+        kicker: `${tr('KIS Klinik · Splunk Allgemeines Krankenhaus')} · ${domain.label}`,
         panels,
         sections,
     });
@@ -468,7 +469,7 @@ export function buildPage(spec, registry) {
     const tokenDefaults = {};
     for (const [token, value] of Object.entries(spec.tokens || {})) tokenDefaults[token] = { value };
 
-    const definition = {
+    const definition = localize({
         title: spec.title,
         description: spec.description,
         inputs,
@@ -493,7 +494,7 @@ export function buildPage(spec, registry) {
             structure,
             globalInputs: order,
         },
-    };
+    });
     const json = JSON.stringify(definition, null, 4);
     if (json.includes(']]>')) throw new Error(`${spec.id}: definition contains a CDATA terminator`);
     const xml = `<dashboard version="2" theme="light">

@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1750" viewBox="0 0 1920 1750">
+  <defs>
+    <filter id="card" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#13294b" flood-opacity="0.07"/>
+    </filter>
+    <style>
+      .pt { font: 600 15px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #13294b; }
+      .ph { font: 400 12.5px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #6b7785; }
+      .sec { font: 700 15px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #13294b; }
+    </style>
+  </defs>
+  <rect width="1920" height="1750" fill="#eef1f5"/>
+  <rect width="1920" height="200" fill="#ffffff"/>
+  <rect width="1920" height="4" fill="#0b7fab"/>
+  <rect x="0" y="199" width="1920" height="1" fill="#d6dde6"/>
+  <g>
+    <path fill="none" stroke="#c3cedb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M1510 92 h120 l14 -34 l18 72 l16 -58 l10 20 h150"/>
+    <path fill="none" stroke="#c3cedb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M1826 56 h24 v24 h24 v24 h-24 v24 h-24 v-24 h-24 v-24 h24 z"/>
+  </g>
+  <circle cx="54" cy="40" r="14" fill="#0b7fab"/>
+  <path d="M51 31 h6 v6 h6 v6 h-6 v6 h-6 v-6 h-6 v-6 h6 z" fill="#ffffff"/>
+  <text x="78" y="45" style="font: 600 13px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; letter-spacing: 0.3px; fill: #5b6878;">HIS Clinic · Splunk General Hospital · Patient Care</text>
+  <rect x="1590" y="26" width="290" height="28" rx="14" fill="#f2f5f8" stroke="#d6dde6"/>
+  <text x="1735" y="45" text-anchor="middle" style="font: 600 12px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #5b6878;">Synthetic demo data · no patient data</text>
+  <text x="40" y="96" style="font: 600 36px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #13294b;">Emergency Department</text>
+  <text x="40" y="124" style="font: 400 16px 'Segoe UI', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; fill: #5b6878;">Manchester triage, wait times, boarding and ambulance bypass – click a triage level to filter the arrivals</text>
+  <g>
+    <text x="40" y="284" class="sec">Board</text>
+    <rect x="40" y="290" width="28" height="3" rx="1.5" fill="#1e8a5a"/>
+    <text x="40" y="484" class="sec">Triage</text>
+    <rect x="40" y="490" width="28" height="3" rx="1.5" fill="#1e8a5a"/>
+    <text x="40" y="914" class="sec">Arrivals (filter: triage level above or click in the flow)</text>
+    <rect x="40" y="920" width="28" height="3" rx="1.5" fill="#1e8a5a"/>
+  </g>
+  <g>
+    <rect x="40" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="318" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="74" y="328" class="pt">Waiting</text>
+    <line x1="41" y1="340.5" x2="329" y2="340.5" stroke="#edf1f5"/>
+    <rect x="350" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="368" y="318" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="384" y="328" class="pt">Longest wait (min)</text>
+    <line x1="351" y1="340.5" x2="639" y2="340.5" stroke="#edf1f5"/>
+    <rect x="660" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="678" y="318" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="694" y="328" class="pt">Door-to-Doc (min)</text>
+    <line x1="661" y1="340.5" x2="949" y2="340.5" stroke="#edf1f5"/>
+    <rect x="970" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="988" y="318" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="1004" y="328" class="pt">Boarding</text>
+    <line x1="971" y1="340.5" x2="1259" y2="340.5" stroke="#edf1f5"/>
+    <rect x="1280" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1298" y="318" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="1314" y="328" class="pt">Arrivals per hour</text>
+    <line x1="1281" y1="340.5" x2="1569" y2="340.5" stroke="#edf1f5"/>
+    <rect x="1590" y="300" width="290" height="150" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1608" y="318" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="1624" y="328" class="pt">Status</text>
+    <line x1="1591" y1="340.5" x2="1879" y2="340.5" stroke="#edf1f5"/>
+    <rect x="40" y="500" width="1065" height="380" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="518" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="74" y="528" class="pt">Waiting by Manchester triage level</text>
+    <text x="1087" y="528" class="ph" text-anchor="end">Click a level to filter the arrivals below; click again or pick &quot;All levels&quot; above to clear the filter</text>
+    <line x1="41" y1="540.5" x2="1104" y2="540.5" stroke="#edf1f5"/>
+    <rect x="1125" y="500" width="755" height="380" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1143" y="518" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="1159" y="528" class="pt">Waiting and boarding</text>
+    <line x1="1126" y1="540.5" x2="1879" y2="540.5" stroke="#edf1f5"/>
+    <rect x="40" y="930" width="910" height="340" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="948" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="74" y="958" class="pt">Arrivals by triage level</text>
+    <line x1="41" y1="970.5" x2="949" y2="970.5" stroke="#edf1f5"/>
+    <rect x="970" y="930" width="445" height="340" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="988" y="948" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="1004" y="958" class="pt">Chief complaints</text>
+    <line x1="971" y1="970.5" x2="1414" y2="970.5" stroke="#edf1f5"/>
+    <rect x="1435" y="930" width="445" height="340" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="1453" y="948" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="1469" y="958" class="pt">Arrival mode</text>
+    <line x1="1436" y1="970.5" x2="1879" y2="970.5" stroke="#edf1f5"/>
+    <rect x="40" y="1290" width="600" height="420" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="58" y="1308" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="74" y="1318" class="pt">Next care in</text>
+    <line x1="41" y1="1330.5" x2="639" y2="1330.5" stroke="#edf1f5"/>
+    <rect x="660" y="1290" width="1220" height="420" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
+    <rect x="678" y="1308" width="8" height="8" rx="2" fill="#1e8a5a"/>
+    <text x="694" y="1318" class="pt">Latest arrivals</text>
+    <line x1="661" y1="1330.5" x2="1879" y2="1330.5" stroke="#edf1f5"/>
+  </g>
+</svg>

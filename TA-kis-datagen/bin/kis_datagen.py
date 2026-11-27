@@ -19,7 +19,7 @@ class KIS_DATAGEN(smi.Script):
         scheme.use_single_instance = False
 
         scheme.add_argument(smi.Argument('name', title='Name', description='Name', required_on_create=True))
-        for arg in ('metrics_index', 'timezone', 'seed', 'backfill_minutes', 'max_gap_minutes'):
+        for arg in ('metrics_index', 'language', 'timezone', 'seed', 'backfill_minutes', 'max_gap_minutes'):
             scheme.add_argument(smi.Argument(arg, required_on_create=True))
         for name in SCENARIOS:
             scheme.add_argument(smi.Argument('scenario_' + name, required_on_create=False))

@@ -1,0 +1,2164 @@
+<dashboard version="2" theme="light">
+    <label>Labor &amp; Radiology</label>
+    <description>LIS results with TAT and HIS delivery, RIS orders by modality and DICOM stores in the PACS</description>
+    <definition><![CDATA[{
+    "title": "Lab and Radiology",
+    "description": "LIS results with TAT and HIS delivery, RIS orders by modality and DICOM stores in the PACS",
+    "inputs": {
+        "input_time": {
+            "type": "input.timerange",
+            "title": "Time range",
+            "options": {
+                "token": "global_time",
+                "defaultValue": "-4h@m,now"
+            }
+        },
+        "input_dept": {
+            "type": "input.dropdown",
+            "title": "Department",
+            "options": {
+                "items": [
+                    {
+                        "label": "All departments",
+                        "value": "*"
+                    },
+                    {
+                        "label": "Internal Medicine (INN)",
+                        "value": "INN"
+                    },
+                    {
+                        "label": "Cardiology (KAR)",
+                        "value": "KAR"
+                    },
+                    {
+                        "label": "Neurology (NEU)",
+                        "value": "NEU"
+                    },
+                    {
+                        "label": "Oncology (ONK)",
+                        "value": "ONK"
+                    },
+                    {
+                        "label": "General Surgery (CHI)",
+                        "value": "CHI"
+                    },
+                    {
+                        "label": "Trauma Surgery/Orthopedics (UCH)",
+                        "value": "UCH"
+                    },
+                    {
+                        "label": "Urology (URO)",
+                        "value": "URO"
+                    },
+                    {
+                        "label": "HNO",
+                        "value": "HNO"
+                    },
+                    {
+                        "label": "Anesthesia/OR (ANA)",
+                        "value": "ANA"
+                    },
+                    {
+                        "label": "Intensive Care (ICU)",
+                        "value": "ICU"
+                    },
+                    {
+                        "label": "Emergency Department (ZNA)",
+                        "value": "ZNA"
+                    },
+                    {
+                        "label": "Radiology (RAD)",
+                        "value": "RAD"
+                    },
+                    {
+                        "label": "Gynecology/Obstetrics (GYN)",
+                        "value": "GYN"
+                    },
+                    {
+                        "label": "Pediatrics (PAED)",
+                        "value": "PAED"
+                    },
+                    {
+                        "label": "Psychiatry (PSY)",
+                        "value": "PSY"
+                    }
+                ],
+                "token": "dept",
+                "defaultValue": "*"
+            }
+        }
+    },
+    "defaults": {
+        "dataSources": {
+            "ds.search": {
+                "options": {
+                    "queryParameters": {
+                        "earliest": "$global_time.earliest$",
+                        "latest": "$global_time.latest$"
+                    }
+                }
+            }
+        },
+        "tokens": {
+            "default": {
+                "lab_test": {
+                    "value": "*"
+                }
+            }
+        }
+    },
+    "dataSources": {
+        "ds_lis": {
+            "type": "ds.search",
+            "options": {
+                "query": "index=demo_sakh_en sourcetype=\"sakh:lis:result\" department=\"$dept$\"\n| fields Direction Ward _time c category count critical delivered_to_kis delivery_status flag m n pos priority tat_min test_code u value ward",
+                "enableSmartSources": true
+            },
+            "name": "Lab results"
+        },
+        "ds_k_results": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_lis",
+                "query": "| timechart span=30m count as Results"
+            }
+        },
+        "ds_k_crit": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_lis",
+                "query": "| eval c=if(critical=\"true\" OR critical=\"1\", 1, 0) | timechart span=30m sum(c) as \"Critical values\""
+            }
+        },
+        "ds_k_tat": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_lis",
+                "query": "| where priority=\"Emergency\" | timechart span=30m avg(tat_min) as \"TAT Emergency\""
+            }
+        },
+        "ds_k_undeliv": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_lis",
+                "query": "| eval u=if(delivered_to_kis=\"false\" OR delivered_to_kis=\"0\", 1, 0) | timechart span=10m sum(u) as \"Not in HIS\""
+            }
+        },
+        "ds_k_flu": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_lis",
+                "query": "| where test_code=\"INFLU\" | stats count(eval(value=\"positive\")) as pos count as n | eval \"Influenza positive %\"=if(n>0, round(100 * pos / n, 1), 0) | fields \"Influenza positive %\""
+            }
+        },
+        "ds_cat": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_lis",
+                "query": "| timechart span=30m count by category"
+            }
+        },
+        "ds_tat": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_lis",
+                "query": "| where category!=\"Microbiology\" | timechart span=30m avg(tat_min) by priority"
+            }
+        },
+        "ds_delivery": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_lis",
+                "query": "| timechart span=10m count by delivery_status"
+            }
+        },
+        "ds_crit": {
+            "type": "ds.search",
+            "options": {
+                "query": "index=demo_sakh_en department=\"$dept$\" ((sourcetype=\"sakh:lis:result\" (flag=\"HH\" OR flag=\"LL\")) OR sourcetype=\"sakh:lis:critical\")\n| eventstats min(eval(if(sourcetype=\"sakh:lis:critical\", _time, null()))) as ack_start\n| eval rt=if(sourcetype=\"sakh:lis:result\", _time, null()), acked=if(action=\"acknowledged\", minutes, null()), ack_role=if(action=\"acknowledged\", role, null()), told=if(action=\"communicated\", 1, null()), esc=if(action=\"escalated\", escalation_level, null()), why=if(action=\"escalated\", reason, null())\n| stats min(rt) as rt max(acked) as ack_min first(ack_role) as ack_role max(told) as told max(esc) as escalated first(why) as reason first(test_code) as test_code first(test_name) as test_name first(value) as value first(unit) as unit first(ref_low) as ref_low first(ref_high) as ref_high first(crit_low) as crit_low first(crit_high) as crit_high first(flag) as flag first(ward) as ward first(priority) as priority first(delivery_status) as delivery_status first(patient_id) as patient_id first(ack_start) as ack_start by order_id\n| where isnotnull(rt)\n| eval ack_state=case(isnotnull(ack_min), \"acknowledged\", rt>=ack_start, \"open\", true(), \"unknown\")\n| eval _time=rt | sort - _time | head 300\n| table _time test_code test_name value unit ref_low ref_high crit_low crit_high flag ward priority delivery_status patient_id ack_state ack_min ack_role escalated reason",
+                "enableSmartSources": true
+            },
+            "name": "Critical results with acknowledgement"
+        },
+        "ds_open": {
+            "type": "ds.search",
+            "options": {
+                "query": "index=demo_sakh_en department=\"$dept$\" earliest=-4h latest=now ((sourcetype=\"sakh:lis:result\" (flag=\"HH\" OR flag=\"LL\")) OR sourcetype=\"sakh:lis:critical\")\n| eventstats min(eval(if(sourcetype=\"sakh:lis:critical\", _time, null()))) as ack_start\n| eval rt=if(sourcetype=\"sakh:lis:result\", _time, null()), acked=if(action=\"acknowledged\", minutes, null()), ack_role=if(action=\"acknowledged\", role, null()), told=if(action=\"communicated\", 1, null()), esc=if(action=\"escalated\", escalation_level, null()), why=if(action=\"escalated\", reason, null())\n| stats min(rt) as rt max(acked) as ack_min first(ack_role) as ack_role max(told) as told max(esc) as escalated first(why) as reason first(test_code) as test_code first(test_name) as test_name first(value) as value first(unit) as unit first(ref_low) as ref_low first(ref_high) as ref_high first(crit_low) as crit_low first(crit_high) as crit_high first(flag) as flag first(ward) as ward first(priority) as priority first(delivery_status) as delivery_status first(patient_id) as patient_id first(ack_start) as ack_start by order_id\n| where isnotnull(rt)\n| eval ack_state=case(isnotnull(ack_min), \"acknowledged\", rt>=ack_start, \"open\", true(), \"unknown\")\n| where ack_state=\"open\" | eval age=round((now() - rt) / 60, 0)",
+                "enableSmartSources": true
+            },
+            "name": "Open critical results"
+        },
+        "ds_k_open": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_open",
+                "query": "| stats count as \"Not acknowledged\""
+            }
+        },
+        "ds_k_overdue": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_open",
+                "query": "| where age>30 | stats count as \"Over 30 min\""
+            }
+        },
+        "ds_open_table": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_open",
+                "query": "| sort - age\n| eval Status=case(escalated>=2, \"2nd escalation: attending on duty\", escalated=1, \"escalated to attending physician\", told=1, \"communicated by phone\", true(), \"not yet communicated\"), Wert=value.\" \".unit, Direction=if(flag=\"HH\", \"too high\", \"too low\")\n| table ward age test_name Wert Status reason delivery_status\n| rename ward as Ward age as \"Seit (min)\" test_name as Test reason as Reason delivery_status as HIS\n| appendpipe [| stats count | where count=0 | eval Ward=\"All critical values are acknowledged\" | fields - count]"
+            }
+        },
+        "ds_ack": {
+            "type": "ds.search",
+            "options": {
+                "query": "index=demo_sakh_en sourcetype=\"sakh:lis:critical\" department=\"$dept$\"\n| fields Duration _time action count h minutes ok",
+                "enableSmartSources": true
+            },
+            "name": "Critical value notification"
+        },
+        "ds_k_ack_med": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_ack",
+                "query": "| where action=\"acknowledged\" | timechart span=1h median(minutes) as \"Median\""
+            }
+        },
+        "ds_k_ack_30": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_ack",
+                "query": "| where action=\"acknowledged\" | eval ok=if(minutes<=30, 100, 0) | timechart span=1h avg(ok) as \"Within 30 min\""
+            }
+        },
+        "ds_ack_buckets": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_ack",
+                "query": "| where action=\"acknowledged\"\n| eval Duration=case(minutes<=10, \"bis 10 min\", minutes<=30, \"10 bis 30 min\", true(), \"over 30 min (escalated)\")\n| timechart span=1h count by Duration"
+            }
+        },
+        "ds_crit_ward": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_lis",
+                "query": "| search (flag=\"HH\" OR flag=\"LL\") test_code=\"$lab_test$\"\n| eval Direction=if(flag=\"HH\", \"too high\", \"too low\")\n| chart count over ward by Direction | rename ward as Ward\n| appendpipe [| stats count | where count=0 | eval Ward=\"No critical values in the time range\" | fields - count]"
+            }
+        },
+        "ds_ris": {
+            "type": "ds.search",
+            "options": {
+                "query": "index=demo_sakh_en sourcetype=\"sakh:ris:order\" department=\"$dept$\"\n| fields Days Time _time count device_id exam modality order_id original_device priority reason status wait_days",
+                "enableSmartSources": true
+            },
+            "name": "RIS orders"
+        },
+        "ds_modality": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_ris",
+                "query": "| chart count over modality by status"
+            }
+        },
+        "ds_wait": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_ris",
+                "query": "| where priority=\"Routine\" | stats avg(wait_days) as \"Wartezeit (Days)\" by modality | eval \"Wartezeit (Days)\"=round('Wartezeit (Days)', 1)"
+            }
+        },
+        "ds_moved": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_ris",
+                "query": "| where status=\"rescheduled\"\n| eval Time=strftime(_time, \"%H:%M\") | table Time order_id exam original_device device_id reason wait_days\n| rename order_id as Order exam as Exam original_device as \"Planned on\" device_id as \"Moved to\" reason as Reason wait_days as \"Wartezeit (Days)\"\n| appendpipe [| stats count | where count=0 | eval Time=\"No rescheduled exams in the time range\" | fields - count]"
+            }
+        },
+        "ds_pacs": {
+            "type": "ds.search",
+            "options": {
+                "query": "index=demo_sakh_en sourcetype=\"sakh:pacs:dicom\" | timechart span=30m sum(size_mb) as MB by modality",
+                "enableSmartSources": true
+            },
+            "name": "PACS data volume"
+        },
+        "ds_pacs_fail": {
+            "type": "ds.search",
+            "options": {
+                "query": "index=demo_sakh_en sourcetype=\"sakh:pacs:dicom\" status!=\"Success\" | stats count as Error by device_id status | rename device_id as Modality status as Fault | appendpipe [| stats count | where count=0 | eval Modality=\"No store failures in the time range\" | fields - count]",
+                "enableSmartSources": true
+            }
+        },
+        "ds_device": {
+            "type": "ds.chain",
+            "options": {
+                "extend": "ds_ris",
+                "query": "| stats count by device_id | sort - count | head 12"
+            }
+        }
+    },
+    "visualizations": {
+        "viz_nav_home": {
+            "type": "splunk.image",
+            "options": {
+                "src": "/static/app/kis_clinic/images/nav_home.svg",
+                "preserveAspectRatio": true
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.linkToDashboard",
+                    "options": {
+                        "app": "kis_clinic",
+                        "dashboard": "kis_home",
+                        "tokens": [],
+                        "newTab": false
+                    }
+                }
+            ]
+        },
+        "viz_nav_care": {
+            "type": "splunk.image",
+            "options": {
+                "src": "/static/app/kis_clinic/images/nav_care.svg",
+                "preserveAspectRatio": true
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.linkToDashboard",
+                    "options": {
+                        "app": "kis_clinic",
+                        "dashboard": "kis_beds",
+                        "tokens": [],
+                        "newTab": false
+                    }
+                }
+            ]
+        },
+        "viz_nav_diag": {
+            "type": "splunk.image",
+            "options": {
+                "src": "/static/app/kis_clinic/images/nav_diag_on.svg",
+                "preserveAspectRatio": true
+            }
+        },
+        "viz_nav_medtech": {
+            "type": "splunk.image",
+            "options": {
+                "src": "/static/app/kis_clinic/images/nav_medtech.svg",
+                "preserveAspectRatio": true
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.linkToDashboard",
+                    "options": {
+                        "app": "kis_clinic",
+                        "dashboard": "kis_medtech",
+                        "tokens": [],
+                        "newTab": false
+                    }
+                }
+            ]
+        },
+        "viz_nav_network": {
+            "type": "splunk.image",
+            "options": {
+                "src": "/static/app/kis_clinic/images/nav_network.svg",
+                "preserveAspectRatio": true
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.linkToDashboard",
+                    "options": {
+                        "app": "kis_clinic",
+                        "dashboard": "kis_network",
+                        "tokens": [],
+                        "newTab": false
+                    }
+                }
+            ]
+        },
+        "viz_nav_it": {
+            "type": "splunk.image",
+            "options": {
+                "src": "/static/app/kis_clinic/images/nav_it.svg",
+                "preserveAspectRatio": true
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.linkToDashboard",
+                    "options": {
+                        "app": "kis_clinic",
+                        "dashboard": "kis_servers",
+                        "tokens": [],
+                        "newTab": false
+                    }
+                }
+            ]
+        },
+        "viz_nav_security": {
+            "type": "splunk.image",
+            "options": {
+                "src": "/static/app/kis_clinic/images/nav_security.svg",
+                "preserveAspectRatio": true
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.linkToDashboard",
+                    "options": {
+                        "app": "kis_clinic",
+                        "dashboard": "kis_security",
+                        "tokens": [],
+                        "newTab": false
+                    }
+                }
+            ]
+        },
+        "viz_sub_kis_lab": {
+            "type": "splunk.image",
+            "options": {
+                "src": "/static/app/kis_clinic/images/sub_kis_lab_on.svg",
+                "preserveAspectRatio": true
+            }
+        },
+        "viz_sub_kis_blood": {
+            "type": "splunk.image",
+            "options": {
+                "src": "/static/app/kis_clinic/images/sub_kis_blood.svg",
+                "preserveAspectRatio": true
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.linkToDashboard",
+                    "options": {
+                        "app": "kis_clinic",
+                        "dashboard": "kis_blood",
+                        "tokens": [],
+                        "newTab": false
+                    }
+                }
+            ]
+        },
+        "viz_sub_kis_pharmacy": {
+            "type": "splunk.image",
+            "options": {
+                "src": "/static/app/kis_clinic/images/sub_kis_pharmacy.svg",
+                "preserveAspectRatio": true
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.linkToDashboard",
+                    "options": {
+                        "app": "kis_clinic",
+                        "dashboard": "kis_pharmacy",
+                        "tokens": [],
+                        "newTab": false
+                    }
+                }
+            ]
+        },
+        "viz_01": {
+            "type": "splunk.singlevalue",
+            "dataSources": {
+                "primary": "ds_k_results"
+            },
+            "options": {
+                "majorColor": "#b8457c",
+                "backgroundColor": "transparent",
+                "sparklineDisplay": "below",
+                "trendDisplay": "off",
+                "numberPrecision": 0,
+                "sparklineStrokeColor": "#0b7fab"
+            }
+        },
+        "viz_02": {
+            "type": "splunk.singlevalue",
+            "dataSources": {
+                "primary": "ds_k_crit"
+            },
+            "options": {
+                "majorColor": "> majorValue | rangeValue(majorColorConfig)",
+                "backgroundColor": "transparent",
+                "sparklineDisplay": "below",
+                "trendDisplay": "off",
+                "numberPrecision": 0,
+                "sparklineStrokeColor": "#0b7fab"
+            },
+            "context": {
+                "majorColorConfig": [
+                    {
+                        "to": 5,
+                        "value": "#1e8a5a"
+                    },
+                    {
+                        "from": 5,
+                        "to": 10,
+                        "value": "#c98a00"
+                    },
+                    {
+                        "from": 10,
+                        "value": "#c8253f"
+                    }
+                ]
+            }
+        },
+        "viz_03": {
+            "type": "splunk.singlevalue",
+            "dataSources": {
+                "primary": "ds_k_tat"
+            },
+            "options": {
+                "majorColor": "> majorValue | rangeValue(majorColorConfig)",
+                "backgroundColor": "transparent",
+                "sparklineDisplay": "below",
+                "trendDisplay": "off",
+                "numberPrecision": 0,
+                "sparklineStrokeColor": "#0b7fab"
+            },
+            "context": {
+                "majorColorConfig": [
+                    {
+                        "to": 45,
+                        "value": "#1e8a5a"
+                    },
+                    {
+                        "from": 45,
+                        "to": 60,
+                        "value": "#c98a00"
+                    },
+                    {
+                        "from": 60,
+                        "value": "#c8253f"
+                    }
+                ]
+            }
+        },
+        "viz_04": {
+            "type": "splunk.singlevalue",
+            "dataSources": {
+                "primary": "ds_k_undeliv"
+            },
+            "options": {
+                "majorColor": "> majorValue | rangeValue(majorColorConfig)",
+                "backgroundColor": "transparent",
+                "sparklineDisplay": "below",
+                "trendDisplay": "off",
+                "numberPrecision": 0,
+                "sparklineStrokeColor": "#0b7fab"
+            },
+            "context": {
+                "majorColorConfig": [
+                    {
+                        "to": 1,
+                        "value": "#1e8a5a"
+                    },
+                    {
+                        "from": 1,
+                        "to": 10,
+                        "value": "#c98a00"
+                    },
+                    {
+                        "from": 10,
+                        "value": "#c8253f"
+                    }
+                ]
+            }
+        },
+        "viz_05": {
+            "type": "splunk.singlevalue",
+            "dataSources": {
+                "primary": "ds_k_flu"
+            },
+            "options": {
+                "majorColor": "> majorValue | rangeValue(majorColorConfig)",
+                "backgroundColor": "transparent",
+                "sparklineDisplay": "off",
+                "trendDisplay": "off",
+                "numberPrecision": 1,
+                "sparklineStrokeColor": "#0b7fab",
+                "unit": "%",
+                "unitPosition": "after"
+            },
+            "context": {
+                "majorColorConfig": [
+                    {
+                        "to": 20,
+                        "value": "#1e8a5a"
+                    },
+                    {
+                        "from": 20,
+                        "to": 40,
+                        "value": "#c98a00"
+                    },
+                    {
+                        "from": 40,
+                        "value": "#c8253f"
+                    }
+                ]
+            }
+        },
+        "viz_06": {
+            "type": "splunk.column",
+            "dataSources": {
+                "primary": "ds_cat"
+            },
+            "options": {
+                "backgroundColor": "transparent",
+                "legendDisplay": "bottom",
+                "xAxisTitleVisibility": "hide",
+                "yAxisTitleVisibility": "hide",
+                "seriesColors": [
+                    "#0b7fab",
+                    "#6b4fb3",
+                    "#1e8a5a",
+                    "#c98a00",
+                    "#c8253f",
+                    "#2f6fc4",
+                    "#b8457c",
+                    "#0f8f84",
+                    "#d0661f",
+                    "#9b3fae"
+                ],
+                "stackMode": "stacked"
+            }
+        },
+        "viz_07": {
+            "type": "splunk.line",
+            "dataSources": {
+                "primary": "ds_tat"
+            },
+            "options": {
+                "backgroundColor": "transparent",
+                "legendDisplay": "bottom",
+                "xAxisTitleVisibility": "hide",
+                "yAxisTitleVisibility": "hide",
+                "seriesColors": [
+                    "#0b7fab",
+                    "#6b4fb3",
+                    "#1e8a5a",
+                    "#c98a00",
+                    "#c8253f",
+                    "#2f6fc4",
+                    "#b8457c",
+                    "#0f8f84",
+                    "#d0661f",
+                    "#9b3fae"
+                ],
+                "lineWidth": 2
+            }
+        },
+        "viz_08": {
+            "type": "splunk.column",
+            "dataSources": {
+                "primary": "ds_delivery"
+            },
+            "options": {
+                "backgroundColor": "transparent",
+                "legendDisplay": "bottom",
+                "xAxisTitleVisibility": "hide",
+                "yAxisTitleVisibility": "hide",
+                "seriesColors": [
+                    "#c8253f",
+                    "#1e8a5a"
+                ],
+                "stackMode": "stacked"
+            }
+        },
+        "viz_09": {
+            "type": "splunk.singlevalue",
+            "dataSources": {
+                "primary": "ds_k_open"
+            },
+            "options": {
+                "majorColor": "> majorValue | rangeValue(majorColorConfig)",
+                "backgroundColor": "transparent",
+                "sparklineDisplay": "off",
+                "trendDisplay": "off",
+                "numberPrecision": 0,
+                "sparklineStrokeColor": "#0b7fab"
+            },
+            "context": {
+                "majorColorConfig": [
+                    {
+                        "to": 3,
+                        "value": "#1e8a5a"
+                    },
+                    {
+                        "from": 3,
+                        "to": 6,
+                        "value": "#c98a00"
+                    },
+                    {
+                        "from": 6,
+                        "value": "#c8253f"
+                    }
+                ]
+            }
+        },
+        "viz_10": {
+            "type": "splunk.singlevalue",
+            "dataSources": {
+                "primary": "ds_k_overdue"
+            },
+            "options": {
+                "majorColor": "> majorValue | rangeValue(majorColorConfig)",
+                "backgroundColor": "transparent",
+                "sparklineDisplay": "off",
+                "trendDisplay": "off",
+                "numberPrecision": 0,
+                "sparklineStrokeColor": "#0b7fab"
+            },
+            "context": {
+                "majorColorConfig": [
+                    {
+                        "to": 1,
+                        "value": "#1e8a5a"
+                    },
+                    {
+                        "from": 1,
+                        "to": 2,
+                        "value": "#c98a00"
+                    },
+                    {
+                        "from": 2,
+                        "value": "#c8253f"
+                    }
+                ]
+            }
+        },
+        "viz_11": {
+            "type": "splunk.singlevalue",
+            "dataSources": {
+                "primary": "ds_k_ack_med"
+            },
+            "options": {
+                "majorColor": "> majorValue | rangeValue(majorColorConfig)",
+                "backgroundColor": "transparent",
+                "sparklineDisplay": "below",
+                "trendDisplay": "off",
+                "numberPrecision": 0,
+                "sparklineStrokeColor": "#0b7fab",
+                "unit": "min",
+                "unitPosition": "after"
+            },
+            "context": {
+                "majorColorConfig": [
+                    {
+                        "to": 15,
+                        "value": "#1e8a5a"
+                    },
+                    {
+                        "from": 15,
+                        "to": 30,
+                        "value": "#c98a00"
+                    },
+                    {
+                        "from": 30,
+                        "value": "#c8253f"
+                    }
+                ]
+            }
+        },
+        "viz_12": {
+            "type": "splunk.singlevalue",
+            "dataSources": {
+                "primary": "ds_k_ack_30"
+            },
+            "options": {
+                "majorColor": "> majorValue | rangeValue(majorColorConfig)",
+                "backgroundColor": "transparent",
+                "sparklineDisplay": "below",
+                "trendDisplay": "off",
+                "numberPrecision": 0,
+                "sparklineStrokeColor": "#0b7fab",
+                "unit": "%",
+                "unitPosition": "after"
+            },
+            "context": {
+                "majorColorConfig": [
+                    {
+                        "to": 80,
+                        "value": "#c8253f"
+                    },
+                    {
+                        "from": 80,
+                        "to": 90,
+                        "value": "#c98a00"
+                    },
+                    {
+                        "from": 90,
+                        "value": "#1e8a5a"
+                    }
+                ]
+            }
+        },
+        "viz_13": {
+            "type": "splunk.table",
+            "dataSources": {
+                "primary": "ds_open_table"
+            },
+            "options": {
+                "backgroundColor": "transparent",
+                "count": 7,
+                "headerVisibility": "fixed",
+                "fontSize": "small",
+                "tableFormat": {
+                    "rowBackgroundColors": "> table | seriesByIndex(0) | pick(rowBg)",
+                    "headerBackgroundColor": "#e9eef4",
+                    "rowColors": "#13294b",
+                    "headerColor": "#5b6878"
+                },
+                "columnFormat": {
+                    "Seit (min)": {
+                        "rowBackgroundColors": "> table | seriesByName(\"Seit (min)\") | rangeValue(range_2)"
+                    },
+                    "Status": {
+                        "rowBackgroundColors": "> table | seriesByName(\"Status\") | matchValue(statusBg)"
+                    },
+                    "HIS": {
+                        "rowBackgroundColors": "> table | seriesByName(\"HIS\") | matchValue(statusBg)"
+                    }
+                }
+            },
+            "context": {
+                "rowBg": [
+                    "#ffffff",
+                    "#f5f7fa"
+                ],
+                "statusBg": [
+                    {
+                        "match": "Critical",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Degraded",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "Healthy",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "critical",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "high",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "error",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "warning",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "medium",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "stopped",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "failed",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "running",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "success",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "good",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "normal",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Reachable",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Unreachable",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "critical",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "full",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "stopped",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Blocked",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Offline",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Failed",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Error",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Vulnerable",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "overdue",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "escalated to attending physician",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "2nd escalation: attending on duty",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "not yet communicated",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "communicated by phone",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "queued",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "delivered",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Ambulance bypass",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "understaffed",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "low",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "tight",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "congested",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "Warning",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "Maintenance",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "Expiring",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "End of Sale",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "End of Support",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "overloaded",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "ok",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Success",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "in operation",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Covered",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Active",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Operational",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Non-Operational",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Not Covered",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Critical",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "High",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Medium",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "Error",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Emergency",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "suspicious",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "New",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "In Progress",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "Resolved",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "online",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "offline",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "normal",
+                        "value": "#d9f0e3"
+                    }
+                ],
+                "range_2": [
+                    {
+                        "to": 15,
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "from": 15,
+                        "to": 30,
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "from": 30,
+                        "value": "#f9dde1"
+                    }
+                ]
+            }
+        },
+        "viz_14": {
+            "type": "splunk.column",
+            "dataSources": {
+                "primary": "ds_ack_buckets"
+            },
+            "options": {
+                "backgroundColor": "transparent",
+                "legendDisplay": "bottom",
+                "xAxisTitleVisibility": "hide",
+                "yAxisTitleVisibility": "hide",
+                "seriesColors": [
+                    "#0b7fab",
+                    "#6b4fb3",
+                    "#1e8a5a",
+                    "#c98a00",
+                    "#c8253f",
+                    "#2f6fc4",
+                    "#b8457c",
+                    "#0f8f84",
+                    "#d0661f",
+                    "#9b3fae"
+                ],
+                "stackMode": "stacked",
+                "seriesColorsByField": {
+                    "bis 10 min": "#13804f",
+                    "10 bis 30 min": "#d99a1e",
+                    "over 30 min (escalated)": "#c8102e"
+                }
+            }
+        },
+        "viz_15": {
+            "type": "kis_clinic.lab_critical",
+            "dataSources": {
+                "primary": "ds_crit"
+            },
+            "options": {
+                "drilldownToken": "lab_test"
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.setToken",
+                    "options": {
+                        "tokens": [
+                            {
+                                "token": "lab_test",
+                                "key": "value"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "viz_16": {
+            "type": "splunk.bar",
+            "dataSources": {
+                "primary": "ds_crit_ward"
+            },
+            "options": {
+                "backgroundColor": "transparent",
+                "legendDisplay": "bottom",
+                "xAxisTitleVisibility": "hide",
+                "yAxisTitleVisibility": "hide",
+                "seriesColors": [
+                    "#0b7fab",
+                    "#6b4fb3",
+                    "#1e8a5a",
+                    "#c98a00",
+                    "#c8253f",
+                    "#2f6fc4",
+                    "#b8457c",
+                    "#0f8f84",
+                    "#d0661f",
+                    "#9b3fae"
+                ],
+                "stackMode": "stacked",
+                "seriesColorsByField": {
+                    "too high": "#c8102e",
+                    "too low": "#006d9c"
+                }
+            }
+        },
+        "viz_17": {
+            "type": "splunk.bar",
+            "dataSources": {
+                "primary": "ds_modality"
+            },
+            "options": {
+                "backgroundColor": "transparent",
+                "legendDisplay": "bottom",
+                "xAxisTitleVisibility": "hide",
+                "yAxisTitleVisibility": "hide",
+                "seriesColors": [
+                    "#0b7fab",
+                    "#6b4fb3",
+                    "#1e8a5a",
+                    "#c98a00",
+                    "#c8253f",
+                    "#2f6fc4",
+                    "#b8457c",
+                    "#0f8f84",
+                    "#d0661f",
+                    "#9b3fae"
+                ],
+                "stackMode": "stacked"
+            }
+        },
+        "viz_18": {
+            "type": "splunk.column",
+            "dataSources": {
+                "primary": "ds_wait"
+            },
+            "options": {
+                "backgroundColor": "transparent",
+                "legendDisplay": "off",
+                "xAxisTitleVisibility": "hide",
+                "yAxisTitleVisibility": "hide",
+                "seriesColors": [
+                    "#0b7fab",
+                    "#6b4fb3",
+                    "#1e8a5a",
+                    "#c98a00",
+                    "#c8253f",
+                    "#2f6fc4",
+                    "#b8457c",
+                    "#0f8f84",
+                    "#d0661f",
+                    "#9b3fae"
+                ]
+            }
+        },
+        "viz_19": {
+            "type": "splunk.column",
+            "dataSources": {
+                "primary": "ds_pacs"
+            },
+            "options": {
+                "backgroundColor": "transparent",
+                "legendDisplay": "bottom",
+                "xAxisTitleVisibility": "hide",
+                "yAxisTitleVisibility": "hide",
+                "seriesColors": [
+                    "#0b7fab",
+                    "#6b4fb3",
+                    "#1e8a5a",
+                    "#c98a00",
+                    "#c8253f",
+                    "#2f6fc4",
+                    "#b8457c",
+                    "#0f8f84",
+                    "#d0661f",
+                    "#9b3fae"
+                ],
+                "stackMode": "stacked"
+            }
+        },
+        "viz_20": {
+            "type": "splunk.table",
+            "dataSources": {
+                "primary": "ds_moved"
+            },
+            "options": {
+                "backgroundColor": "transparent",
+                "count": 8,
+                "headerVisibility": "fixed",
+                "fontSize": "small",
+                "tableFormat": {
+                    "rowBackgroundColors": "> table | seriesByIndex(0) | pick(rowBg)",
+                    "headerBackgroundColor": "#e9eef4",
+                    "rowColors": "#13294b",
+                    "headerColor": "#5b6878"
+                }
+            },
+            "context": {
+                "rowBg": [
+                    "#ffffff",
+                    "#f5f7fa"
+                ],
+                "statusBg": [
+                    {
+                        "match": "Critical",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Degraded",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "Healthy",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "critical",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "high",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "error",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "warning",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "medium",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "stopped",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "failed",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "running",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "success",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "good",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "normal",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Reachable",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Unreachable",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "critical",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "full",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "stopped",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Blocked",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Offline",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Failed",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Error",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Vulnerable",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "overdue",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "escalated to attending physician",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "2nd escalation: attending on duty",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "not yet communicated",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "communicated by phone",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "queued",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "delivered",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Ambulance bypass",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "understaffed",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "low",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "tight",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "congested",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "Warning",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "Maintenance",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "Expiring",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "End of Sale",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "End of Support",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "overloaded",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "ok",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Success",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "in operation",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Covered",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Active",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Operational",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Non-Operational",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Not Covered",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Critical",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "High",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Medium",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "Error",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Emergency",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "suspicious",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "New",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "In Progress",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "Resolved",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "online",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "offline",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "normal",
+                        "value": "#d9f0e3"
+                    }
+                ]
+            }
+        },
+        "viz_21": {
+            "type": "splunk.pie",
+            "dataSources": {
+                "primary": "ds_device"
+            },
+            "options": {
+                "backgroundColor": "transparent",
+                "labelDisplay": "valuesAndPercentage",
+                "seriesColors": [
+                    "#0b7fab",
+                    "#6b4fb3",
+                    "#1e8a5a",
+                    "#c98a00",
+                    "#c8253f",
+                    "#2f6fc4",
+                    "#b8457c",
+                    "#0f8f84",
+                    "#d0661f",
+                    "#9b3fae"
+                ],
+                "showDonutHole": true
+            }
+        },
+        "viz_22": {
+            "type": "splunk.table",
+            "dataSources": {
+                "primary": "ds_pacs_fail"
+            },
+            "options": {
+                "backgroundColor": "transparent",
+                "count": 8,
+                "headerVisibility": "fixed",
+                "fontSize": "small",
+                "tableFormat": {
+                    "rowBackgroundColors": "> table | seriesByIndex(0) | pick(rowBg)",
+                    "headerBackgroundColor": "#e9eef4",
+                    "rowColors": "#13294b",
+                    "headerColor": "#5b6878"
+                }
+            },
+            "context": {
+                "rowBg": [
+                    "#ffffff",
+                    "#f5f7fa"
+                ],
+                "statusBg": [
+                    {
+                        "match": "Critical",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Degraded",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "Healthy",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "critical",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "high",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "error",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "warning",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "medium",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "stopped",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "failed",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "running",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "success",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "good",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "normal",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Reachable",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Unreachable",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "critical",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "full",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "stopped",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Blocked",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Offline",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Failed",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Error",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Vulnerable",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "overdue",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "escalated to attending physician",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "2nd escalation: attending on duty",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "not yet communicated",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "communicated by phone",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "queued",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "delivered",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Ambulance bypass",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "understaffed",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "low",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "tight",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "congested",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "Warning",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "Maintenance",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "Expiring",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "End of Sale",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "End of Support",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "overloaded",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "ok",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Success",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "in operation",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Covered",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Active",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Operational",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "Non-Operational",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Not Covered",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Critical",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "High",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Medium",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "Error",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "Emergency",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "suspicious",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "New",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "In Progress",
+                        "value": "#fcefcc"
+                    },
+                    {
+                        "match": "Resolved",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "online",
+                        "value": "#d9f0e3"
+                    },
+                    {
+                        "match": "offline",
+                        "value": "#f9dde1"
+                    },
+                    {
+                        "match": "normal",
+                        "value": "#d9f0e3"
+                    }
+                ]
+            }
+        }
+    },
+    "layout": {
+        "type": "absolute",
+        "options": {
+            "width": 1920,
+            "height": 2620,
+            "display": "auto-scale",
+            "backgroundColor": "#eef1f5",
+            "backgroundImage": {
+                "src": "/static/app/kis_clinic/images/bg_kis_lab.svg",
+                "sizeType": "cover",
+                "x": 0,
+                "y": 0
+            }
+        },
+        "structure": [
+            {
+                "item": "viz_nav_home",
+                "type": "block",
+                "position": {
+                    "x": 40,
+                    "y": 142,
+                    "w": 236,
+                    "h": 46
+                }
+            },
+            {
+                "item": "viz_nav_care",
+                "type": "block",
+                "position": {
+                    "x": 290,
+                    "y": 142,
+                    "w": 236,
+                    "h": 46
+                }
+            },
+            {
+                "item": "viz_nav_diag",
+                "type": "block",
+                "position": {
+                    "x": 540,
+                    "y": 142,
+                    "w": 236,
+                    "h": 46
+                }
+            },
+            {
+                "item": "viz_nav_medtech",
+                "type": "block",
+                "position": {
+                    "x": 790,
+                    "y": 142,
+                    "w": 236,
+                    "h": 46
+                }
+            },
+            {
+                "item": "viz_nav_network",
+                "type": "block",
+                "position": {
+                    "x": 1040,
+                    "y": 142,
+                    "w": 236,
+                    "h": 46
+                }
+            },
+            {
+                "item": "viz_nav_it",
+                "type": "block",
+                "position": {
+                    "x": 1290,
+                    "y": 142,
+                    "w": 236,
+                    "h": 46
+                }
+            },
+            {
+                "item": "viz_nav_security",
+                "type": "block",
+                "position": {
+                    "x": 1540,
+                    "y": 142,
+                    "w": 236,
+                    "h": 46
+                }
+            },
+            {
+                "item": "viz_sub_kis_lab",
+                "type": "block",
+                "position": {
+                    "x": 40,
+                    "y": 212,
+                    "w": 218,
+                    "h": 36
+                }
+            },
+            {
+                "item": "viz_sub_kis_blood",
+                "type": "block",
+                "position": {
+                    "x": 270,
+                    "y": 212,
+                    "w": 218,
+                    "h": 36
+                }
+            },
+            {
+                "item": "viz_sub_kis_pharmacy",
+                "type": "block",
+                "position": {
+                    "x": 500,
+                    "y": 212,
+                    "w": 218,
+                    "h": 36
+                }
+            },
+            {
+                "item": "viz_01",
+                "type": "block",
+                "position": {
+                    "x": 52,
+                    "y": 344,
+                    "w": 266,
+                    "h": 94
+                }
+            },
+            {
+                "item": "viz_02",
+                "type": "block",
+                "position": {
+                    "x": 362,
+                    "y": 344,
+                    "w": 266,
+                    "h": 94
+                }
+            },
+            {
+                "item": "viz_03",
+                "type": "block",
+                "position": {
+                    "x": 672,
+                    "y": 344,
+                    "w": 421,
+                    "h": 94
+                }
+            },
+            {
+                "item": "viz_04",
+                "type": "block",
+                "position": {
+                    "x": 1137,
+                    "y": 344,
+                    "w": 421,
+                    "h": 94
+                }
+            },
+            {
+                "item": "viz_05",
+                "type": "block",
+                "position": {
+                    "x": 1602,
+                    "y": 344,
+                    "w": 266,
+                    "h": 94
+                }
+            },
+            {
+                "item": "viz_06",
+                "type": "block",
+                "position": {
+                    "x": 52,
+                    "y": 514,
+                    "w": 576,
+                    "h": 284
+                }
+            },
+            {
+                "item": "viz_07",
+                "type": "block",
+                "position": {
+                    "x": 672,
+                    "y": 514,
+                    "w": 576,
+                    "h": 284
+                }
+            },
+            {
+                "item": "viz_08",
+                "type": "block",
+                "position": {
+                    "x": 1292,
+                    "y": 514,
+                    "w": 576,
+                    "h": 284
+                }
+            },
+            {
+                "item": "viz_09",
+                "type": "block",
+                "position": {
+                    "x": 52,
+                    "y": 904,
+                    "w": 421,
+                    "h": 94
+                }
+            },
+            {
+                "item": "viz_10",
+                "type": "block",
+                "position": {
+                    "x": 517,
+                    "y": 921,
+                    "w": 421,
+                    "h": 77
+                }
+            },
+            {
+                "item": "viz_11",
+                "type": "block",
+                "position": {
+                    "x": 982,
+                    "y": 904,
+                    "w": 421,
+                    "h": 94
+                }
+            },
+            {
+                "item": "viz_12",
+                "type": "block",
+                "position": {
+                    "x": 1447,
+                    "y": 904,
+                    "w": 421,
+                    "h": 94
+                }
+            },
+            {
+                "item": "viz_13",
+                "type": "block",
+                "position": {
+                    "x": 52,
+                    "y": 1074,
+                    "w": 886,
+                    "h": 284
+                }
+            },
+            {
+                "item": "viz_14",
+                "type": "block",
+                "position": {
+                    "x": 982,
+                    "y": 1074,
+                    "w": 886,
+                    "h": 284
+                }
+            },
+            {
+                "item": "viz_15",
+                "type": "block",
+                "position": {
+                    "x": 52,
+                    "y": 1434,
+                    "w": 1196,
+                    "h": 364
+                }
+            },
+            {
+                "item": "viz_16",
+                "type": "block",
+                "position": {
+                    "x": 1292,
+                    "y": 1434,
+                    "w": 576,
+                    "h": 364
+                }
+            },
+            {
+                "item": "viz_17",
+                "type": "block",
+                "position": {
+                    "x": 52,
+                    "y": 1904,
+                    "w": 576,
+                    "h": 284
+                }
+            },
+            {
+                "item": "viz_18",
+                "type": "block",
+                "position": {
+                    "x": 672,
+                    "y": 1904,
+                    "w": 421,
+                    "h": 284
+                }
+            },
+            {
+                "item": "viz_19",
+                "type": "block",
+                "position": {
+                    "x": 1137,
+                    "y": 1904,
+                    "w": 731,
+                    "h": 284
+                }
+            },
+            {
+                "item": "viz_20",
+                "type": "block",
+                "position": {
+                    "x": 52,
+                    "y": 2264,
+                    "w": 886,
+                    "h": 304
+                }
+            },
+            {
+                "item": "viz_21",
+                "type": "block",
+                "position": {
+                    "x": 982,
+                    "y": 2264,
+                    "w": 421,
+                    "h": 304
+                }
+            },
+            {
+                "item": "viz_22",
+                "type": "block",
+                "position": {
+                    "x": 1447,
+                    "y": 2264,
+                    "w": 421,
+                    "h": 304
+                }
+            }
+        ],
+        "globalInputs": [
+            "input_time",
+            "input_dept"
+        ]
+    }
+}]]></definition>
+    <meta type="hiddenElements"><![CDATA[{"hideEdit": false, "hideOpenInSearch": false, "hideExport": false}]]></meta>
+</dashboard>

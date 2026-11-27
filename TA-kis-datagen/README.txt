@@ -13,25 +13,39 @@ Cisco-IQ-Advisories, CVEs (CVE-2026-99xxx) und Field Notices sind erfunden und a
 
 | # | Was | Warum |
 |---|-----|-------|
-| 1 | HEC-Token, dessen *Allowed Indexes* `demo_sakh` **und** `demo_sakh_metrics` enthalten | Jedes Event traegt seinen Index; fehlt einer → `Incorrect index` (Code 7). |
+| 1 | HEC-Token, dessen *Allowed Indexes* `demo_sakh` **und** `demo_sakh_metrics` enthalten, fuer englische Inputs zusaetzlich `demo_sakh_en` und `demo_sakh_en_metrics` | Jedes Event traegt seinen Index; fehlt einer → `Incorrect index` (Code 7). |
 | 2 | HEC-URL | Splunk Cloud: `https://http-inputs-<stack>.splunkcloud.com:443` · Enterprise: `https://<host>:8088` |
 | 3 | Rolle `sc_admin` (Cloud) / `admin` | Private App hochladen, Inputs anlegen. |
 
-Die App legt beide Indexe an (`default/indexes.conf`, 30 Tage Aufbewahrung):
+Die App legt alle vier Indexe an (`default/indexes.conf`, 30 Tage Aufbewahrung):
 
 | Index | Typ | Inhalt |
 |---|---|---|
 | `demo_sakh` | event | alle Ereignisse, Logs und Snapshots (38 Sourcetypes) |
 | `demo_sakh_metrics` | metric | numerische Zeitreihen (`sakh.*`, Sourcetype `sakh:metrics`) |
+| `demo_sakh_en` | event | wie `demo_sakh`, englische Inputs (App `kis_clinic`) |
+| `demo_sakh_en_metrics` | metric | wie `demo_sakh_metrics`, englische Inputs |
 
 ## Einrichtung
 
-1. App installieren (`TA-kis-datagen-1.0.9.tar.gz`).
+1. App installieren (`TA-kis-datagen-1.1.0.tar.gz`).
 2. *Configuration → HEC Setup*: Modus HEC, URL und Token eintragen (Token wird geprueft und
    verschluesselt gespeichert). Ohne HEC: Modus *Direct*.
 3. *Inputs → Create New Input → SAKH Krankenhaus*: Name vergeben, Standardwerte passen
    (Index `demo_sakh`, Metrik-Index `demo_sakh_metrics`, Zeitzone Europe/Vienna, Backfill 1440 min).
 4. Szenarien bei Bedarf per Checkbox einschalten – sie wirken live nach ca. 10 Sekunden.
+
+## Englische Daten (Splunk General Hospital)
+
+*Sprache / Language* im Input waehlt die Sprache der Events und Metrik-Dimensionen (Standard Deutsch).
+Mit *English* schreibt der Generator dieselben Datenquellen auf Englisch, passend zur App
+`kis_clinic`: Statuswerte, Freitexte, Stationen, Diagnosen, Geraetetypen sowie die Quellen
+(`source`), z. B. `bloodbank:stock` statt `blutdepot:bestand`. Feldnamen, Sourcetypes und
+Metriknamen bleiben gleich, Abteilungskuerzel und Geraete-IDs (z. B. MRT-1) ebenso.
+
+Stehen die Indizes auf den Standardwerten `demo_sakh` / `demo_sakh_metrics`, schreibt ein englischer
+Input automatisch nach `demo_sakh_en` / `demo_sakh_en_metrics`, damit sich deutsche und englische
+Daten nicht mischen. Fuer eine Demo in beiden Sprachen zwei Inputs anlegen, einen je Sprache.
 
 Volumen: rund 280.000 Events (ca. 100 MB) und 1,3 Mio. Metrik-Datenpunkte pro Tag.
 

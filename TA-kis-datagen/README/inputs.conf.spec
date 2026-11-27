@@ -2,6 +2,7 @@
 interval = Long-running input: splunkd only uses this to restart the generator if it ever stops unexpectedly. (Default: 60)
 index = Target index for every source. Must exist and (HEC mode) be allowed for the HEC token. (Default: demo_sakh)
 metrics_index = Metrics index (datatype metric) for the numeric time series: server, VMware, databases, HL7 channels, ThousandEyes, medical device telemetry, beds, blood bank, ICU vitals, ED board, eHealth, nursing, Catalyst health. Must exist and (HEC mode) be allowed for the HEC token. (Default: demo_sakh_metrics)
+language = de or en. Language of event texts and metric dimensions. en produces the English "Splunk General Hospital" data for the kis_clinic app; with index/metrics_index left at demo_sakh/demo_sakh_metrics it writes to demo_sakh_en/demo_sakh_en_metrics instead. (Default: de)
 timezone = IANA name. Daily patterns (shifts, OR plan, ED peaks) run in this zone. (Default: Europe/Vienna)
 seed = Seed of the deterministic hospital model. Same seed = same curves after restart and backfill. (Default: sakh)
 backfill_minutes = Runs only the first time this input starts. 1440 = one day (about 280,000 events and 1.3 million metric data points). 0 = realtime only. (Default: 1440)

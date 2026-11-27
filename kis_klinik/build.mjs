@@ -5,6 +5,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import chalk from 'chalk';
 import { cssInjectAndSizeWarnPlugin } from './build-plugins/css-and-size.mjs';
+import { i18nPlugin } from './build-plugins/i18n.mjs';
 
 const colors = {
     success: (text) => chalk.green(text),
@@ -22,8 +23,11 @@ const entryFileName = entryArg ? entryArg.split('=')[1] : 'visualization.js';
 const isWatch = process.argv.includes('--watch');
 const isProduction = process.env.NODE_ENV === 'production';
 
+const isEnglish = process.env.KIS_LANG === 'en';
+const i18nChanges = [];
+
 const visualizationsDir = join(__dirname, 'visualizations');
-const distDir = join(__dirname, 'dist');
+const distDir = join(__dirname, isEnglish ? 'dist_en' : 'dist');
 
 if (!isWatch && existsSync(distDir)) {
     rmSync(distDir, { recursive: true, force: true });
@@ -115,7 +119,7 @@ const buildOptions = {
     minify: isProduction,
     sourcemap: !isProduction,
     ...(useJsx && { jsx: 'automatic' }),
-    plugins: [splunkCjsInteropPlugin, cssInjectAndSizeWarnPlugin],
+    plugins: [splunkCjsInteropPlugin, cssInjectAndSizeWarnPlugin, ...(isEnglish ? [i18nPlugin(i18nChanges)] : [])],
     loader: {
         '.png': 'dataurl',
         '.jpg': 'dataurl',
@@ -198,5 +202,13 @@ if (isWatch) {
             process.exit(1);
         }
     }
-    console.log(colors.success(`\nBuild complete! Output: dist/`));
+    if (isEnglish) {
+        const seen = new Set();
+        const lines = i18nChanges
+            .map((c) => `${c.file.slice(__dirname.length + 1)}:${c.line}\t${JSON.stringify(c.from)} -> ${JSON.stringify(c.to)}`)
+            .filter((line) => !seen.has(line) && seen.add(line));
+        writeFileSync(join(distDir, 'i18n-changes.txt'), `${lines.join('\n')}\n`);
+        console.log(colors.dim(`  ${lines.length} translated strings (dist_en/i18n-changes.txt)`));
+    }
+    console.log(colors.success(`\nBuild complete! Output: ${isEnglish ? 'dist_en' : 'dist'}/`));
 }

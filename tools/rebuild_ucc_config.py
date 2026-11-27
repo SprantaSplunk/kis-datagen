@@ -62,7 +62,12 @@ def build_global(gc):
     interval = copy.deepcopy(next(e for e in template["entity"] if e["field"] == "interval"))
     interval["label"] = "Neustart-Pruefung (Sekunden)"
     interval["help"] = "Dauerhaft laufender Input: splunkd nutzt den Wert nur, um den Generator nach einem Absturz neu zu starten."
-    entity = [name_entity, interval,
+    language = {"type": "radio", "field": "language", "label": "Sprache / Language", "required": True, "defaultValue": "de",
+                "options": {"items": [{"value": "de", "label": "Deutsch"}, {"value": "en", "label": "English"}]},
+                "help": "Sprache der Events und Metrik-Dimensionen. English: Splunk General Hospital, passend zur App "
+                        "kis_clinic. Stehen die Indizes auf demo_sakh / demo_sakh_metrics, schreibt English automatisch "
+                        "nach demo_sakh_en / demo_sakh_en_metrics."}
+    entity = [name_entity, interval, language,
               text("index", "Event-Index", "demo_sakh", "Alle Ereignisse, Logs und Snapshots (KIS, Netzwerk, CMDB).",
                    r"^[a-zA-Z0-9][\w-]*$", "Buchstaben, Ziffern, _ und -"),
               text("metrics_index", "Metrik-Index", "demo_sakh_metrics",
@@ -87,7 +92,7 @@ def build_global(gc):
     inputs["services"] = [service]
     inputs["title"] = "Inputs"
     inputs["description"] = "Ein Input erzeugt alle Datenquellen des SAKH. Status-Schalter = Start / Stop."
-    more = [{"label": "Event-Index", "field": "index"}, {"label": "Metrik-Index", "field": "metrics_index"},
+    more = [{"label": "Sprache", "field": "language"}, {"label": "Event-Index", "field": "index"}, {"label": "Metrik-Index", "field": "metrics_index"},
             {"label": "Zeitzone", "field": "timezone"}, {"label": "Seed", "field": "seed"},
             {"label": "Backfill (Minuten)", "field": "backfill_minutes"},
             {"label": "Luecken fuellen (Minuten)", "field": "max_gap_minutes"}]
@@ -112,7 +117,7 @@ def build_openapi(oa):
         if not k.startswith(("hec_setup", "logging")):
             del schemas[k]
     props = {"name": {"type": "string"}}
-    for f in ("interval", "index", "metrics_index", "timezone", "seed", "backfill_minutes", "max_gap_minutes"):
+    for f in ("interval", "index", "metrics_index", "language", "timezone", "seed", "backfill_minutes", "max_gap_minutes"):
         props[f] = {"type": "string"}
     for name, _l, _r in SCENARIOS:
         props["scenario_" + name] = {"type": "string", "enum": ["0", "1"]}

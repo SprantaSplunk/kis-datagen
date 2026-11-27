@@ -15,8 +15,13 @@ import {
 } from 'node:fs';
 import chalk from 'chalk';
 import { create as createTar } from 'tar';
+import { LANG, localize } from './dashboards/lib/i18n.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// KIS_LANG=en packages the English app kis_clinic from package/app_en and the dist_en bundles
+const APP_SUB = LANG === 'en' ? 'app_en' : 'app';
+const DIST = LANG === 'en' ? 'dist_en' : 'dist';
 
 const colors = {
     success: (text) => chalk.green(text),
@@ -85,9 +90,9 @@ function parseAppConf(content) {
 }
 
 function getAppConfPath(projectRoot) {
-    const appConfPath = join(join(projectRoot, 'package', 'app'), 'app.conf');
+    const appConfPath = join(projectRoot, 'package', APP_SUB, 'app.conf');
     if (!existsSync(appConfPath)) {
-        throw new Error('Missing package/app/app.conf. Run from a project created with init.');
+        throw new Error(`Missing package/${APP_SUB}/app.conf. Run from a project created with init.`);
     }
     return appConfPath;
 }
@@ -117,8 +122,8 @@ function discoverVisualizations(projectRoot) {
         const name = entry.name;
         const configPath = join(vizDir, name, 'config.json');
         if (existsSync(configPath)) {
-            const config = JSON.parse(readFileSync(configPath, 'utf-8'));
-            const distPath = join(projectRoot, 'dist', name, 'visualization.js');
+            const config = localize(JSON.parse(readFileSync(configPath, 'utf-8')));
+            const distPath = join(projectRoot, DIST, name, 'visualization.js');
             vizs.push({ name, configPath, config, distPath });
         }
     }
@@ -161,10 +166,10 @@ function validateProjectStructure(projectRoot) {
     }
 
     const missingBuilds = withConfig.filter(
-        (e) => !existsSync(join(projectRoot, 'dist', e.name, 'visualization.js'))
+        (e) => !existsSync(join(projectRoot, DIST, e.name, 'visualization.js'))
     );
     if (missingBuilds.length > 0) {
-        const list = missingBuilds.map((e) => `  - dist/${e.name}/visualization.js`).join('\n');
+        const list = missingBuilds.map((e) => `  - ${DIST}/${e.name}/visualization.js`).join('\n');
         throw new Error(
             `Missing built visualization bundles:\n${list}\n\nMake sure you have run the build command before packaging`
         );
@@ -275,7 +280,7 @@ const GENERATED_FILES = new Set(['app.conf', 'visualizations.conf']);
 
 function stageAppContent(projectRoot, stageAppDir) {
     console.log(colors.info('Copying dashboards and static app files...'));
-    const appDir = join(projectRoot, 'package', 'app');
+    const appDir = join(projectRoot, 'package', APP_SUB);
     for (const entry of readdirSync(appDir, { withFileTypes: true })) {
         if (entry.name.startsWith('.') || GENERATED_FILES.has(entry.name)) continue;
         if (entry.isDirectory()) {
@@ -379,7 +384,7 @@ async function main({ cwd }) {
 
     const stageDir = join(projectRoot, 'stage');
     const stageAppDir = join(stageDir, appId);
-    const distDir = join(projectRoot, 'dist');
+    const distDir = join(projectRoot, DIST);
 
     console.log(colors.info('Creating app structure...'));
     rmSync(stageAppDir, { recursive: true, force: true });

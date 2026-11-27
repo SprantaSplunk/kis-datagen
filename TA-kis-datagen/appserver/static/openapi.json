@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "TA-kis-datagen",
-        "version": "1.0.9",
+        "version": "1.1.0",
         "description": "KIS Datagen (Splunk Allgemeines Krankenhaus SAKH)",
         "contact": {
             "name": "Alex"
@@ -114,6 +114,9 @@
                     "metrics_index": {
                         "type": "string"
                     },
+                    "language": {
+                        "type": "string"
+                    },
                     "timezone": {
                         "type": "string"
                     },
@@ -194,6 +197,9 @@
                         "type": "string"
                     },
                     "metrics_index": {
+                        "type": "string"
+                    },
+                    "language": {
                         "type": "string"
                     },
                     "timezone": {
@@ -279,6 +285,9 @@
                         "type": "string"
                     },
                     "metrics_index": {
+                        "type": "string"
+                    },
+                    "language": {
                         "type": "string"
                     },
                     "timezone": {

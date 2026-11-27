@@ -7,3 +7,4 @@ storybook-static/
 .env
 .env.local
 
+dist_en/

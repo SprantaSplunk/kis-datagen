@@ -69,6 +69,15 @@ fields = [
         )
     ),
     field.RestField(
+        'language',
+        required=True,
+        encrypted=False,
+        default='de',
+        validator=validator.Pattern(
+            regex=r"""^(de|en)$""",
+        )
+    ),
+    field.RestField(
         'timezone',
         required=True,
         encrypted=False,
