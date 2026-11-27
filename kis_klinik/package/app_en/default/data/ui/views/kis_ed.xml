@@ -137,7 +137,7 @@
             "type": "ds.chain",
             "options": {
                 "extend": "ds_m",
-                "query": "| where metric_name IN (\"sakh.ed.waiting\", \"sakh.ed.boarding\")\n| eval series=if(metric_name=\"sakh.ed.waiting\", \"Waiting\", \"Boarding (wartet auf Ward)\")\n| timechart span=10m avg(v) by series"
+                "query": "| where metric_name IN (\"sakh.ed.waiting\", \"sakh.ed.boarding\")\n| eval series=if(metric_name=\"sakh.ed.waiting\", \"Waiting\", \"Boarding (waiting for a ward)\")\n| timechart span=10m avg(v) by series"
             }
         },
         "ds_arrivals": {
@@ -172,7 +172,7 @@
         "ds_last": {
             "type": "ds.search",
             "options": {
-                "query": "index=demo_sakh_en sourcetype=\"sakh:ed:tracking\" type=arrival triage_level=\"$triage$\"\n| eval Time=strftime(_time, \"%H:%M\"), Triage=triage_level.\" \".triage_color\n| table Time Triage complaint target_department arrival_mode age sex\n| rename complaint as \"Chief complaint\" target_department as Department arrival_mode as Arrival age as Alter sex as Sex\n| head 50\n| appendpipe [| stats count | where count=0 | eval Time=\"No arrivals with this triage level in the time range\" | fields - count]",
+                "query": "index=demo_sakh_en sourcetype=\"sakh:ed:tracking\" type=arrival triage_level=\"$triage$\"\n| eval Time=strftime(_time, \"%H:%M\"), Triage=triage_level.\" \".triage_color\n| table Time Triage complaint target_department arrival_mode age sex\n| rename complaint as \"Chief complaint\" target_department as Department arrival_mode as Arrival age as Age sex as Sex\n| head 50\n| appendpipe [| stats count | where count=0 | eval Time=\"No arrivals with this triage level in the time range\" | fields - count]",
                 "enableSmartSources": true
             }
         }

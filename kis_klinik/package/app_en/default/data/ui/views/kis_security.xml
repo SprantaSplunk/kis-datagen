@@ -168,7 +168,7 @@
         "ds_win": {
             "type": "ds.search",
             "options": {
-                "query": "index=demo_sakh_en sourcetype=\"WinEventLog\" (EventCode=4625 OR EventCode=4740 OR EventCode=4672)\n| rex \"Account Name:\\\\s+(?<account>\\\\S+)\" | rex \"Source Network Address:\\\\s+(?<src>\\\\S+)\"\n| stats count as Count latest(_time) as t by EventCode account src ComputerName\n| eval Time=strftime(t, \"%m/%d %H:%M\"), Ereignis=case(EventCode=4625, \"Logon failed\", EventCode=4740, \"Account locked\", true(), \"Privileged logon\")\n| sort - Count | head 25 | table Time Ereignis account src ComputerName Count | rename account as Account src as Source ComputerName as Server",
+                "query": "index=demo_sakh_en sourcetype=\"WinEventLog\" (EventCode=4625 OR EventCode=4740 OR EventCode=4672)\n| rex \"Account Name:\\\\s+(?<account>\\\\S+)\" | rex \"Source Network Address:\\\\s+(?<src>\\\\S+)\"\n| stats count as Count latest(_time) as t by EventCode account src ComputerName\n| eval Time=strftime(t, \"%m/%d %H:%M\"), Event=case(EventCode=4625, \"Logon failed\", EventCode=4740, \"Account locked\", true(), \"Privileged logon\")\n| sort - Count | head 25 | table Time Event account src ComputerName Count | rename account as Account src as Source ComputerName as Server",
                 "enableSmartSources": true
             }
         },

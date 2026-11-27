@@ -117,13 +117,13 @@
             "type": "ds.chain",
             "options": {
                 "extend": "ds_flow",
-                "query": "| eval Status=status\n| table channel source_system target_system message_type messages queue_depth avg_latency_ms Status\n| rename channel as Channel source_system as Source target_system as Target message_type as Message messages as \"Nachrichten (5 min)\" queue_depth as Queue avg_latency_ms as \"Latency ms\""
+                "query": "| eval Status=status\n| table channel source_system target_system message_type messages queue_depth avg_latency_ms Status\n| rename channel as Channel source_system as Source target_system as Target message_type as Message messages as \"Messages (5 min)\" queue_depth as Queue avg_latency_ms as \"Latency ms\""
             }
         },
         "ds_eh": {
             "type": "ds.search",
             "options": {
-                "query": "index=demo_sakh_en sourcetype=\"sakh:ehealth\" type=service earliest=-15m\n| stats latest(service_name) as Shift latest(requests) as \"Anfragen (5 min)\" latest(error_pct) as \"Error %\" latest(avg_response_ms) as \"Response ms\" latest(status) as Status by service | fields - service",
+                "query": "index=demo_sakh_en sourcetype=\"sakh:ehealth\" type=service earliest=-15m\n| stats latest(service_name) as Service latest(requests) as \"Requests (5 min)\" latest(error_pct) as \"Error %\" latest(avg_response_ms) as \"Response ms\" latest(status) as Status by service | fields - service",
                 "enableSmartSources": true
             }
         },

@@ -127,7 +127,7 @@
             "type": "ds.chain",
             "options": {
                 "extend": "ds_stock",
-                "query": "| eval Shortage=if(basg_shortage=\"true\" OR basg_shortage=1, \"BASG notice\", \"\"), BtM=if(controlled=\"true\" OR controlled=1, \"ja\", \"\")\n| sort days_of_supply | table drug atc on_hand reorder_point daily_usage days_of_supply Shortage BtM status\n| rename drug as Drug atc as ATC on_hand as Stock reorder_point as \"Reorder level\" daily_usage as \"Use/day\" days_of_supply as \"Supply (days)\" status as Status"
+                "query": "| eval Shortage=if(basg_shortage=\"true\" OR basg_shortage=1, \"BASG notice\", \"\"), Controlled=if(controlled=\"true\" OR controlled=1, \"yes\", \"\")\n| sort days_of_supply | table drug atc on_hand reorder_point daily_usage days_of_supply Shortage Controlled status\n| rename drug as Drug atc as ATC on_hand as Stock reorder_point as \"Reorder level\" daily_usage as \"Use/day\" days_of_supply as \"Supply (days)\" status as Status"
             }
         },
         "ds_dispense": {

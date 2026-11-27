@@ -138,7 +138,7 @@
         "ds_assets": {
             "type": "ds.search",
             "options": {
-                "query": "index=demo_sakh_en sourcetype=\"snow:alm_asset\" earliest=-7h | stats latest(cost) as cost latest(model_category) as cat by asset_tag | stats sum(cost) as EUR count as Assets by cat | eval \"Wert (Mio EUR)\"=round(EUR / 1000000, 2) | fields cat Assets \"Wert (Mio EUR)\" | rename cat as Category",
+                "query": "index=demo_sakh_en sourcetype=\"snow:alm_asset\" earliest=-7h | stats latest(cost) as cost latest(model_category) as cat by asset_tag | stats sum(cost) as EUR count as Assets by cat | eval \"Value (EUR m)\"=round(EUR / 1000000, 2) | fields cat Assets \"Value (EUR m)\" | rename cat as Category",
                 "enableSmartSources": true
             }
         }

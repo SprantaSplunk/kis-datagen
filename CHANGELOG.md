@@ -2,6 +2,17 @@
 
 ## 2026-11-27
 
+### kis_clinic 1.0.1
+
+- Restliche deutsche Spalten und Werte uebersetzt: *Latest arrivals* (Spalte *Age*), *Open critical
+  results* (*Value*, *Open for (min)*), *Time to acknowledgement* (*up to 10 min*, *10 to 30 min*),
+  *Rescheduled exams* und Wartezeit je Modalitaet (*Wait (days)*), Arzneimittelbestand (*Controlled*
+  mit *yes*), *Channels* (*Messages (5 min)*), *Services* (*Requests (5 min)*), *Assets*
+  (*Value (EUR m)*), *Windows security events* (*Event*), ED-Trend *Boarding (waiting for a ward)*
+  sowie die Titel *Health by building*, *Health by switch* und *CPU by server (%)*.
+- *Services* (eHealth): Die erste Spalte heisst jetzt *Service*, bisher stand dort faelschlich *Shift*.
+- Zu tun: `dist/kis_clinic-1.0.1.spl` als Upgrade hochladen und die Dashboards im Browser neu laden.
+
 ### TA-kis-datagen 1.1.0
 
 - Neues Pflichtfeld *Sprache / Language* im Input (*Deutsch* oder *English*, Standard *Deutsch*).

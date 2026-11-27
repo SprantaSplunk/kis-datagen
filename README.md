@@ -6,7 +6,7 @@ Drei Splunk-Apps fuer Demos rund um ein oesterreichisches Krankenhausinformation
 | --- | --- | --- | --- |
 | [TA-kis-datagen](TA-kis-datagen/README.txt) | 1.1.0 | `dist/TA-kis-datagen-1.1.0.tar.gz` | Datengenerator: KIS, Medizintechnik, Cisco-Netzwerk inkl. Cisco IQ, Server, Datenbanken, ServiceNow – per HEC oder direkt, Deutsch oder Englisch je Input |
 | [kis_klinik](kis_klinik/README.md) | 1.0.11 | `dist/kis_klinik-1.0.11.spl` | Dashboard Studio im hellen, klinischen Design: 15 Dashboards, 11 interaktive Canvas-Visualisierungen |
-| [kis_clinic](kis_klinik/README.md#englische-ausgabe-kis_clinic) | 1.0.0 | `dist/kis_clinic-1.0.0.spl` | Englische Ausgabe von kis_klinik (*HIS Clinic (SGH)*, Splunk General Hospital), parallel installierbar |
+| [kis_clinic](kis_klinik/README.md#englische-ausgabe-kis_clinic) | 1.0.1 | `dist/kis_clinic-1.0.1.spl` | Englische Ausgabe von kis_klinik (*HIS Clinic (SGH)*, Splunk General Hospital), parallel installierbar |
 
 Indexe (werden von TA-kis-datagen angelegt):
 
@@ -26,7 +26,7 @@ Der HEC-Token muss beide Indexe erlauben, fuer englische Inputs auch die beiden 
 4. Fuer eine Demo ein Szenario im Input einschalten, z. B. *Netzwerkausfall Haus C* oder
    *Blutkonserven-Engpass*. Die Vorwarnsignale erscheinen sofort, die Auswirkung nach rund 6 Minuten.
 5. Englische Demo: einen zweiten Input mit *Sprache / Language = English* anlegen und
-   `dist/kis_clinic-1.0.0.spl` installieren, *HIS Clinic (SGH)* oeffnen.
+   `dist/kis_clinic-1.0.1.spl` installieren, *HIS Clinic (SGH)* oeffnen.
 
 ## Repository
 

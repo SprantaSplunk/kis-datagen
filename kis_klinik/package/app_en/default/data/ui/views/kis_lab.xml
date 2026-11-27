@@ -206,7 +206,7 @@
             "type": "ds.chain",
             "options": {
                 "extend": "ds_open",
-                "query": "| sort - age\n| eval Status=case(escalated>=2, \"2nd escalation: attending on duty\", escalated=1, \"escalated to attending physician\", told=1, \"communicated by phone\", true(), \"not yet communicated\"), Wert=value.\" \".unit, Direction=if(flag=\"HH\", \"too high\", \"too low\")\n| table ward age test_name Wert Status reason delivery_status\n| rename ward as Ward age as \"Seit (min)\" test_name as Test reason as Reason delivery_status as HIS\n| appendpipe [| stats count | where count=0 | eval Ward=\"All critical values are acknowledged\" | fields - count]"
+                "query": "| sort - age\n| eval Status=case(escalated>=2, \"2nd escalation: attending on duty\", escalated=1, \"escalated to attending physician\", told=1, \"communicated by phone\", true(), \"not yet communicated\"), Value=value.\" \".unit, Direction=if(flag=\"HH\", \"too high\", \"too low\")\n| table ward age test_name Value Status reason delivery_status\n| rename ward as Ward age as \"Open for (min)\" test_name as Test reason as Reason delivery_status as HIS\n| appendpipe [| stats count | where count=0 | eval Ward=\"All critical values are acknowledged\" | fields - count]"
             }
         },
         "ds_ack": {
@@ -235,7 +235,7 @@
             "type": "ds.chain",
             "options": {
                 "extend": "ds_ack",
-                "query": "| where action=\"acknowledged\"\n| eval Duration=case(minutes<=10, \"bis 10 min\", minutes<=30, \"10 bis 30 min\", true(), \"over 30 min (escalated)\")\n| timechart span=1h count by Duration"
+                "query": "| where action=\"acknowledged\"\n| eval Duration=case(minutes<=10, \"up to 10 min\", minutes<=30, \"10 to 30 min\", true(), \"over 30 min (escalated)\")\n| timechart span=1h count by Duration"
             }
         },
         "ds_crit_ward": {
@@ -264,14 +264,14 @@
             "type": "ds.chain",
             "options": {
                 "extend": "ds_ris",
-                "query": "| where priority=\"Routine\" | stats avg(wait_days) as \"Wartezeit (Days)\" by modality | eval \"Wartezeit (Days)\"=round('Wartezeit (Days)', 1)"
+                "query": "| where priority=\"Routine\" | stats avg(wait_days) as \"Wait (days)\" by modality | eval \"Wait (days)\"=round('Wait (days)', 1)"
             }
         },
         "ds_moved": {
             "type": "ds.chain",
             "options": {
                 "extend": "ds_ris",
-                "query": "| where status=\"rescheduled\"\n| eval Time=strftime(_time, \"%H:%M\") | table Time order_id exam original_device device_id reason wait_days\n| rename order_id as Order exam as Exam original_device as \"Planned on\" device_id as \"Moved to\" reason as Reason wait_days as \"Wartezeit (Days)\"\n| appendpipe [| stats count | where count=0 | eval Time=\"No rescheduled exams in the time range\" | fields - count]"
+                "query": "| where status=\"rescheduled\"\n| eval Time=strftime(_time, \"%H:%M\") | table Time order_id exam original_device device_id reason wait_days\n| rename order_id as Order exam as Exam original_device as \"Planned on\" device_id as \"Moved to\" reason as Reason wait_days as \"Wait (days)\"\n| appendpipe [| stats count | where count=0 | eval Time=\"No rescheduled exams in the time range\" | fields - count]"
             }
         },
         "ds_pacs": {
@@ -808,8 +808,8 @@
                     "headerColor": "#5b6878"
                 },
                 "columnFormat": {
-                    "Seit (min)": {
-                        "rowBackgroundColors": "> table | seriesByName(\"Seit (min)\") | rangeValue(range_2)"
+                    "Open for (min)": {
+                        "rowBackgroundColors": "> table | seriesByName(\"Open for (min)\") | rangeValue(range_2)"
                     },
                     "Status": {
                         "rowBackgroundColors": "> table | seriesByName(\"Status\") | matchValue(statusBg)"
@@ -1115,8 +1115,8 @@
                 ],
                 "stackMode": "stacked",
                 "seriesColorsByField": {
-                    "bis 10 min": "#13804f",
-                    "10 bis 30 min": "#d99a1e",
+                    "up to 10 min": "#13804f",
+                    "10 to 30 min": "#d99a1e",
                     "over 30 min (escalated)": "#c8102e"
                 }
             }

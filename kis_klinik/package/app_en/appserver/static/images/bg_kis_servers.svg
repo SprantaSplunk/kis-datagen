@@ -64,7 +64,7 @@
     <line x1="1591" y1="340.5" x2="1879" y2="340.5" stroke="#edf1f5"/>
     <rect x="40" y="500" width="1220" height="420" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
     <rect x="58" y="518" width="8" height="8" rx="2" fill="#0f8f84"/>
-    <text x="74" y="528" class="pt">CPU je Server (%)</text>
+    <text x="74" y="528" class="pt">CPU by server (%)</text>
     <text x="1242" y="528" class="ph" text-anchor="end">Click a row to select the server</text>
     <line x1="41" y1="540.5" x2="1259" y2="540.5" stroke="#edf1f5"/>
     <rect x="1280" y="500" width="600" height="420" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>

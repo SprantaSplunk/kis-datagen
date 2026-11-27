@@ -11,6 +11,10 @@
         [
             "%d\\.%m\\.%Y",
             "%m/%d/%Y"
+        ],
+        [
+            "latest\\(service_name\\) as Dienst\\b",
+            "latest(service_name) as Service"
         ]
     ],
     "textPatterns": [
@@ -676,6 +680,22 @@
         "Verspaetung gelb ab (min)": "Delay yellow from (min)",
         "aktiv": "active",
         "erfolgreich": "successful",
-        "jetzt": "now"
+        "jetzt": "now",
+        "Anfragen (5 min)": "Requests (5 min)",
+        "Nachrichten (5 min)": "Messages (5 min)",
+        "Seit (min)": "Open for (min)",
+        "Wartezeit (Tage)": "Wait (days)",
+        "Wert (Mio EUR)": "Value (EUR m)",
+        "Ereignis": "Event",
+        "Wert": "Value",
+        "Alter": "Age",
+        "BtM": "Controlled",
+        "ja": "yes",
+        "Boarding (wartet auf Station)": "Boarding (waiting for a ward)",
+        "bis 10 min": "up to 10 min",
+        "10 bis 30 min": "10 to 30 min",
+        "Health je Haus": "Health by building",
+        "Health je Switch": "Health by switch",
+        "CPU je Server (%)": "CPU by server (%)"
     }
 }

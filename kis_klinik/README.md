@@ -18,7 +18,7 @@ Die Visualisierungen werden global exportiert und stehen auch in anderen Apps zu
 
 ## Englische Ausgabe kis_clinic
 
-`kis_clinic-1.0.0.spl` (*HIS Clinic (SGH)*, Splunk General Hospital) ist dieselbe App auf
+`kis_clinic-1.0.1.spl` (*HIS Clinic (SGH)*, Splunk General Hospital) ist dieselbe App auf
 Englisch: alle Dashboards, Hintergrundgrafiken und Visualisierungen, US-Englisch, KIS heisst HIS.
 Sie liest `demo_sakh_en` und `demo_sakh_en_metrics` und laesst sich parallel zu `kis_klinik`
 installieren. Die Daten dazu liefert ein eigener Input in `TA-kis-datagen` (ab 1.1.0) mit

@@ -68,11 +68,11 @@
     <line x1="1591" y1="340.5" x2="1879" y2="340.5" stroke="#edf1f5"/>
     <rect x="40" y="470" width="600" height="380" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
     <rect x="58" y="488" width="8" height="8" rx="2" fill="#0a72a6"/>
-    <text x="74" y="498" class="pt">Health je Building</text>
+    <text x="74" y="498" class="pt">Health by building</text>
     <line x1="41" y1="510.5" x2="639" y2="510.5" stroke="#edf1f5"/>
     <rect x="660" y="470" width="1220" height="380" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>
     <rect x="678" y="488" width="8" height="8" rx="2" fill="#0a72a6"/>
-    <text x="694" y="498" class="pt">Health je Switch</text>
+    <text x="694" y="498" class="pt">Health by switch</text>
     <text x="1862" y="498" class="ph" text-anchor="end">Click a row to filter the syslog</text>
     <line x1="661" y1="510.5" x2="1879" y2="510.5" stroke="#edf1f5"/>
     <rect x="40" y="870" width="1065" height="400" rx="8" fill="#ffffff" stroke="#d6dde6" filter="url(#card)"/>

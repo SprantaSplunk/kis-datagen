@@ -120,7 +120,7 @@
                 "query": "| mstats avg(_value) as v WHERE index=demo_sakh_en_metrics metric_name=\"sakh.network.health_score\" BY building\n| eval key=building, name=\"Building \".building, value=round(v, 1), unit=\"\", min=0, max=10, warn=7, crit=4, better=\"higher\" | table name value unit min max warn crit better key",
                 "enableSmartSources": true
             },
-            "name": "Health je Building"
+            "name": "Health by building"
         },
         "ds_heat": {
             "type": "ds.search",
@@ -128,7 +128,7 @@
                 "query": "| mstats avg(_value) as value WHERE index=demo_sakh_en_metrics metric_name=\"sakh.network.health_score\" building=\"$building$\" device_family=\"Switches and Hubs\" BY device span=10m\n| timechart span=10m limit=0 avg(value) by device",
                 "enableSmartSources": true
             },
-            "name": "Health je Switch"
+            "name": "Health by switch"
         },
         "ds_issues": {
             "type": "ds.search",
