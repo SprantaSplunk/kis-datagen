@@ -98,7 +98,7 @@ export function link(dashboard, tokens = []) {
 }
 
 export function linkDept(dashboard, key = 'value') {
-    return link(dashboard, [{ token: 'form.dept', value: key }]);
+    return link(dashboard, [{ token: 'dept', value: key }]);
 }
 
 export function setToken(token, key = 'value') {

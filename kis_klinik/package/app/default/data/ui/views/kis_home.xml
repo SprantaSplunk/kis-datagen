@@ -539,7 +539,7 @@
                         "dashboard": "kis_beds",
                         "tokens": [
                             {
-                                "token": "form.dept",
+                                "token": "dept",
                                 "value": "value"
                             }
                         ],

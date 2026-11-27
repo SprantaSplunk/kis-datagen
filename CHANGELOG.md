@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-11-27
+
+### kis_klinik 1.0.11
+
+- *Klinik-Uebersicht*, *Stationen nach Haus und Etage*: Der Klick auf eine Station oeffnet das
+  *Bettenmanagement* jetzt gefiltert auf deren Abteilung. Bisher setzte der Link `form.form.dept`
+  statt `form.dept`, und der Filter blieb auf *Alle*.
+- Zu tun: `dist/kis_klinik-1.0.11.spl` als Upgrade hochladen und die Dashboards im Browser neu laden.
+
 ## 2026-11-23
 
 ### kis_klinik 1.0.10
